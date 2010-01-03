@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="STYLESHEET" type="text/css" href="html/jugglinglab.css"/>
+<title>Juggling Lab</title>
+</head>
+<body>
+<p style="text-align:center"><img src="html/title.gif" alt="Juggling Lab screenshot"/>
+</p>
+
+<p>Juggling Lab is a Java application for creating and animating juggling patterns.  It evolved from the
+<a href="http://juggleanim.sourceforge.net">JuggleAnim</a> juggling applet, and extends JuggleAnim
+by providing greater flexibility and user interactivity.</p>
+<p>Juggling Lab is free for non-commercial use (more details
+<a href="html/license.html">here</a>).  Portions are released under the
+GNU <a href="http://www.gnu.org/licenses/gpl.html">General Public License</a>.
+</p>
+
+<h4>How to run Juggling Lab</h4>
+<blockquote>
+
+<p>Juggling Lab is written entirely in Java, so it will run on any platform
+that supports the Java 2 Standard Edition platform.  It has been tested
+extensively on Windows and Mac OS X, and we have reports of users
+running it successfully on other Unix-like
+operating systems as well (e.g., Linux, Solaris).</p>
+
+<p><b>Windows:</b>
+Double-click on the <b>JugglingLab.bat</b> file.  If it doesn't launch correctly,
+you most likely have an older version of Java; try installing Sun's
+<a href="http://java.com">latest version</a>.</p>
+
+<p><b>Mac OS X:</b>
+Juggling Lab works like any other application, and is launched by double-clicking.</p>
+
+<p><b>Other:</b>
+The executable jar file is <b>bin/JugglingLab.jar</b>.  Consult your
+Java installation's documentation for instructions on how to run a jar file.
+On Unix-like systems: (1) change your shell search path to
+include the "java" command (try <b>'which java'</b> in the shell
+to verify it's working), and
+(2) execute the "JugglingLab.sh" shell script.</p>
+</blockquote>
+
+<h4>Documentation</h4>
+<blockquote>
+<p>
+Juggling Lab is not yet fully documented, but the following pages may help you get started:</p>
+<ul>
+<li><a href="html/phpinfo.html">Web link front end.</a>  Describes how to create a Juggling Lab animation with a web link.</li>
+<li><a href="html/sspanel.html">Using the siteswap input panel.</a>  Describes how to enter
+siteswap patterns, add hand movements, and change pattern timing.</li>
+<li><a href="html/editor.html">Using the visual editor.</a>  Describes how to use
+Juggling Lab's visual editor to modify patterns.</li>
+<li><a href="html/ssgenerator.html">Using the siteswap generator.</a>  Describes
+what the siteswap generator does and what all those options mean.</li>
+<li><a href="html/ssnotation.html">Generalized siteswap notation.</a>  Explains the generalized
+form of siteswap notation used by Juggling Lab.</li>
+<li><a href="html/jml.html">Juggling Markup Language (JML).</a>  Explains JML,
+Juggling Lab's primary pattern notation.</li>
+<li><a href="html/applet.html">Using Juggling Lab as an applet.</a>  Describes the HTML needed
+to create an animation within a web page.</li>
+<li><a href="html/license.html">The Juggling Lab license.</a>  Describes what you need to do if you make Juggling Lab publicly available (for example, you post it on a web site).</li>
+</ul>
+<p><a href="http://jugglinglab.sourceforge.net/source_doc/html/index.html">Source code documentation</a> is also available, for those interested (<a href="http://jugglinglab.sourceforge.net/JugglingLab_src_doc.tar.gz">download</a>).</p>
+</blockquote>
+
+<h4>How to compile Juggling Lab</h4>
+<blockquote>
+<p>As distributed, Juggling Lab is already compiled so there
+is no need to do so again unless you want to change the source code.  If you are
+interested in adding new features to Juggling Lab, please consider becoming a
+developer on the Juggling Lab project so that your features become
+a part of the standard distribution; contact the <a href="mailto:jboyce@users.sourceforge.net">Juggling Lab project administrator</a>.</p>
+
+<p>Please note that most of Juggling Lab is released under the GNU <a href="http://www.gnu.org/licenses/gpl.html">General Public License (GPL)</a>.  The GPL requires that, if you make Juggling Lab publicly available, it must be accompanied by a copy of the source code in a machine-readable format.</p>
+
+<p>First you need to extract the source code; it is distributed as a
+compressed archive:</p>
+<blockquote>
+<p><b>Windows:</b>
+Double-click on the <b>bin/extract_source.bat</b> batch file.  This should
+create a directory called <b>source</b> in the main Juggling Lab directory.</p>
+
+<p><b>Mac OS X:</b>
+From a Terminal window, execute the <b>bin/extract_source.sh</b>
+shell script.  This will create folders called <b>osx_project</b> and <b>source</b> in the
+same folder as the main Juggling Lab application.</p>
+
+<p><b>Other:</b>
+The source code is archived in <b>bin/JugglingLab_source.jar</b>  Consult
+your Java installation's documentation for instructions on how to expand
+a jar file.  On Unix-like systems: (1) change your shell search path to
+include the "jar" command (try <b>'which jar'</b> in the shell
+to verify it's working), and
+(2) execute the <b>bin/extract_source.sh</b> shell script.</p>
+</blockquote>
+
+<p>Next you need to compile the source code:</p>
+<blockquote>
+
+<p><b>Windows and Other:</b></p>
+<ul>
+<li>The distribution includes a file <b>build.xml</b>, which is a build
+file for use with the Apache Ant Java build system.  Ant is free software
+that is available for most platforms at
+<a href="http://ant.apache.org">ant.apache.org</a>.</li>
+
+<li>The default build target creates three files:  <b>bin/JugglingLab.jar</b>,
+<b>bin/JugglingLabAWTApplet.jar</b>, and <b>bin/JugglingLab_source.jar</b>.  The latter source
+archive must be included with Juggling Lab whenever it is made publicly
+available, in the same directory as the executable jar files.</li>
+</ul>
+
+<p><b>Mac OS X:</b></p>
+<ul>
+<li>Make sure you have a sufficiently recent version of Apple's OS X development tools (<a href="http://developer.apple.com">download</a>).  The project file
+will work with Xcode version 1.1, which requires at least Mac OS X 10.3 to run.</li>
+<li>Launch the <b>osx_project/Juggling Lab.pbproj</b> project file to open the IDE.  There are three project targets, corresponding to the OS X application and the two jar distributions.</li>
+<li>Project Builder puts the finished build products into the <b>osx_project/build</b> folder.</li>
+<li>To fulfill the source code provision of the GPL, the project file creates a source code archive as part of the build process; this archive is inserted within the application bundle at <b>Juggling Lab.app/Contents/Resources/Java/JugglingLab_source.jar</b>.</li>
+</ul>
+</blockquote>
+</blockquote>
+
+</body>
+</html>

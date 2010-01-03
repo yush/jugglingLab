@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="STYLESHEET" type="text/css" href="jugglinglab.css"/>
+    <title>Juggling Lab applet documentation</title>
+</head>
+<body>
+
+<h2>Applet basics</h2>
+<p>To use Juggling Lab in your page, you only need a single executable from the Juggling Lab
+distribution, called <code>JugglingLab.jar</code>.  This archive
+includes two applet classes usable within a web page:</p>
+<ul>
+<li><b><code>JugglingLab.class</code></b>, which is configurable to contain any or
+all of the following elements:  An animation view, a pattern input text field,
+a pattern browser list, a siteswap generator, and a ladder diagram editor.  This
+applet requires Java 2 support within the browser, which is most reliable when users have downloaded
+the Java plug-in from Sun.</li>
+<li><b><code>JugglingLabAWT.class</code></b>, which runs under Java 1.1 and shows only
+a 2D animator view (i.e., the pattern input and ladder diagram are unavailable, as
+these are Swing-based GUI components).  When using this applet, the
+<code><b>config</b></code> and <code><b>patternfile</b></code> parameters below are
+unused.</li>
+</ul>
+<p>If you are only using the <code>JugglingLabAWT</code> class, you can use the
+<code>JugglingLabAWTApplet.jar</code> archive file instead of <code>JugglingLab.jar</code>; it leaves
+out the unused classes and is therefore a shorter download when running over the network.</p>
+<p>In addition to these applets, the following classes can be run as command line applications:</p>
+<ul>
+<li><b><code>JugglingLab.class</code></b>, which is an application version of the applet.  Use command line
+option "help" for a help message.</li>
+<li><b><code>siteswapGenerator.class</code></b>, which gives command line access to the siteswap generator.
+Use no command line options for a help message.</li>
+</ul>
+
+<p>In addition to these executable jar files, you must include the
+<code>JugglingLab_source.jar</code> file on your site as well.  As stated
+in the Juggling Lab <a href="license.html">license</a>, the recommended way to do this is to <b>always include the <code>JugglingLab_source.jar</code> file in the same directory as the executable jar files.</b></p>
+
+
+<h2>Juggling Lab applet parameters</h2>
+<p>When used as an applet, Juggling Lab recognizes seven parameters within the
+<code>&lt;applet&gt</code> tag.  These are named <b><code>config</code></b>, 
+<b><code>animprefs</code></b>, <b><code>notation</code></b>, <b><code>pattern</code></b>, 
+<b><code>jmldir</code></b>, <b><code>jmlfile</code></b>, and <b><code>uploadscript</code></b>.  Each of these parameters is optional,
+and is set as follows:</p>
+
+<dl>
+<dt><b><code>config</code></b></dt>
+<dd>This parameter configures which interface elements are included in the applet display.
+It is comprised of semicolon-separated assignment settings, for example <code>"entry=siteswap;view=jml"</code>
+<ul>
+<li><b><code>entry</code></b> -- determines which notation (if any) is used in the pattern input panel shown on the left of the applet display.  Values are 'none' and 'siteswap'; default value is 'siteswap'.</li>
+<li><b><code>view</code></b> -- determines which type of animation view is shown on the right of the applet display.  Values are 'none', 'simple', 'edit', 'selection', and 'jml'; default value is 'simple'.</li>
+</ul>
+</dd>
+</dl>
+
+<dl>
+<dt id="animprefs"><b><code>animprefs</code></b></dt>
+<dd>This parameter defines how the animator itself will work.  (These settings are made in
+the "Animation Preferences" panel when Juggling Lab is run as an application.)
+It is comprised of semicolon-separated assignment settings, for example <code>"threed=true;fps=10"</code>
+<ul>
+<li><b><code>threed</code></b> -- determines whether the display is a 3d solid perspective display, or a 2d wireframe orthographic display.  Values are true/false; default value is false.</li>
+<li><b><code>stereo</code></b> -- determines whether to display a stereo pair of images.  Values are true/false; default value is false.</li>
+<li><b><code>dbuffer</code></b> -- determines if the display will be double-buffered to minimize flicker.
+Has no effect in 3d display mode, which is always double-buffered.  Values are true/false; default value is true.</li>
+<li><b><code>startpaused</code></b> -- causes the animator to wait for a prompt from the user to begin animation.  Values are true/false; default value is false.</li>
+<li><b><code>catchsound</code></b> -- determines whether catches are audible.  Values are true/false; default value is false.</li>
+<li><b><code>bouncesound</code></b> -- determines whether bounces off the ground are audible.  Values are true/false; default value is true.</li>
+<li><b><code>fps</code></b> -- sets the number of frames per second to be drawn by the animator.  Values are floating point
+numbers greater than 0.0; default value is 30.0.</li>
+<li><b><code>slowdown</code></b> -- defines an overall time slowdown factor (e.g., slowdown=1.0 is actual speed,
+slowdown=2.0 is half actual speed).  Values are floating point numbers greater than 0.0; default value is 2.0.</li>
+<li><b><code>border</code></b> -- defines a border (in pixels) around the animation.  Values are integers greater than
+or equal to 0; default value is 0.</li>
+</ul>
+</dd>
+</dl>
+
+<dl>
+<dt><b><code>notation</code></b></dt>
+<dd>This parameter determines which notation component will be used to parse the pattern specified in the
+<b><code>pattern</code></b> parameter below.  Currently recognized values are 'jml' and 'siteswap'; default is 'siteswap'.
+</dd>
+</dl>
+
+<dl>
+<dt><b><code>pattern</code></b></dt>
+<dd>This parameter defines the pattern to be juggled.  The text string provided here is sent to the
+notation component defined in the <b><code>notation</code></b> parameter above, for conversion to JML and
+animation.  The expected input format varies by notation; for the notations currently implemented it is:
+<ul>
+<li><b><code>jml</code></b> -- the text string should be in standard JML format, described in the
+<a href="jml.html">JML documentation</a>.
+To get examples, use the "Save as HTML" feature in the application and look at the HTML generated.</li>
+<li><b><code>siteswap</code></b> -- text string should be in one of two formats (the applet will auto-detect
+which you're using):
+<ol>
+<li>A siteswap pattern alone, using the same format as in the "Pattern" input box on the
+<a href="sspanel.html">siteswap input panel</a>.
+For example <code>"(4x,4x)"</code>.</li>
+<li>A list of settings in the form used in the <a href="sspanel.html#settings">
+"Manual settings" field</a> of the siteswap input panel.</li>
+</ol>
+</li>
+</ul>
+</dd>
+</dl>
+
+<dl>
+<dt><b><code>jmldir</code></b></dt>
+<dd>An absolute link to a directory used as a base for <b><code>jmlfile</code></b> below.  For example, <code>http://jugglinglab.sourceforge.net/wiki_patterns/</code>.
+</dd>
+</dl>
+
+<dl>
+<dt><b><code>jmlfile</code></b></dt>
+<dd>This parameter causes the applet to load a JML file from the server.  If the JML file contains a pattern, it is loaded into the animator and the <b><code>pattern</code></b> parameter above is ignored.  If the file is a pattern list, it is
+displayed in a "Patterns" tab attached to the left side of the applet.  The format of this
+parameter is a UNIX-like path to the pattern file, relative to either <b><code>jmldir</code></b> if defined, or to the HTML document containing the applet.  For example, <code>patterns/demo.jml</code>.
+</dd>
+</dl>
+
+<dl>
+<dt><b><code>uploadscript</code></b></dt>
+<dd>An absolute link to the server script for uploading JML files.  This is used by the "Save to Server" function.  For example, <code>http://jugglinglab.sourceforge.net/cgi-bin/JL_fup.pl</code>.
+</dd>
+</dl>
+
+<h2>Examples</h2>
+<p>No examples in here yet.</p>
+
+<p>Look at the HTML files in the Juggling Lab distribution for examples of how you can use the
+applet within a web page.</p>
+
+<hr/>
+<p>
+<a href="http://validator.w3.org/check/referer">
+<img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0!" height="31" width="88" /></a>
+</p>
+
+</body>
+</html>

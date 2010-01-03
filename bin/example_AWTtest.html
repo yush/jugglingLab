@@ -1,0 +1,92 @@
+<html>
+<head>
+<link rel="STYLESHEET" type="text/css" href="../html/jugglinglab.css"/>
+<title>Test of Java 1.1 applet</title>
+</head>
+<body>
+
+<applet archive="JugglingLabAWTApplet.jar" code="JugglingLabAWT" width="200" height="250">
+<param name="animprefs" value="startpaused=true"/>
+<param name="notation" value="jml"/>
+<param name='pattern' value='
+<jml version="1.0">
+<pattern>
+<title>Rubensteins Revenge</title>
+<prop type="ball"/>
+<setup jugglers="1" paths="3" props="1,1,1"/>
+<symmetry type="delay" pperm="(1)(2)(3)" delay="2.0689"/>
+<symmetry type="switchdelay" jperm="(1,1*)" pperm="(1)(2)(3)"/>
+<event x="-2.7934" y="32.3932" z="0" t="0.064" hand="1:right">
+<holding path="2"/>
+</event>
+<event x="7.9933" y="9.3936" z="0" t="0.1827" hand="1:right">
+<holding path="2"/>
+</event>
+<event x="-28.7457" y="21.5084" z="0" t="0.1874" hand="1:left">
+<catch path="3"/>
+</event>
+<event x="-37.1632" y="36.1346" z="0" t="0.2874" hand="1:left">
+<holding path="3"/>
+</event>
+<event x="-9.6222" y="1.2878" z="0" t="0.3241" hand="1:right">
+<throw path="2" type="toss"/>
+</event>
+<event x="-7.9119" y="45.562" z="0" t="0.3682" hand="1:left">
+<holding path="3"/>
+</event>
+<event x="9.867" y="25.6334" z="0" t="0.4559" hand="1:left">
+<holding path="3"/>
+</event>
+<event x="-13.5971" y="13.6449" z="0" t="0.5401" hand="1:left">
+<holding path="3"/>
+</event>
+<event x="25.4101" y="0.8294" z="0" t="0.5862" hand="1:right">
+<catch path="1"/>
+</event>
+<event x="-20.3483" y="31.0158" z="0" t="0.6368" hand="1:left">
+<throw path="3" type="toss"/>
+</event>
+<event x="-2.9849" y="24.1707" z="0" t="0.7758" hand="1:left">
+<catch path="2"/>
+</event>
+<event x="11.5531" y="8.0518" z="0" t="0.8881" hand="1:left">
+<holding path="2"/>
+</event>
+<event x="-18.4467" y="-0.5026" z="0" t="0.9103" hand="1:right">
+<throw path="1" type="toss"/>
+</event>
+<event x="23.0759" y="25.9622" z="0" t="0.9887" hand="1:left">
+<holding path="2"/>
+</event>
+</pattern>
+</jml>
+'/>
+Java not available
+</applet>
+
+<applet archive="JugglingLabAWTApplet.jar" code="JugglingLabAWT" width="200" height="250">
+<param name="animprefs" value="startpaused=true"/>
+<param name="notation" value="siteswap"/>
+<param name="pattern" value="pattern=<R|L><4xp|3><3|4xp>;mat_style={8,0}{8,0};balldiam=0.15;colors={gray}{255,100,100}"/>
+Java not available
+</applet>
+
+<applet archive="JugglingLabAWTApplet.jar" code="JugglingLabAWT" width="200" height="250">
+<param name="animprefs" value="threed=true;fps=15;slowdown=4;startpaused=true"/>
+<param name="notation" value="siteswap"/>
+<param name="pattern" value="pattern=<R|L><4xpB|3xpB>;tps=6;colors=mixed"/>
+Java not available
+</applet>
+
+<ol>
+<li>After the applet loads you should see three "Click to start" messages above.  They may take a minute
+or more to appear if you have a slower net connection.  If you see "Java not available" instead,
+then most likely Java has been disabled on your browser; try checking browser preferences.</li>
+<li>When each message is clicked, an animation should start.</li>
+<li>Pause/unpause by clicking on the animation again.</li>
+<li>Move the camera by dragging with the mouse button held down.</li>
+</ol>
+</p>
+
+</body>
+</html>
