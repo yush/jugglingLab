@@ -246,6 +246,9 @@ public class View extends JPanel implements ActionListener {
 					restartView(pat, jc);
 				}
 			}
+            else if (command.equals("add_pattern")) {
+            	doPatternMenuCommand(PATTERN_ADD);
+            }
         } catch (JuggleExceptionUser je) {
             new ErrorDialog(this, je.getMessage());
         } catch (Exception e) {
@@ -486,5 +489,17 @@ public class View extends JPanel implements ActionListener {
 		if (subview instanceof SelectionView)
 			return VIEW_SELECTION;
 		return VIEW_NONE;
+	}
+	
+	public static final int PATTERN_ADD = 0;
+	
+	
+	//
+	public void doPatternMenuCommand (int action) throws JuggleExceptionInternal {
+		switch (action) {
+		case PATTERN_ADD:
+			System.out.print("add pattern");
+			break;
+		}
 	}
 }

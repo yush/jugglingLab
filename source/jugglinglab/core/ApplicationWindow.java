@@ -76,11 +76,11 @@ public class ApplicationWindow extends JFrame implements ActionListener, WindowL
 
 
     protected static final String[] fileItems = new String[]
-    { "Open JML...", "Open JuggleAnim pattern list...", null, "Quit" };
+    { "New_Pattern_List","Open JML...", "Open JuggleAnim pattern list...", null, "Quit" };
     protected static final String[] fileCommands = new String[]
-    { "open", "juggleanim", null, "exit" };
+    { "newlist", "open", "juggleanim", null, "exit" };
     protected static final char[] fileShortcuts =
-    { 'O', ' ', ' ', 'Q' };
+    { ' ','O', ' ', ' ', 'Q' };
 
 	protected JMenu createFileMenu() {
         JMenu filemenu = new JMenu(guistrings.getString("File"));
@@ -111,10 +111,10 @@ public class ApplicationWindow extends JFrame implements ActionListener, WindowL
         try {
             /* if (command.equals("newpat"))
                 doFileMenuCommand(FILE_NEWPAT);
-            else if (command.equals("newlist"))
-                doFileMenuCommand(FILE_NEWLIST);
-            else*/
-			if (command.equals("open"))
+            else */
+        	if (command.equals("newlist"))
+                doMenuCommand(FILE_NEWLIST);
+            else if (command.equals("open"))
                 doMenuCommand(FILE_OPEN);
             else if (command.equals("juggleanim"))
                 doMenuCommand(FILE_JUGGLEANIM);
@@ -128,7 +128,7 @@ public class ApplicationWindow extends JFrame implements ActionListener, WindowL
 
     public static final int FILE_NONE = 0;
     // public static final int FILE_NEWPAT = 1;
-    // public static final int FILE_NEWLIST = 2;
+    public static final int FILE_NEWLIST = 2;
     public static final int FILE_OPEN = 3;
     public static final int	FILE_JUGGLEANIM = 4;
     public static final int	FILE_EXIT = 5;
@@ -161,11 +161,11 @@ public class ApplicationWindow extends JFrame implements ActionListener, WindowL
                 }
             }
                 break;
-
+			 */
             case FILE_NEWLIST:
                 new PatternListWindow(guistrings.getString("Pattern_List"));
                 break;
-			*/
+			
             case FILE_OPEN:
 				javax.swing.filechooser.FileFilter filter = new javax.swing.filechooser.FileFilter() {
 					public boolean accept(File f) {
