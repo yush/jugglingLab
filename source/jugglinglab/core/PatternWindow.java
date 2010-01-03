@@ -44,6 +44,7 @@ public class PatternWindow extends JFrame implements ActionListener {
     protected View view = null;
 	protected JMenu filemenu = null;
 	protected JMenu viewmenu = null;
+	protected JMenu patternmenu = null;
 	
 
     public PatternWindow(String name, JMLPattern pat, AnimatorPrefs jc) throws JuggleExceptionUser, JuggleExceptionInternal {
@@ -65,6 +66,12 @@ public class PatternWindow extends JFrame implements ActionListener {
 			jmi.addActionListener(this);   // so we can enable/disable GIFsave depending on view mode
 		}
         mb.add(viewmenu);
+        
+        //deployment
+        patternmenu = view.createPatternMenu();
+        mb.add(patternmenu);
+        //
+        
         setJMenuBar(mb);
 
         view.setViewMode(View.VIEW_SIMPLE);

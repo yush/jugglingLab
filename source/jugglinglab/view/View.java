@@ -169,6 +169,33 @@ public class View extends JPanel implements ActionListener {
 		return viewmenu;
 	}
 	
+    protected static final String[] pattern_menuItems = new String[]
+    { "Add_pattern"};
+    protected static final String[] pattern_menuCommands = new String[]
+    { "add_pattern"};
+    protected static final char[] pattern_menuShortcuts =
+    { ' ' };	
+	
+	public JMenu createPatternMenu() {
+		JMenu patternmenu = new JMenu(guistrings.getString("Pattern_menu"));
+        for (int i = 0; i < pattern_menuItems.length; i++) {
+            if (pattern_menuItems[i] == null)
+            	patternmenu.addSeparator();
+            else {
+				JMenuItem pattern_menuitem = new JMenuItem(guistrings.getString(pattern_menuItems[i].replace(' ', '_')));
+				
+                if (pattern_menuShortcuts[i] != ' ')
+                	pattern_menuitem.setAccelerator(KeyStroke.getKeyStroke(pattern_menuShortcuts[i],
+											Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+
+                pattern_menuitem.setActionCommand(pattern_menuCommands[i]);
+                pattern_menuitem.addActionListener(this);
+                patternmenu.add(pattern_menuitem);
+            }
+        }		
+		return patternmenu;
+	}
+	
 	
     public void actionPerformed(ActionEvent ae) {
         String command = ae.getActionCommand();
