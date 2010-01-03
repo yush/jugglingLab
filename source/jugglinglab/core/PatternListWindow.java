@@ -74,7 +74,7 @@ public class PatternListWindow extends JFrame implements ActionListener {
         this.pl = new PatternList(null);
 
         this.getContentPane().add(pl, BorderLayout.CENTER);
-        this.setSize(200,300);
+        this.setSize(500,300);
         createMenuBar();
         this.setVisible(true);
     }
