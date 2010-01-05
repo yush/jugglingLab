@@ -496,9 +496,10 @@ public class View extends JPanel implements ActionListener {
 	
 	//
 	public void doPatternMenuCommand (int action) throws JuggleExceptionInternal {
+		JMLPatternList test = new JMLPatternList();
 		switch (action) {
 		case PATTERN_ADD:
-			System.out.print("add pattern");
+			test.writePatternList();
 			break;
 		}
 	}
