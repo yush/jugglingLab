@@ -1,7 +1,6 @@
 TODO:
 
 encapsulate a pattern. ex:
-
 <patternlist>
 	<title>Juggling Lab Patterns</title>
 	<line display="ex1" notation="jml" pattern='
@@ -10,3 +9,24 @@ encapsulate a pattern. ex:
 	<pattern>...</pattern>' />
 </patternlist>
 
+PatternList must be dynamic:
+	add
+	remove
+	up
+	down
+	categorize
+
+PatternListWindow owns PatternList( window + vector patternRecord )
+PatternList composed of PatternRecor
+PatternRecord:
+	anim: xml (<pattern></pattern>)
+	animprefs:
+	display:title
+	notation: type of notation (jml/siteswap)
+
+		=> PatternList: function writePatternList: write all pattern with anim and add tags
+		
+01-12
+	find a way to add a pattern from a PL.
+	1/ from View, menu add, then choose the file in which pattern must be added ( and re-parse the PL)
+			=> find the link between View and PL

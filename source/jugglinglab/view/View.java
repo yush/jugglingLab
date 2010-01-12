@@ -497,10 +497,39 @@ public class View extends JPanel implements ActionListener {
 	//
 	public void doPatternMenuCommand (int action) throws JuggleExceptionInternal {
 		JMLPatternList test = new JMLPatternList();
+		PatternList aList = new PatternList();
 		switch (action) {
 		case PATTERN_ADD:
 			test.writePatternList();
-			break;
+            if (getPattern().isValid()) {
+                try {
+                    int option = PlatformSpecific.getPlatformSpecific().showSaveDialog(this);
+                    if (option == JFileChooser.APPROVE_OPTION) {
+                        if (PlatformSpecific.getPlatformSpecific().getSelectedFile() != null) {
+                            setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                            //create a new PatternList
+                            aList.addPattern(getPattern().writeJMLPattern(true), ' ', getPattern().getTitle() , anim); 
+                            //test si fichier contient jml
+                            //oui: charge arbre dans PatternList, ajout du nouveau pattern, rŽŽcrit le nouvel arbre
+                            //non: charge pas mais fait pareil
+                            FileWriter fw = new FileWriter(PlatformSpecific.getPlatformSpecific().getSelectedFile());
+                            PrintWriter write = new PrintWriter(fw);
+                            for (int i = 0; i < JMLDefs.jmlprefix.length; i++)
+                                write.println(JMLDefs.jmlprefix[i]);
+                            write.flush();
+                            getPattern().writeJML(fw, true);
+                            fw.close();
+                        }
+                    }
+                } catch (FileNotFoundException fnfe) {
+                    throw new JuggleExceptionInternal("FileNotFound: "+fnfe.getMessage());
+                } catch (IOException ioe) {
+                    throw new JuggleExceptionInternal("IOException: "+ioe.getMessage());
+                } finally {
+                    setCursor(Cursor.getDefaultCursor());
+                }
+            }
+            break;
 		}
 	}
 }

@@ -1354,11 +1354,9 @@ done2:
 
         return result.substring(0, endpos);
     }
-
-    public void writeJML(Writer wr, boolean title) throws IOException {
-        PrintWriter write = new PrintWriter(wr);
-
-        write.println("<jml version=\"" + this.version + "\">");
+    
+    public void writeJMLPattern(PrintWriter write, boolean title) throws IOException {
+    	//StringBuffer write = new StringBuffer()
         write.println("<pattern>");
         if (title)
             write.println("<title>"+this.title+"</title>");
@@ -1386,8 +1384,13 @@ done2:
                 ev.writeJML(write);
             ev = ev.getNext();
         }
-        write.println("</pattern>");
+        write.println("</pattern>");    	
+    }
 
+    public void writeJML(Writer wr, boolean title) throws IOException {
+        PrintWriter write = new PrintWriter(wr);
+        write.println("<jml version=\"" + this.version + "\">");
+        writeJMLPattern(write,true);
         write.println("</jml>");
         for (int i = 0; i < JMLDefs.jmlsuffix.length; i++)
             write.println(JMLDefs.jmlsuffix[i]);

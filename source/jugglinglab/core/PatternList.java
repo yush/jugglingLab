@@ -236,6 +236,45 @@ public class PatternList extends JPanel {
         write.flush();
         //		write.close();
     }
+    
+    public void writeJMLPatternList(Writer wr) throws IOException {
+        PrintWriter write = new PrintWriter(wr);
+        for (int i = 0; i < JMLDefs.jmlprefix.length; i++)
+            write.println(JMLDefs.jmlprefix[i]);
+        String vers = this.loadingversion;
+        if (vers == null)
+            vers = JMLDefs.jmlversion;
+        write.println("<jml version=\""+vers+"\">");
+        write.println("<patternlist>");
+        write.println("<title>"+this.title+"</title>");
+
+        for (int i = 0; i < patterns.size(); i++) {
+            PatternRecord rec = (PatternRecord)patterns.elementAt(i);
+            String line = "<line display=\"" + rec.display + "\"";
+
+            if (rec.animprefs != null)
+                line += " animprefs=\"" + rec.animprefs + "\"";
+            if (rec.notation != null)
+                line += " notation=\"" + rec.notation.toLowerCase() + "\"";
+            if ((rec.notation != null) && rec.notation.equalsIgnoreCase("JML")) {
+                line += " pattern=\'";
+                write.println(line);
+                write.println(rec.anim);
+                write.println("\'/>");
+            } else if (rec.anim != null) {
+                line += " pattern=\"" + rec.anim + "\"/>";
+                write.println(line);
+            } else {
+                line += "/>";
+                write.println(line);
+            }
+        }
+        write.println("</patternlist>");
+        write.println("</jml>");
+        for (int i = 0; i < JMLDefs.jmlsuffix.length; i++)
+            write.println(JMLDefs.jmlsuffix[i]);
+        write.flush();    	
+    }
 
     public void writeText(Writer wr) throws IOException {
         PrintWriter write = new PrintWriter(wr);

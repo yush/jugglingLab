@@ -4,6 +4,7 @@ package jugglinglab.jml;
 
 public class JMLPatternList {
 	
+	
 	public JMLPatternList(){
 		
 	}
