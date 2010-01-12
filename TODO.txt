@@ -1,0 +1,12 @@
+TODO:
+
+encapsulate a pattern. ex:
+
+<patternlist>
+	<title>Juggling Lab Patterns</title>
+	<line display="ex1" notation="jml" pattern='
+	<pattern>...</pattern>' />
+	<line display="ex1" notation="jml" pattern='
+	<pattern>...</pattern>' />
+</patternlist>
+
