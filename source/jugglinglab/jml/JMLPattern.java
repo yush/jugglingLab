@@ -25,6 +25,7 @@ package jugglinglab.jml;
 
 import java.io.*;
 import java.util.*;
+import java.text.MessageFormat;
 import org.xml.sax.*;
 
 import jugglinglab.core.*;
@@ -57,11 +58,11 @@ public class JMLPattern {
     // static ResourceBundle guistrings;
     static ResourceBundle errorstrings;
     static {
-        // guistrings = ResourceBundle.getBundle("GUIStrings");
-        errorstrings = ResourceBundle.getBundle("ErrorStrings");
+        // guistrings = JLLocale.getBundle("GUIStrings");
+        errorstrings = JLLocale.getBundle("ErrorStrings");
     }
 
-    protected String version = JMLDefs.jmlversion;	// JML version number
+    protected String version = JMLDefs.default_JML_on_save;	// JML version number
     protected String title;
     protected int numjugglers;
     protected int numpaths;
@@ -99,9 +100,9 @@ public class JMLPattern {
     }
 
     // Used to specify the jml version number, when pattern is part of a patternlist
-    public JMLPattern(JMLNode root, String jmlversion) throws JuggleExceptionUser {
+    public JMLPattern(JMLNode root, String jmlvers) throws JuggleExceptionUser {
         this();
-        this.loadingversion = jmlversion;
+        this.loadingversion = jmlvers;
         readJML(root);
         valid = true;
     }
@@ -120,14 +121,7 @@ public class JMLPattern {
 
     //	public void setJMLVersion(String version)	{ this.version = version; }
     
-    public void setTitle(String title) {
-        for (int i = 0; i < title.length(); i++) {
-            if ( title.charAt(i) == '<' || title.charAt(i) == '>') {
-                title = "Passing Pattern";
-            }
-        }
-        this.title = title;
-    }
+    public void setTitle(String title)		{ this.title = title == null ? null : title.trim(); }
     public void setNumberOfJugglers(int n)	{ this.numjugglers = n; }
     public void setNumberOfPaths(int n)		{ this.numpaths = n; }
 
@@ -331,10 +325,16 @@ public class JMLPattern {
                 if (hasVDHandJMLTransition[i][1] == false)
                     hasVDHandJMLTransition[i][1] = ei[j].hasVDJMLTransitionForHand(i+1, HandLink.RIGHT_HAND);
             }
-            if (hasJMLTransitionForLeft == false)
-                throw new JuggleExceptionUser(errorstrings.getString("Error_no_left_events_prefix")+" "+(i+1));
-            if (hasJMLTransitionForRight == false)
-                throw new JuggleExceptionUser(errorstrings.getString("Error_no_right_events_prefix")+" "+(i+1));
+            if (hasJMLTransitionForLeft == false) {
+				String template = errorstrings.getString("Error_no_left_events");
+				Object[] arguments = { new Integer(i+1) };
+				throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
+			}
+            if (hasJMLTransitionForRight == false) {
+ 				String template = errorstrings.getString("Error_no_right_events");
+				Object[] arguments = { new Integer(i+1) };
+				throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
+			}
             needVDHandEvent[i][0] = hasVDHandJMLTransition[i][0];	// set up for later
             needVDHandEvent[i][1] = hasVDHandJMLTransition[i][1];
             needHandEvent[i][0] = needHandEvent[i][1] = true;
@@ -349,8 +349,11 @@ public class JMLPattern {
                 if (hasVDPathJMLTransition[i] == false)
                     hasVDPathJMLTransition[i] = ei[j].hasVDJMLTransitionForPath(i+1);
             }
-            if (hasPathJMLTransition == false)
-                throw new JuggleExceptionUser(errorstrings.getString("Error_no_path_events_prefix")+" "+(i+1));
+            if (hasPathJMLTransition == false) {
+ 				String template = errorstrings.getString("Error_no_path_events");
+				Object[] arguments = { new Integer(i+1) };
+				throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
+			}
             needPathEvent[i] = true;			// set up for later
             needSpecialPathEvent[i] = false;
         }
@@ -585,14 +588,15 @@ public class JMLPattern {
                 positions[0] = new Coordinate();
                 angles[0] = new Coordinate();
 
+				// default juggler body positions
                 if (this.getNumberOfJugglers() == 1) {
                     positions[0].setCoordinate(0.0, 0.0, 100.0);
                     angles[0].setCoordinate(0.0, 0.0, 0.0);
                 } else {
                     double r = 70.0;
                     double theta = 360.0 / (double)this.getNumberOfJugglers();
-                    if (r * Math.sin(JLMath.toRad(0.5*theta)) < 45.0)
-                        r = 45.0 / Math.sin(JLMath.toRad(0.5*theta));
+                    if (r * Math.sin(JLMath.toRad(0.5*theta)) < 65.0)
+                        r = 65.0 / Math.sin(JLMath.toRad(0.5*theta));
                     positions[0].setCoordinate(r*Math.cos(JLMath.toRad(theta*(double)(i-1))),
                                                r*Math.sin(JLMath.toRad(theta*(double)(i-1))), 100.0);
                     angles[0].setCoordinate(90.0 + theta*(double)(i-1), 0.0, 0.0);
@@ -690,22 +694,37 @@ done1:
                         switch (tr.getType()) {
                             case JMLTransition.TRANS_THROW:
                             case JMLTransition.TRANS_HOLDING:
-                                if (lasttr.getType() == JMLTransition.TRANS_THROW)
-                                    throw new JuggleExceptionUser(errorstrings.getString("Error_successive_throws_prefix")+" "+(i+1));
-                                if (lastev.getJuggler() != ev.getJuggler())
-                                    throw new JuggleExceptionUser(errorstrings.getString("Error_juggler_changed_prefix")+" "+(i+1));
-                                    if (lastev.getHand() != ev.getHand())
-                                        throw new JuggleExceptionUser(errorstrings.getString("Error_hand_changed_prefix")+" "+(i+1));
-                                        pl.setInHand(ev.getJuggler(), ev.getHand());
+                                if (lasttr.getType() == JMLTransition.TRANS_THROW) {
+									String template = errorstrings.getString("Error_successive_throws");
+									Object[] arguments = { new Integer(i+1) };
+									throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
+								}
+                                if (lastev.getJuggler() != ev.getJuggler()) {
+									String template = errorstrings.getString("Error_juggler_changed");
+									Object[] arguments = { new Integer(i+1) };
+									throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
+								}
+								if (lastev.getHand() != ev.getHand()) {
+									String template = errorstrings.getString("Error_hand_changed");
+									Object[] arguments = { new Integer(i+1) };
+									throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
+								}
+								pl.setInHand(ev.getJuggler(), ev.getHand());
                                 break;
                             case JMLTransition.TRANS_CATCH:
-                                if (lasttr.getType() != JMLTransition.TRANS_THROW)
-                                    throw new JuggleExceptionUser(errorstrings.getString("Error_successive_catches_prefix")+" "+(i+1));
+                                if (lasttr.getType() != JMLTransition.TRANS_THROW) {
+									String template = errorstrings.getString("Error_successive_catches");
+									Object[] arguments = { new Integer(i+1) };
+									throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
+								}
                                 pl.setThrow(lasttr.getThrowType(), lasttr.getMod());
                                 break;
                             case JMLTransition.TRANS_SOFTCATCH:
-                                if (lasttr.getType() != JMLTransition.TRANS_THROW)
-                                    throw new JuggleExceptionUser(errorstrings.getString("Error_successive_catches_prefix")+" "+(i+1));
+                                if (lasttr.getType() != JMLTransition.TRANS_THROW) {
+									String template = errorstrings.getString("Error_successive_catches");
+									Object[] arguments = { new Integer(i+1) };
+									throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
+								}
                                 pl.setThrow(lasttr.getThrowType(), lasttr.getMod());
                                 break;
                         }
@@ -1239,8 +1258,7 @@ done2:
         if (type.equalsIgnoreCase("jml")) {
             loadingversion = current.getAttributes().getAttribute("version");
             if (loadingversion == null)
-                loadingversion = Constants.default_JML_version;
-            // System.out.println("loading version = "+loadingversion);
+                loadingversion = JMLDefs.default_JML_on_load;
         } else if (type.equalsIgnoreCase("pattern")) {
             // do nothing
         } else if (type.equalsIgnoreCase("title")) {
@@ -1299,9 +1317,12 @@ done2:
             pos.readJML(current, loadingversion);
             this.addPosition(pos);
             return;
-        } else
-            throw new JuggleExceptionUser(errorstrings.getString("Error_unknown_tag_prefix")+" '"+type+"'");
-
+        } else {
+			String template = errorstrings.getString("Error_unknown_tag");
+			Object[] arguments = { type };					
+			throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
+		}
+		
         for (int i = 0; i < current.getNumberOfChildren(); i++)
             readJML(current.getChildNode(i));
     }
@@ -1358,14 +1379,16 @@ done2:
     public void writeJML(Writer wr, boolean title) throws IOException {
         PrintWriter write = new PrintWriter(wr);
 
+        for (int i = 0; i < JMLDefs.jmlprefix.length; i++)
+            write.println(JMLDefs.jmlprefix[i]);
         write.println("<jml version=\"" + this.version + "\">");
         write.println("<pattern>");
         if (title)
-            write.println("<title>"+this.title+"</title>");
+            write.println("<title>" + JMLNode.xmlescape(this.title) + "</title>");
         for (int i = 0; i < props.size(); i++)
             ((PropDef)props.elementAt(i)).writeJML(write);
 
-        String out = "<setup jugglers=\""+getNumberOfJugglers()+"\" paths=\""+
+        String out = "<setup jugglers=\"" + getNumberOfJugglers() + "\" paths=\""+
             getNumberOfPaths()+"\" props=\""+getPropAssignment(1);
         for (int i = 2; i <= getNumberOfPaths(); i++)
             out += "," + getPropAssignment(i);

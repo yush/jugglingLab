@@ -24,39 +24,40 @@ package jugglinglab.prop;
 
 import java.awt.*;
 import java.util.*;
+import java.text.MessageFormat;
+
 import jugglinglab.util.*;
 import jugglinglab.renderer.*;
-import idx3d.*;
 
 
 public abstract class Prop {
-    // static ResourceBundle guistrings;
+    static ResourceBundle guistrings;
     static ResourceBundle errorstrings;
     static {
-        // guistrings = ResourceBundle.getBundle("GUIStrings");
-        errorstrings = ResourceBundle.getBundle("ErrorStrings");
+        guistrings = JLLocale.getBundle("GUIStrings");
+        errorstrings = JLLocale.getBundle("ErrorStrings");
     }
     
     protected String initString;
 
-    public static final String[] builtinProps = { "Ball", "Image", "Ring", "New_Ball", "New_Ring", "Club"};
+    public static final String[] builtinProps = { "Ball", "Image", "Ring" };
 
     public static Prop getProp(String name) throws JuggleExceptionUser {
         try {
             Object obj = Class.forName("jugglinglab.prop."+name.toLowerCase()+"Prop").newInstance();
-            if (!(obj instanceof Prop))
-                throw new JuggleExceptionUser("Prop type '"+name+"' doesn't work");
-            return (Prop)obj;
+            if (obj instanceof Prop)
+				return (Prop)obj;
         }
         catch (ClassNotFoundException cnfe) {
-            throw new JuggleExceptionUser("Prop type '"+name+"' not found");
         }
         catch (IllegalAccessException iae) {
-            throw new JuggleExceptionUser("Cannot access '"+name+"' prop file (security)");
         }
         catch (InstantiationException ie) {
-            throw new JuggleExceptionUser("Couldn't create '"+name+"' prop");
         }
+
+		String template = errorstrings.getString("Error_prop_type");
+		Object[] arguments = { name };					
+		throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
     }
 
     public abstract String getName();
@@ -77,6 +78,9 @@ public abstract class Prop {
     public abstract Dimension getProp2DSize(Component comp, double zoom);
     public abstract Dimension getProp2DCenter(Component comp, double zoom);
     public abstract Dimension getProp2DGrip(Component comp, double zoom);
+	
+	/*
     public abstract Object getPropIDX3D();
     public abstract Coordinate getPropIDX3DGrip();
+	*/
 }

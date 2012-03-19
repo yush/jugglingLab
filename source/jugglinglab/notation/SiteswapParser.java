@@ -928,28 +928,28 @@ public class SiteswapParser implements SiteswapParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final private boolean jj_2_1(int xla) {
+  private boolean jj_2_1(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_1(); }
     catch(LookaheadSuccess ls) { return true; }
     finally { jj_save(0, xla); }
   }
 
-  final private boolean jj_2_2(int xla) {
+  private boolean jj_2_2(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_2(); }
     catch(LookaheadSuccess ls) { return true; }
     finally { jj_save(1, xla); }
   }
 
-  final private boolean jj_2_3(int xla) {
+  private boolean jj_2_3(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_3(); }
     catch(LookaheadSuccess ls) { return true; }
     finally { jj_save(2, xla); }
   }
 
-  final private boolean jj_3R_74() {
+  private boolean jj_3R_74() {
     if (jj_3R_23()) return true;
     Token xsp;
     xsp = jj_scanpos;
@@ -959,7 +959,7 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_84() {
+  private boolean jj_3R_84() {
     Token xsp;
     xsp = jj_scanpos;
     if (jj_3R_85()) {
@@ -972,12 +972,12 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_14() {
+  private boolean jj_3R_14() {
     if (jj_3R_22()) return true;
     return false;
   }
 
-  final private boolean jj_3_2() {
+  private boolean jj_3_2() {
     Token xsp;
     xsp = jj_scanpos;
     if (jj_3R_14()) {
@@ -990,12 +990,12 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_73() {
+  private boolean jj_3R_73() {
     if (jj_3R_22()) return true;
     return false;
   }
 
-  final private boolean jj_3R_68() {
+  private boolean jj_3R_68() {
     Token xsp;
     xsp = jj_scanpos;
     if (jj_3R_73()) {
@@ -1008,7 +1008,7 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_79() {
+  private boolean jj_3R_79() {
     Token xsp;
     if (jj_3R_84()) return true;
     while (true) {
@@ -1018,22 +1018,22 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_83() {
+  private boolean jj_3R_83() {
     if (jj_scan_token(21)) return true;
     return false;
   }
 
-  final private boolean jj_3R_82() {
+  private boolean jj_3R_82() {
     if (jj_scan_token(22)) return true;
     return false;
   }
 
-  final private boolean jj_3R_81() {
+  private boolean jj_3R_81() {
     if (jj_scan_token(MOD)) return true;
     return false;
   }
 
-  final private boolean jj_3R_77() {
+  private boolean jj_3R_77() {
     Token xsp;
     xsp = jj_scanpos;
     if (jj_3R_81()) {
@@ -1046,7 +1046,7 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_52() {
+  private boolean jj_3R_52() {
     Token xsp;
     if (jj_3R_68()) return true;
     while (true) {
@@ -1056,7 +1056,7 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_80() {
+  private boolean jj_3R_80() {
     if (jj_scan_token(24)) return true;
     Token xsp;
     xsp = jj_scanpos;
@@ -1065,7 +1065,7 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_71() {
+  private boolean jj_3R_71() {
     if (jj_scan_token(MOD)) return true;
     Token xsp;
     while (true) {
@@ -1075,13 +1075,13 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_21() {
+  private boolean jj_3R_21() {
     if (jj_scan_token(10)) return true;
     if (jj_3R_30()) return true;
     return false;
   }
 
-  final private boolean jj_3R_13() {
+  private boolean jj_3R_13() {
     if (jj_scan_token(9)) return true;
     if (jj_3R_20()) return true;
     Token xsp;
@@ -1091,17 +1091,17 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_70() {
+  private boolean jj_3R_70() {
     if (jj_scan_token(26)) return true;
     return false;
   }
 
-  final private boolean jj_3_1() {
+  private boolean jj_3_1() {
     if (jj_3R_13()) return true;
     return false;
   }
 
-  final private boolean jj_3R_54() {
+  private boolean jj_3R_54() {
     Token xsp;
     if (jj_3R_70()) return true;
     while (true) {
@@ -1111,22 +1111,22 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_44() {
+  private boolean jj_3R_44() {
     if (jj_3R_54()) return true;
     return false;
   }
 
-  final private boolean jj_3R_43() {
+  private boolean jj_3R_43() {
     if (jj_3R_53()) return true;
     return false;
   }
 
-  final private boolean jj_3R_42() {
+  private boolean jj_3R_42() {
     if (jj_3R_52()) return true;
     return false;
   }
 
-  final private boolean jj_3R_76() {
+  private boolean jj_3R_76() {
     if (jj_scan_token(23)) return true;
     Token xsp;
     xsp = jj_scanpos;
@@ -1142,27 +1142,27 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_45() {
+  private boolean jj_3R_45() {
     if (jj_scan_token(NUM)) return true;
     return false;
   }
 
-  final private boolean jj_3R_41() {
+  private boolean jj_3R_41() {
     if (jj_3R_13()) return true;
     return false;
   }
 
-  final private boolean jj_3R_29() {
+  private boolean jj_3R_29() {
     if (jj_scan_token(8)) return true;
     return false;
   }
 
-  final private boolean jj_3R_69() {
+  private boolean jj_3R_69() {
     if (jj_3R_76()) return true;
     return false;
   }
 
-  final private boolean jj_3R_30() {
+  private boolean jj_3R_30() {
     Token xsp;
     if (jj_3R_45()) return true;
     while (true) {
@@ -1172,7 +1172,7 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_28() {
+  private boolean jj_3R_28() {
     Token xsp;
     xsp = jj_scanpos;
     if (jj_3R_41()) {
@@ -1188,17 +1188,17 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_40() {
+  private boolean jj_3R_40() {
     if (jj_scan_token(22)) return true;
     return false;
   }
 
-  final private boolean jj_3R_39() {
+  private boolean jj_3R_39() {
     if (jj_scan_token(21)) return true;
     return false;
   }
 
-  final private boolean jj_3R_20() {
+  private boolean jj_3R_20() {
     Token xsp;
     if (jj_3R_28()) return true;
     while (true) {
@@ -1210,7 +1210,7 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_53() {
+  private boolean jj_3R_53() {
     Token xsp;
     if (jj_3R_69()) return true;
     while (true) {
@@ -1220,12 +1220,12 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_35() {
+  private boolean jj_3R_35() {
     if (jj_scan_token(22)) return true;
     return false;
   }
 
-  final private boolean jj_3R_27() {
+  private boolean jj_3R_27() {
     Token xsp;
     xsp = jj_scanpos;
     if (jj_3R_39()) {
@@ -1235,17 +1235,17 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_34() {
+  private boolean jj_3R_34() {
     if (jj_scan_token(21)) return true;
     return false;
   }
 
-  final private boolean jj_3R_67() {
+  private boolean jj_3R_67() {
     if (jj_3R_71()) return true;
     return false;
   }
 
-  final private boolean jj_3R_66() {
+  private boolean jj_3R_66() {
     if (jj_scan_token(18)) return true;
     Token xsp;
     xsp = jj_scanpos;
@@ -1253,27 +1253,27 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_72() {
+  private boolean jj_3R_72() {
     if (jj_3R_30()) return true;
     return false;
   }
 
-  final private boolean jj_3R_64() {
+  private boolean jj_3R_64() {
     if (jj_scan_token(19)) return true;
     return false;
   }
 
-  final private boolean jj_3R_63() {
+  private boolean jj_3R_63() {
     if (jj_scan_token(18)) return true;
     return false;
   }
 
-  final private boolean jj_3R_65() {
+  private boolean jj_3R_65() {
     if (jj_scan_token(19)) return true;
     return false;
   }
 
-  final private boolean jj_3R_24() {
+  private boolean jj_3R_24() {
     Token xsp;
     xsp = jj_scanpos;
     if (jj_3R_34()) {
@@ -1283,47 +1283,47 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_62() {
+  private boolean jj_3R_62() {
     if (jj_scan_token(LET)) return true;
     return false;
   }
 
-  final private boolean jj_3R_60() {
+  private boolean jj_3R_60() {
     if (jj_3R_71()) return true;
     return false;
   }
 
-  final private boolean jj_3R_58() {
+  private boolean jj_3R_58() {
     if (jj_scan_token(19)) return true;
     return false;
   }
 
-  final private boolean jj_3R_61() {
+  private boolean jj_3R_61() {
     if (jj_scan_token(NUM)) return true;
     return false;
   }
 
-  final private boolean jj_3R_57() {
+  private boolean jj_3R_57() {
     if (jj_scan_token(18)) return true;
     return false;
   }
 
-  final private boolean jj_3R_59() {
+  private boolean jj_3R_59() {
     if (jj_scan_token(19)) return true;
     return false;
   }
 
-  final private boolean jj_3R_56() {
+  private boolean jj_3R_56() {
     if (jj_scan_token(LET)) return true;
     return false;
   }
 
-  final private boolean jj_3R_55() {
+  private boolean jj_3R_55() {
     if (jj_scan_token(NUM)) return true;
     return false;
   }
 
-  final private boolean jj_3R_49() {
+  private boolean jj_3R_49() {
     Token xsp;
     xsp = jj_scanpos;
     if (jj_3R_61()) {
@@ -1347,7 +1347,7 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_51() {
+  private boolean jj_3R_51() {
     if (jj_3R_49()) return true;
     Token xsp;
     xsp = jj_scanpos;
@@ -1355,7 +1355,7 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_46() {
+  private boolean jj_3R_46() {
     Token xsp;
     xsp = jj_scanpos;
     if (jj_3R_55()) {
@@ -1377,7 +1377,7 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_48() {
+  private boolean jj_3R_48() {
     if (jj_3R_46()) return true;
     Token xsp;
     xsp = jj_scanpos;
@@ -1385,7 +1385,7 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_50() {
+  private boolean jj_3R_50() {
     if (jj_3R_49()) return true;
     Token xsp;
     xsp = jj_scanpos;
@@ -1393,7 +1393,7 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_38() {
+  private boolean jj_3R_38() {
     if (jj_scan_token(16)) return true;
     Token xsp;
     xsp = jj_scanpos;
@@ -1409,7 +1409,7 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_47() {
+  private boolean jj_3R_47() {
     if (jj_3R_46()) return true;
     Token xsp;
     xsp = jj_scanpos;
@@ -1417,7 +1417,7 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_33() {
+  private boolean jj_3R_33() {
     if (jj_scan_token(16)) return true;
     Token xsp;
     xsp = jj_scanpos;
@@ -1433,12 +1433,12 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_19() {
+  private boolean jj_3R_19() {
     if (jj_3R_27()) return true;
     return false;
   }
 
-  final private boolean jj_3R_37() {
+  private boolean jj_3R_37() {
     if (jj_scan_token(14)) return true;
     Token xsp;
     xsp = jj_scanpos;
@@ -1454,7 +1454,7 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_36() {
+  private boolean jj_3R_36() {
     if (jj_3R_49()) return true;
     Token xsp;
     xsp = jj_scanpos;
@@ -1462,7 +1462,7 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_32() {
+  private boolean jj_3R_32() {
     if (jj_scan_token(14)) return true;
     Token xsp;
     xsp = jj_scanpos;
@@ -1478,7 +1478,7 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_31() {
+  private boolean jj_3R_31() {
     if (jj_3R_46()) return true;
     Token xsp;
     xsp = jj_scanpos;
@@ -1486,7 +1486,7 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_25() {
+  private boolean jj_3R_25() {
     Token xsp;
     xsp = jj_scanpos;
     if (jj_3R_36()) {
@@ -1499,12 +1499,12 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_16() {
+  private boolean jj_3R_16() {
     if (jj_3R_24()) return true;
     return false;
   }
 
-  final private boolean jj_3R_22() {
+  private boolean jj_3R_22() {
     Token xsp;
     xsp = jj_scanpos;
     if (jj_3R_31()) {
@@ -1517,12 +1517,12 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_18() {
+  private boolean jj_3R_18() {
     if (jj_3R_26()) return true;
     return false;
   }
 
-  final private boolean jj_3R_87() {
+  private boolean jj_3R_87() {
     if (jj_3R_27()) return true;
     Token xsp;
     xsp = jj_scanpos;
@@ -1530,7 +1530,7 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_26() {
+  private boolean jj_3R_26() {
     if (jj_scan_token(9)) return true;
     Token xsp;
     xsp = jj_scanpos;
@@ -1544,17 +1544,17 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_88() {
+  private boolean jj_3R_88() {
     if (jj_scan_token(12)) return true;
     return false;
   }
 
-  final private boolean jj_3R_15() {
+  private boolean jj_3R_15() {
     if (jj_3R_23()) return true;
     return false;
   }
 
-  final private boolean jj_3R_23() {
+  private boolean jj_3R_23() {
     if (jj_scan_token(9)) return true;
     Token xsp;
     xsp = jj_scanpos;
@@ -1568,7 +1568,7 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_86() {
+  private boolean jj_3R_86() {
     if (jj_3R_26()) return true;
     Token xsp;
     xsp = jj_scanpos;
@@ -1578,7 +1578,7 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_75() {
+  private boolean jj_3R_75() {
     if (jj_3R_24()) return true;
     Token xsp;
     xsp = jj_scanpos;
@@ -1586,17 +1586,17 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_85() {
+  private boolean jj_3R_85() {
     if (jj_3R_25()) return true;
     return false;
   }
 
-  final private boolean jj_3R_17() {
+  private boolean jj_3R_17() {
     if (jj_3R_25()) return true;
     return false;
   }
 
-  final private boolean jj_3_3() {
+  private boolean jj_3_3() {
     Token xsp;
     xsp = jj_scanpos;
     if (jj_3R_17()) {
@@ -1609,34 +1609,41 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
-  final private boolean jj_3R_78() {
+  private boolean jj_3R_78() {
     if (jj_scan_token(12)) return true;
     return false;
   }
 
+  /** Generated Token Manager. */
   public SiteswapParserTokenManager token_source;
   SimpleCharStream jj_input_stream;
-  public Token token, jj_nt;
+  /** Current token. */
+  public Token token;
+  /** Next token. */
+  public Token jj_nt;
   private int jj_ntk;
   private Token jj_scanpos, jj_lastpos;
   private int jj_la;
-  public boolean lookingAhead = false;
-  private boolean jj_semLA;
   private int jj_gen;
   final private int[] jj_la1 = new int[58];
   static private int[] jj_la1_0;
   static {
-      jj_la1_0();
+      jj_la1_init_0();
    }
-   private static void jj_la1_0() {
+   private static void jj_la1_init_0() {
       jj_la1_0 = new int[] {0x80,0x4ed4230,0x4ed4230,0x100,0x400,0x1000,0x80,0x80,0x6d4230,0x80,0x80,0x80,0x80,0x80,0xc0030,0x80,0x80,0x80,0xc0030,0x80,0xd4030,0xc0030,0x80000,0x40,0x100000,0x600000,0x800000,0x80,0x1000000,0x80,0x80,0x1000,0x80,0x80,0x6d4230,0x80,0x80,0x80,0x80,0x80,0xc0030,0x80,0x80,0x80,0xc0030,0x80,0xd4030,0xc0030,0x80000,0x10,0x40000,0x40,0x100000,0x600000,0x10,0x4000000,0x600040,0x600040,};
    }
   final private JJCalls[] jj_2_rtns = new JJCalls[3];
   private boolean jj_rescan = false;
   private int jj_gc = 0;
 
+  /** Constructor with InputStream. */
   public SiteswapParser(java.io.InputStream stream) {
-    jj_input_stream = new SimpleCharStream(stream, 1, 1);
+     this(stream, null);
+  }
+  /** Constructor with InputStream and supplied encoding */
+  public SiteswapParser(java.io.InputStream stream, String encoding) {
+    try { jj_input_stream = new SimpleCharStream(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
     token_source = new SiteswapParserTokenManager(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
@@ -1645,8 +1652,13 @@ public class SiteswapParser implements SiteswapParserConstants {
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
+  /** Reinitialise. */
   public void ReInit(java.io.InputStream stream) {
-    jj_input_stream.ReInit(stream, 1, 1);
+     ReInit(stream, null);
+  }
+  /** Reinitialise. */
+  public void ReInit(java.io.InputStream stream, String encoding) {
+    try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
     token_source.ReInit(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
@@ -1655,6 +1667,7 @@ public class SiteswapParser implements SiteswapParserConstants {
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
+  /** Constructor. */
   public SiteswapParser(java.io.Reader stream) {
     jj_input_stream = new SimpleCharStream(stream, 1, 1);
     token_source = new SiteswapParserTokenManager(jj_input_stream);
@@ -1665,6 +1678,7 @@ public class SiteswapParser implements SiteswapParserConstants {
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
+  /** Reinitialise. */
   public void ReInit(java.io.Reader stream) {
     jj_input_stream.ReInit(stream, 1, 1);
     token_source.ReInit(jj_input_stream);
@@ -1675,6 +1689,7 @@ public class SiteswapParser implements SiteswapParserConstants {
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
+  /** Constructor with generated Token Manager. */
   public SiteswapParser(SiteswapParserTokenManager tm) {
     token_source = tm;
     token = new Token();
@@ -1684,6 +1699,7 @@ public class SiteswapParser implements SiteswapParserConstants {
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
+  /** Reinitialise. */
   public void ReInit(SiteswapParserTokenManager tm) {
     token_source = tm;
     token = new Token();
@@ -1693,7 +1709,7 @@ public class SiteswapParser implements SiteswapParserConstants {
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
-  final private Token jj_consume_token(int kind) throws ParseException {
+  private Token jj_consume_token(int kind) throws ParseException {
     Token oldToken;
     if ((oldToken = token).next != null) token = token.next;
     else token = token.next = token_source.getNextToken();
@@ -1719,7 +1735,7 @@ public class SiteswapParser implements SiteswapParserConstants {
 
   static private final class LookaheadSuccess extends java.lang.Error { }
   final private LookaheadSuccess jj_ls = new LookaheadSuccess();
-  final private boolean jj_scan_token(int kind) {
+  private boolean jj_scan_token(int kind) {
     if (jj_scanpos == jj_lastpos) {
       jj_la--;
       if (jj_scanpos.next == null) {
@@ -1740,6 +1756,8 @@ public class SiteswapParser implements SiteswapParserConstants {
     return false;
   }
 
+
+/** Get the next Token. */
   final public Token getNextToken() {
     if (token.next != null) token = token.next;
     else token = token.next = token_source.getNextToken();
@@ -1748,8 +1766,9 @@ public class SiteswapParser implements SiteswapParserConstants {
     return token;
   }
 
+/** Get the specific Token. */
   final public Token getToken(int index) {
-    Token t = lookingAhead ? jj_scanpos : token;
+    Token t = token;
     for (int i = 0; i < index; i++) {
       if (t.next != null) t = t.next;
       else t = t.next = token_source.getNextToken();
@@ -1757,14 +1776,14 @@ public class SiteswapParser implements SiteswapParserConstants {
     return t;
   }
 
-  final private int jj_ntk() {
+  private int jj_ntk() {
     if ((jj_nt=token.next) == null)
       return (jj_ntk = (token.next=token_source.getNextToken()).kind);
     else
       return (jj_ntk = jj_nt.kind);
   }
 
-  private java.util.Vector jj_expentries = new java.util.Vector();
+  private java.util.List<int[]> jj_expentries = new java.util.ArrayList<int[]>();
   private int[] jj_expentry;
   private int jj_kind = -1;
   private int[] jj_lasttokens = new int[100];
@@ -1779,31 +1798,26 @@ public class SiteswapParser implements SiteswapParserConstants {
       for (int i = 0; i < jj_endpos; i++) {
         jj_expentry[i] = jj_lasttokens[i];
       }
-      boolean exists = false;
-      for (java.util.Enumeration e = jj_expentries.elements(); e.hasMoreElements();) {
-        int[] oldentry = (int[])(e.nextElement());
+      jj_entries_loop: for (java.util.Iterator<?> it = jj_expentries.iterator(); it.hasNext();) {
+        int[] oldentry = (int[])(it.next());
         if (oldentry.length == jj_expentry.length) {
-          exists = true;
           for (int i = 0; i < jj_expentry.length; i++) {
             if (oldentry[i] != jj_expentry[i]) {
-              exists = false;
-              break;
+              continue jj_entries_loop;
             }
           }
-          if (exists) break;
+          jj_expentries.add(jj_expentry);
+          break jj_entries_loop;
         }
       }
-      if (!exists) jj_expentries.addElement(jj_expentry);
       if (pos != 0) jj_lasttokens[(jj_endpos = pos) - 1] = kind;
     }
   }
 
+  /** Generate ParseException. */
   public ParseException generateParseException() {
-    jj_expentries.removeAllElements();
+    jj_expentries.clear();
     boolean[] la1tokens = new boolean[27];
-    for (int i = 0; i < 27; i++) {
-      la1tokens[i] = false;
-    }
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -1821,7 +1835,7 @@ public class SiteswapParser implements SiteswapParserConstants {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;
-        jj_expentries.addElement(jj_expentry);
+        jj_expentries.add(jj_expentry);
       }
     }
     jj_endpos = 0;
@@ -1829,20 +1843,23 @@ public class SiteswapParser implements SiteswapParserConstants {
     jj_add_error_token(0, 0);
     int[][] exptokseq = new int[jj_expentries.size()][];
     for (int i = 0; i < jj_expentries.size(); i++) {
-      exptokseq[i] = (int[])jj_expentries.elementAt(i);
+      exptokseq[i] = jj_expentries.get(i);
     }
     return new ParseException(token, exptokseq, tokenImage);
   }
 
+  /** Enable tracing. */
   final public void enable_tracing() {
   }
 
+  /** Disable tracing. */
   final public void disable_tracing() {
   }
 
-  final private void jj_rescan_token() {
+  private void jj_rescan_token() {
     jj_rescan = true;
     for (int i = 0; i < 3; i++) {
+    try {
       JJCalls p = jj_2_rtns[i];
       do {
         if (p.gen > jj_gen) {
@@ -1855,11 +1872,12 @@ public class SiteswapParser implements SiteswapParserConstants {
         }
         p = p.next;
       } while (p != null);
+      } catch(LookaheadSuccess ls) { }
     }
     jj_rescan = false;
   }
 
-  final private void jj_save(int index, int xla) {
+  private void jj_save(int index, int xla) {
     JJCalls p = jj_2_rtns[index];
     while (p.gen > jj_gen) {
       if (p.next == null) { p = p.next = new JJCalls(); break; }

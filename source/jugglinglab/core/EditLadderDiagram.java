@@ -31,6 +31,7 @@ import javax.swing.event.*;
 import javax.swing.filechooser.*;
 import java.io.File;
 import java.net.*;
+import java.text.MessageFormat;
 
 import jugglinglab.util.*;
 import jugglinglab.jml.*;
@@ -42,8 +43,8 @@ public class EditLadderDiagram extends LadderDiagram implements ActionListener {
     static ResourceBundle guistrings;
     static ResourceBundle errorstrings;
     static {
-        guistrings = ResourceBundle.getBundle("GUIStrings");
-        errorstrings = ResourceBundle.getBundle("ErrorStrings");
+        guistrings = JLLocale.getBundle("GUIStrings");
+        errorstrings = JLLocale.getBundle("ErrorStrings");
     }
 
     static final protected double min_throw_time = 0.05;
@@ -809,15 +810,15 @@ public class EditLadderDiagram extends LadderDiagram implements ActionListener {
         });
 
         jd.getContentPane().add(tf);
-        gb.setConstraints(tf, make_constraints(GridBagConstraints.WEST,0,0,
+        gb.setConstraints(tf, make_constraints(GridBagConstraints.LINE_START,0,0,
                                                new Insets(10,10,0,10)));
         jd.getContentPane().add(okbutton);
-        gb.setConstraints(okbutton, make_constraints(GridBagConstraints.EAST,0,1,
+        gb.setConstraints(okbutton, make_constraints(GridBagConstraints.LINE_END,0,1,
                                                      new Insets(10,10,10,10)));
         jd.getRootPane().setDefaultButton(okbutton);// OK button is default
 		jd.pack();
 		jd.setResizable(false);
-		jd.show();
+		jd.setVisible(true);
 		parent.setTitle(pat.getTitle());
     }
 
@@ -830,11 +831,11 @@ public class EditLadderDiagram extends LadderDiagram implements ActionListener {
         p1.setLayout(gb);
         JLabel lab = new JLabel(guistrings.getString("Rescale_percentage"));
         p1.add(lab);
-        gb.setConstraints(lab, make_constraints(GridBagConstraints.EAST,0,0,
+        gb.setConstraints(lab, make_constraints(GridBagConstraints.LINE_END,0,0,
                                                 new Insets(0,0,0,0)));
         final JTextField tf = new JTextField(7);
         p1.add(tf);
-        gb.setConstraints(tf, make_constraints(GridBagConstraints.WEST,1,0,
+        gb.setConstraints(tf, make_constraints(GridBagConstraints.LINE_START,1,0,
                                                new Insets(0,5,0,0)));
 
         JButton okbutton = new JButton(guistrings.getString("OK"));
@@ -845,14 +846,14 @@ public class EditLadderDiagram extends LadderDiagram implements ActionListener {
         });
 
         jd.getContentPane().add(p1);
-        gb.setConstraints(p1, make_constraints(GridBagConstraints.WEST,0,0,
+        gb.setConstraints(p1, make_constraints(GridBagConstraints.LINE_START,0,0,
                                                new Insets(10,10,0,10)));
         jd.getContentPane().add(okbutton);
-        gb.setConstraints(okbutton, make_constraints(GridBagConstraints.EAST,0,1,
+        gb.setConstraints(okbutton, make_constraints(GridBagConstraints.LINE_END,0,1,
                                                      new Insets(10,10,10,10)));
         jd.getRootPane().setDefaultButton(okbutton);// OK button is default
             jd.pack();
-            jd.show();
+            jd.setVisible(true);
 
             double scale;
             try {
@@ -981,7 +982,7 @@ public class EditLadderDiagram extends LadderDiagram implements ActionListener {
         p1.setLayout(gb);
         JLabel lab = new JLabel(guistrings.getString("Prop_type"));
         p1.add(lab);
-        gb.setConstraints(lab, make_constraints(GridBagConstraints.EAST,0,0,
+        gb.setConstraints(lab, make_constraints(GridBagConstraints.LINE_END,0,0,
                                                 new Insets(0,0,0,0)));
 
         final JPanel p2 = new JPanel();
@@ -989,7 +990,7 @@ public class EditLadderDiagram extends LadderDiagram implements ActionListener {
 
         final JComboBox cb1 = new JComboBox(prtypes);
         p1.add(cb1);
-        gb.setConstraints(cb1, make_constraints(GridBagConstraints.WEST,1,0,
+        gb.setConstraints(cb1, make_constraints(GridBagConstraints.LINE_START,1,0,
                                                 new Insets(0,10,0,0)));
         cb1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
@@ -1021,7 +1022,7 @@ public class EditLadderDiagram extends LadderDiagram implements ActionListener {
         p3.setLayout(gb);
         JButton cancelbutton = new JButton(guistrings.getString("Cancel"));
         p3.add(cancelbutton);
-        gb.setConstraints(cancelbutton, make_constraints(GridBagConstraints.EAST,0,0,new Insets(0,0,0,0)));
+        gb.setConstraints(cancelbutton, make_constraints(GridBagConstraints.LINE_END,0,0,new Insets(0,0,0,0)));
         cancelbutton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 jd.dispose();
@@ -1030,7 +1031,7 @@ public class EditLadderDiagram extends LadderDiagram implements ActionListener {
         });
         JButton okbutton = new JButton(guistrings.getString("OK"));
         p3.add(okbutton);
-        gb.setConstraints(okbutton, make_constraints(GridBagConstraints.EAST,1,0,new Insets(0,10,0,0)));
+        gb.setConstraints(okbutton, make_constraints(GridBagConstraints.LINE_END,1,0,new Insets(0,10,0,0)));
         okbutton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String type = (String)cb1.getItemAt(cb1.getSelectedIndex());
@@ -1098,16 +1099,19 @@ public class EditLadderDiagram extends LadderDiagram implements ActionListener {
         });
 
         jd.getContentPane().add(p1);
-        gb.setConstraints(p1, make_constraints(GridBagConstraints.WEST,0,0,new Insets(10,10,0,10)));
+        gb.setConstraints(p1, make_constraints(GridBagConstraints.LINE_START,0,0,new Insets(10,10,0,10)));
         jd.getContentPane().add(p2);
-        gb.setConstraints(p2, make_constraints(GridBagConstraints.WEST,0,1,new Insets(0,0,0,0)));
+        gb.setConstraints(p2, make_constraints(GridBagConstraints.LINE_START,0,1,new Insets(0,0,0,0)));
         jd.getContentPane().add(p3);
-        gb.setConstraints(p3, make_constraints(GridBagConstraints.EAST,0,2,new Insets(10,10,10,10)));
+        gb.setConstraints(p3, make_constraints(GridBagConstraints.LINE_END,0,2,new Insets(10,10,10,10)));
         jd.getRootPane().setDefaultButton(okbutton);// OK button is default
 
+		Locale loc = JLLocale.getLocale();
+		jd.applyComponentOrientation(ComponentOrientation.getOrientation(loc));
+		
         jd.pack();
 		jd.setResizable(false);
-        jd.show();	// blocks until dispose() above
+        jd.setVisible(true);	// blocks until dispose() above
         dialog_controls = null;
     }
 
@@ -1131,14 +1135,14 @@ public class EditLadderDiagram extends LadderDiagram implements ActionListener {
         p1.setLayout(gb);
         JLabel lab = new JLabel(guistrings.getString("Throw_type"));
         p1.add(lab);
-        gb.setConstraints(lab, make_constraints(GridBagConstraints.EAST,0,0,new Insets(0,0,0,0)));
+        gb.setConstraints(lab, make_constraints(GridBagConstraints.LINE_END,0,0,new Insets(0,0,0,0)));
 
         final JPanel p2 = new JPanel();
         p2.setLayout(gb);
 
         final JComboBox cb1 = new JComboBox(pptypes);
         p1.add(cb1);
-        gb.setConstraints(cb1, make_constraints(GridBagConstraints.WEST,1,0,
+        gb.setConstraints(cb1, make_constraints(GridBagConstraints.LINE_START,1,0,
                                                 new Insets(0,10,0,0)));
         cb1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
@@ -1170,7 +1174,7 @@ public class EditLadderDiagram extends LadderDiagram implements ActionListener {
         p3.setLayout(gb);
         JButton cancelbutton = new JButton(guistrings.getString("Cancel"));
         p3.add(cancelbutton);
-        gb.setConstraints(cancelbutton, make_constraints(GridBagConstraints.EAST,0,0,new Insets(0,0,0,0)));
+        gb.setConstraints(cancelbutton, make_constraints(GridBagConstraints.LINE_END,0,0,new Insets(0,0,0,0)));
         cancelbutton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 jd.dispose();
@@ -1178,7 +1182,7 @@ public class EditLadderDiagram extends LadderDiagram implements ActionListener {
         });
         JButton okbutton = new JButton(guistrings.getString("OK"));
         p3.add(okbutton);
-        gb.setConstraints(okbutton, make_constraints(GridBagConstraints.EAST,1,0,
+        gb.setConstraints(okbutton, make_constraints(GridBagConstraints.LINE_END,1,0,
                                                      new Insets(0,10,0,0)));
         okbutton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -1201,16 +1205,16 @@ public class EditLadderDiagram extends LadderDiagram implements ActionListener {
         });
 
         jd.getContentPane().add(p1);
-        gb.setConstraints(p1, make_constraints(GridBagConstraints.WEST,0,0,new Insets(10,10,0,10)));
+        gb.setConstraints(p1, make_constraints(GridBagConstraints.LINE_START,0,0,new Insets(10,10,0,10)));
         jd.getContentPane().add(p2);
-        gb.setConstraints(p2, make_constraints(GridBagConstraints.WEST,0,1,new Insets(0,0,0,0)));
+        gb.setConstraints(p2, make_constraints(GridBagConstraints.LINE_START,0,1,new Insets(0,0,0,0)));
         jd.getContentPane().add(p3);
-        gb.setConstraints(p3, make_constraints(GridBagConstraints.EAST,0,2,new Insets(10,10,10,10))); 
+        gb.setConstraints(p3, make_constraints(GridBagConstraints.LINE_END,0,2,new Insets(10,10,10,10))); 
         jd.getRootPane().setDefaultButton(okbutton);// OK button is default
 
         jd.pack();
 		jd.setResizable(false);
-        jd.show();	// blocks until dispose() above
+        jd.setVisible(true);	// blocks until dispose() above
         dialog_controls = null;
     }
 
@@ -1229,7 +1233,7 @@ public class EditLadderDiagram extends LadderDiagram implements ActionListener {
              JLabel lab1 = new JLabel("Properties");
 
              jp.add(lab1);
-             gb.setConstraints(lab1, make_constraints(GridBagConstraints.WEST,0,0,
+             gb.setConstraints(lab1, make_constraints(GridBagConstraints.LINE_START,0,0,
                                                       new Insets(10,10,0,10)));
              */
             JPanel pdp = new JPanel();
@@ -1238,12 +1242,12 @@ public class EditLadderDiagram extends LadderDiagram implements ActionListener {
             for (int i = 0; i < pd.length; i++) {
                 JLabel lab = new JLabel(pd[i].name);
                 pdp.add(lab);
-                gb.setConstraints(lab, make_constraints(GridBagConstraints.WEST,0,i,new Insets(0,0,0,0)));
+                gb.setConstraints(lab, make_constraints(GridBagConstraints.LINE_START,0,i,new Insets(0,0,0,0)));
                 if (pd[i].type == ParameterDescriptor.TYPE_BOOLEAN) {
                     //JComboBox jcb = new JComboBox(booleanList);
 					JCheckBox jcb = new JCheckBox();
                     pdp.add(jcb);
-                    gb.setConstraints(jcb, make_constraints(GridBagConstraints.WEST,1,i,new Insets(2,5,2,0)));
+                    gb.setConstraints(jcb, make_constraints(GridBagConstraints.LINE_START,1,i,new Insets(2,5,2,0)));
                     dialog_controls.add(jcb);
                     boolean def = ((Boolean)(pd[i].value)).booleanValue();
                     //jcb.setSelectedIndex(def ? 0 : 1);
@@ -1252,7 +1256,7 @@ public class EditLadderDiagram extends LadderDiagram implements ActionListener {
                 else if (pd[i].type == ParameterDescriptor.TYPE_FLOAT) {
                     JTextField tf = new JTextField(7);
                     pdp.add(tf);
-                    gb.setConstraints(tf, make_constraints(GridBagConstraints.WEST,1,i,new Insets(0,5,0,0)));
+                    gb.setConstraints(tf, make_constraints(GridBagConstraints.LINE_START,1,i,new Insets(0,5,0,0)));
                     dialog_controls.add(tf);
                     Double def = (Double)(pd[i].value);
                     tf.setText(def.toString());
@@ -1263,7 +1267,7 @@ public class EditLadderDiagram extends LadderDiagram implements ActionListener {
 
                     JComboBox jcb = new JComboBox(choices);
                     pdp.add(jcb);
-                    gb.setConstraints(jcb, make_constraints(GridBagConstraints.WEST,1,i,new Insets(0,5,0,0)));
+                    gb.setConstraints(jcb, make_constraints(GridBagConstraints.LINE_START,1,i,new Insets(0,5,0,0)));
                     dialog_controls.add(jcb);
 
                     String val = (String)(pd[i].value);
@@ -1277,7 +1281,7 @@ public class EditLadderDiagram extends LadderDiagram implements ActionListener {
                 else if (pd[i].type == ParameterDescriptor.TYPE_INT) {
                     JTextField tf = new JTextField(4);
                     pdp.add(tf);
-                    gb.setConstraints(tf, make_constraints(GridBagConstraints.WEST,1,i,new Insets(0,5,0,0)));
+                    gb.setConstraints(tf, make_constraints(GridBagConstraints.LINE_START,1,i,new Insets(0,5,0,0)));
                     dialog_controls.add(tf);
                     Integer def = (Integer)(pd[i].value);
                     tf.setText(def.toString());
@@ -1326,7 +1330,7 @@ public class EditLadderDiagram extends LadderDiagram implements ActionListener {
 							int result = ps.showOpenDialog(EditLadderDiagram.this, filter);
 							if (result == JFileChooser.APPROVE_OPTION) {
 								try {
-									URL source = ps.getSelectedFile().toURL();
+									URL source = ps.getSelectedFile().toURI().toURL();
 									// We have to load the image to get the correct dimensions
 									ImageIcon icon = new ImageIcon(source, source.toString());
 									// Rebuild the paramter descriptions
@@ -1347,13 +1351,13 @@ public class EditLadderDiagram extends LadderDiagram implements ActionListener {
 					});
 					// Add the icon to the panel
 					pdp.add(label);
-					gb.setConstraints(label, make_constraints(GridBagConstraints.WEST,1,i,new Insets(0,5,5,0)));
+					gb.setConstraints(label, make_constraints(GridBagConstraints.LINE_START,1,i,new Insets(0,5,5,0)));
 					dialog_controls.add(label);
 				}
             }
 
             jp.add(pdp);
-            gb.setConstraints(pdp, make_constraints(GridBagConstraints.WEST,0,1,new Insets(10,10,0,10)));
+            gb.setConstraints(pdp, make_constraints(GridBagConstraints.LINE_START,0,1,new Insets(10,10,0,10)));
         }
     }
 
@@ -1379,8 +1383,9 @@ public class EditLadderDiagram extends LadderDiagram implements ActionListener {
                     if (val != def_val)
                         term = tf.getText().trim();
                 } catch (NumberFormatException nfe) {
-                    throw new JuggleExceptionUser(errorstrings.getString("Error_number_format_prefix")+
-                            " "+dialog_pd[i].name+" "+errorstrings.getString("Error_number_format_suffix"));
+					String template = errorstrings.getString("Error_number_format");
+					Object[] arguments = { dialog_pd[i].name };					
+					throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
                 }
             }
             else if (dialog_pd[i].type == ParameterDescriptor.TYPE_CHOICE) {
@@ -1399,8 +1404,9 @@ public class EditLadderDiagram extends LadderDiagram implements ActionListener {
                     if (val != def_val)
                         term = tf.getText().trim();
                 } catch (NumberFormatException nfe) {
-                    throw new JuggleExceptionUser(errorstrings.getString("Error_number_format_prefix")+
-                            " "+dialog_pd[i].name+" "+errorstrings.getString("Error_number_format_suffix"));
+					String template = errorstrings.getString("Error_number_format");
+					Object[] arguments = { dialog_pd[i].name };					
+					throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
                 }
             }
 			else if (dialog_pd[i].type == ParameterDescriptor.TYPE_ICON) {

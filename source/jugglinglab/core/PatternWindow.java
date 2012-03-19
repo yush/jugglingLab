@@ -24,6 +24,7 @@ package jugglinglab.core;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
 import javax.swing.*;
 
 import jugglinglab.jml.*;
@@ -36,8 +37,8 @@ public class PatternWindow extends JFrame implements ActionListener {
 	static ResourceBundle guistrings;
     static ResourceBundle errorstrings;
     static {
-        guistrings = ResourceBundle.getBundle("GUIStrings");
-        errorstrings = ResourceBundle.getBundle("ErrorStrings");
+        guistrings = JLLocale.getBundle("GUIStrings");
+        errorstrings = JLLocale.getBundle("ErrorStrings");
     }
 	*/
 
@@ -47,7 +48,7 @@ public class PatternWindow extends JFrame implements ActionListener {
 	
 
     public PatternWindow(String name, JMLPattern pat, AnimatorPrefs jc) throws JuggleExceptionUser, JuggleExceptionInternal {
-        this(name, pat, jc, new Dimension(200, 250));
+        this(name, pat, jc, new Dimension(400, 450));
     }
 
     public PatternWindow(String name, JMLPattern pat, AnimatorPrefs jc, Dimension dim) throws JuggleExceptionUser, JuggleExceptionInternal {
@@ -67,10 +68,27 @@ public class PatternWindow extends JFrame implements ActionListener {
         mb.add(viewmenu);
         setJMenuBar(mb);
 
-        view.setViewMode(View.VIEW_SIMPLE);
-		viewmenu.getItem(0).setSelected(true);
+		if (pat.getNumberOfJugglers() > 1) {
+			view.setViewMode(View.VIEW_SIMPLE);
+			viewmenu.getItem(0).setSelected(true);
+		} else {
+			view.setViewMode(View.VIEW_EDIT);
+			viewmenu.getItem(1).setSelected(true);
+		}
+
+		for (int i = 0; i < filemenu.getItemCount(); i++) {
+			JMenuItem jmi = filemenu.getItem(i);
+			if (jmi != null && jmi.getActionCommand().equals("savegifanim"))
+				jmi.setEnabled(false);
+		}
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		view.setDoubleBuffered(true);
+		this.setBackground(Color.white);
 		setContentPane(view);
+		
+		Locale loc = JLLocale.getLocale();
+		this.applyComponentOrientation(ComponentOrientation.getOrientation(loc));
+		
         pack();
 		view.restartView(pat, jc);
         setVisible(true);
@@ -88,7 +106,7 @@ public class PatternWindow extends JFrame implements ActionListener {
     // Implements ActionListener to enable/disable GIFsave as view mode changes
     public void actionPerformed(ActionEvent ae) {
 		boolean gifenabled = false;
-		if (ae.getActionCommand().equals("normal"))
+		if (ae.getActionCommand().equals("simple"))
 			gifenabled = jugglinglab.core.Constants.INCLUDE_GIF_SAVE;
 		
 		for (int i = 0; i < filemenu.getItemCount(); i++) {

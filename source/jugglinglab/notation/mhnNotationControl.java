@@ -34,29 +34,29 @@ import jugglinglab.prop.Prop;
 
 public class mhnNotationControl extends NotationControl {
     protected static final String[] builtinHandsNames = {
-        "inside throws",
-        "outside throws",
-        "half shower",
-        "Mills Mess"
+        "inside",
+        "outside",
+        "half",
+        "Mills"
     };
     protected static final String[] builtinHandsStrings = {
         "(10)(32.5).",
         "(32.5)(10).",
         "(32.5)(10).(10)(32.5).",
-        "(-30)(2.5).(30)(-2.5).(-30)(0)."
+        "(-25)(2.5).(25)(-2.5).(-25)(0)."
     };
 
     protected static final String[] builtinBodyNames = {
         "line",
         "feed",
-        "back to back",
-        "side to side",
+        "backtoback",
+        "sidetoside",
         "circles"
     };
     protected static final String[] builtinBodyStrings = {
         "<(90).|(270,-125).|(90,125).|(270,-250).|(90,250).|(270,-375).>",
-        "<(90).|(270,-150,50).|(270,-150,-50).|(270,-150,150).|(270,-150,-150).>",
-        "<(270).|(90,-50).|(0,-25,25).|(180,-25,-25).>",
+        "<(90,75).|(270,-75,50).|(270,-75,-50).|(270,-75,150).|(270,-75,-150).>",
+        "<(270,35).|(90,-35).|(0,0,35).|(180,0,-35).>",
 		"<(0).|(0,100).|(0,-100).|(0,200).|(0,-200).|(0,300).>",
         "(0,75,0)...(90,0,75)...(180,-75,0)...(270,0,-75)..."
     };
@@ -72,6 +72,7 @@ public class mhnNotationControl extends NotationControl {
 
 
     public mhnNotationControl() {
+		this.setOpaque(false);
         this.setLayout(new BorderLayout());
 
         JPanel p1 = new JPanel();
@@ -80,44 +81,46 @@ public class mhnNotationControl extends NotationControl {
 
         JLabel lab1 = new JLabel(guistrings.getString("Pattern"));
         p1.add(lab1);
-        gb.setConstraints(lab1, make_constraints(GridBagConstraints.EAST,0,0,
+        gb.setConstraints(lab1, make_constraints(GridBagConstraints.LINE_END,0,0,
                                                  new Insets(border,border,0,hspacing)));
         tf1 = new JTextField(15);
         p1.add(tf1);
-        gb.setConstraints(tf1, make_constraints(GridBagConstraints.WEST,1,0,
+        gb.setConstraints(tf1, make_constraints(GridBagConstraints.LINE_START,1,0,
                                                 new Insets(border,0,0,border)));
         JLabel lab3 = new JLabel(guistrings.getString("Beats_per_second"));
         p1.add(lab3);
-        gb.setConstraints(lab3, make_constraints(GridBagConstraints.EAST,0,1,
+        gb.setConstraints(lab3, make_constraints(GridBagConstraints.LINE_END,0,1,
                                                  new Insets(2*vspacing,border,0,hspacing)));
         tf3 = new JTextField(4);
         p1.add(tf3);
-        gb.setConstraints(tf3, make_constraints(GridBagConstraints.WEST,1,1,
+        gb.setConstraints(tf3, make_constraints(GridBagConstraints.LINE_START,1,1,
                                                 new Insets(2*vspacing,0,0,border)));
         JLabel lab2 = new JLabel(guistrings.getString("Dwell_beats"));
         p1.add(lab2);
-        gb.setConstraints(lab2, make_constraints(GridBagConstraints.EAST,0,2,
+        gb.setConstraints(lab2, make_constraints(GridBagConstraints.LINE_END,0,2,
                                                  new Insets(vspacing,border,0,hspacing)));
         tf2 = new JTextField(4);
         p1.add(tf2);
-        gb.setConstraints(tf2, make_constraints(GridBagConstraints.WEST,1,2,
+        gb.setConstraints(tf2, make_constraints(GridBagConstraints.LINE_START,1,2,
                                                 new Insets(vspacing,0,0,border)));
 
         JLabel lab4 = new JLabel(guistrings.getString("Hand_movement"));
         p1.add(lab4);
-        gb.setConstraints(lab4, make_constraints(GridBagConstraints.EAST,0,3,
+        gb.setConstraints(lab4, make_constraints(GridBagConstraints.LINE_END,0,3,
                                                  new Insets(vspacing,border,0,hspacing)));
         cb1 = new JComboBox();
-        cb1.addItem(guistrings.getString("default"));
-        for (int i = 0; i < builtinHandsNames.length; i++)
-            cb1.addItem(builtinHandsNames[i]);
-        cb1.addItem(guistrings.getString("custom"));
+        cb1.addItem(guistrings.getString("MHNHands_name_default"));
+        for (int i = 0; i < builtinHandsNames.length; i++) {
+			String item = "MHNHands_name_" + builtinHandsNames[i];
+			cb1.addItem(guistrings.getString(item));
+		}
+        cb1.addItem(guistrings.getString("MHNHands_name_custom"));
         p1.add(cb1);
-        gb.setConstraints(cb1, make_constraints(GridBagConstraints.WEST,1,3,
+        gb.setConstraints(cb1, make_constraints(GridBagConstraints.LINE_START,1,3,
                                                 new Insets(vspacing,0,0,border)));
         tf4 = new JTextField(15);
         p1.add(tf4);
-        gb.setConstraints(tf4, make_constraints(GridBagConstraints.WEST,1,4,
+        gb.setConstraints(tf4, make_constraints(GridBagConstraints.LINE_START,1,4,
                                                 new Insets(5,0,0,border)));
         cb1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
@@ -152,19 +155,21 @@ public class mhnNotationControl extends NotationControl {
 
         JLabel lab5 = new JLabel(guistrings.getString("Body_movement"));
         p1.add(lab5);
-        gb.setConstraints(lab5, make_constraints(GridBagConstraints.EAST,0,5,
+        gb.setConstraints(lab5, make_constraints(GridBagConstraints.LINE_END,0,5,
                                                  new Insets(vspacing,border,0,hspacing)));
         cb2 = new JComboBox();
-        cb2.addItem(guistrings.getString("default"));
-        for (int i = 0; i < builtinBodyNames.length; i++)
-            cb2.addItem(builtinBodyNames[i]);
-        cb2.addItem(guistrings.getString("custom"));
+        cb2.addItem(guistrings.getString("MHNBody_name_default"));
+        for (int i = 0; i < builtinBodyNames.length; i++) {
+			String item = "MHNBody_name_" + builtinBodyNames[i];
+			cb2.addItem(guistrings.getString(item));
+		}
+        cb2.addItem(guistrings.getString("MHNBody_name_custom"));
         p1.add(cb2);
-        gb.setConstraints(cb2, make_constraints(GridBagConstraints.WEST,1,5,
+        gb.setConstraints(cb2, make_constraints(GridBagConstraints.LINE_START,1,5,
                                                 new Insets(vspacing,0,0,border)));
         tf5 = new JTextField(15);
         p1.add(tf5);
-        gb.setConstraints(tf5, make_constraints(GridBagConstraints.WEST,1,6,
+        gb.setConstraints(tf5, make_constraints(GridBagConstraints.LINE_START,1,6,
                                                 new Insets(5,0,0,border)));
         cb2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
@@ -199,30 +204,31 @@ public class mhnNotationControl extends NotationControl {
 		
 		JLabel prop_label = new JLabel(guistrings.getString("Prop_type"));
 		p1.add(prop_label);
-		gb.setConstraints(prop_label, make_constraints(GridBagConstraints.EAST,0,7,
+		gb.setConstraints(prop_label, make_constraints(GridBagConstraints.LINE_END,0,7,
 													   new Insets(vspacing,border,0,hspacing)));
 		cb3 = new JComboBox();
 		for (int i = 0; i < Prop.builtinProps.length; i++) {
-			cb3.addItem(Prop.builtinProps[i].toLowerCase());
+			String item = "Prop_name_" + Prop.builtinProps[i].toLowerCase();
+			cb3.addItem(guistrings.getString(item));
 		}
 		p1.add(cb3);
-		gb.setConstraints(cb3, make_constraints(GridBagConstraints.WEST,1,7,
+		gb.setConstraints(cb3, make_constraints(GridBagConstraints.LINE_START,1,7,
                                                 new Insets(vspacing,0,0,border)));
 		
 
         JLabel lab6 = new JLabel(guistrings.getString("Manual_settings"));
         p1.add(lab6);
-        gb.setConstraints(lab6, make_constraints(GridBagConstraints.WEST,0,8,
+        gb.setConstraints(lab6, make_constraints(GridBagConstraints.LINE_START,0,8,
                                                  new Insets(2*vspacing,border,0,hspacing)));
         tf6 = new JTextField(25);
         p1.add(tf6);
-        GridBagConstraints gbc6 = make_constraints(GridBagConstraints.EAST,0,9,
+        GridBagConstraints gbc6 = make_constraints(GridBagConstraints.LINE_END,0,9,
                                                    new Insets(5,border+hspacing,0,border));
         gbc6.gridwidth = 2;
         gb.setConstraints(tf6, gbc6);
         
         this.resetNotationControl();
-        this.add(p1, BorderLayout.NORTH);
+        this.add(p1, BorderLayout.PAGE_START);
     }
 
     protected static GridBagConstraints make_constraints(int location, int gridx, int gridy) {
@@ -256,7 +262,7 @@ public class mhnNotationControl extends NotationControl {
 
         sb.append("pattern=");
         sb.append(tf1.getText());
-		sb.append(";prop=" + ((String)cb3.getSelectedItem()).toLowerCase());
+		sb.append(";prop=" + Prop.builtinProps[cb3.getSelectedIndex()].toLowerCase());
         if (tf2.getText().length() > 0) {
             if (!tf2.getText().equals(new Double(mhnPattern.dwell_default).toString())) {
                 sb.append(";dwell=");

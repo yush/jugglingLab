@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <!-- Build file for Juggling Lab. -->
 <!-- For use with the Apache Ant Java build tool (http://ant.apache.org) -->
@@ -7,172 +7,113 @@
 
 <property name="src" value="source" />
 <property name="build" value="build" />
+<property name="bin" value="bin" />
 <property name="debug" value="off" />
+<property name="deprecation" value="on" />
 
 <target name="init">
-<mkdir dir="${build}" />
+	<mkdir dir="${build}" />
 </target>
 
-<target name="clean">
-<delete dir="${build}" />
+<target name="compile" depends="init">
+	<javac debug="${debug}" srcdir="${src}/." destdir="${build}/." target="1.5" source="1.5" deprecation="${deprecation}" includeAntRuntime="false" includes="**" excludes="jugglinglab/MacOS/PlatformSpecificMacOS.java,resources/*,resources_osx/*,dox.conf,jugglinglab/notation/*.jj">
+	</javac>
 </target>
 
-<target name="build" depends="init">
-<javac debug="${debug}" srcdir="${src}/." destdir="${build}/." target="1.1" source="1.2" includes="**" excludes="jugglinglab/MacOS/PlatformSpecificMacOS.java,idx3d/idx3d_3ds*,idx3d/idx3d_FX*,resources/*,wiki/*,org/apache/regexp/RED*,org/apache/regexp/Reader*,org/apache/regexp/Stream*,org/apache/regexp/RETest.java,jugglinglab/notation/*.jj" />
+<!-- This target is the main Juggling Lab jar file -->
+<target name="jar" depends="compile">
+	<jar index="yes" destfile="${bin}/JugglingLab.jar">
+	<manifest>
+	<attribute name="Main-Class" value="JugglingLab" />
+	</manifest>
+	<fileset dir="${build}" excludes="Organizer*,jugglinglab/MacOS/*,jugglinglab/MacOS" />
+	<fileset dir="${src}/resources" includes="GUIStrings*" />
+	<fileset dir="${src}/resources" includes="ErrorStrings*" />
+	<fileset dir="${src}" includes="resources/*.au" />
+	<fileset dir="${src}" includes="resources/*.gif" />
+	<fileset dir="${src}" includes="resources/*.png" />
+	</jar>
 </target>
 
+<!-- This target builds an archive containing all source code, plus the build file -->
 <target name="source">
-<jar destfile="bin/JugglingLab_source.jar">
-<fileset file="build.xml" />
-<fileset defaultexcludes="yes" dir="." includes="${src}/**" />
-</jar>
+	<jar destfile="${bin}/JugglingLab_source.jar">
+	<fileset file="build.xml" />
+	<fileset defaultexcludes="yes" dir="." includes="${src}/**" />
+	</jar>
 </target>
 
-<target name="jars" depends="jar,awtjar" />
-
-<target name="jar" depends="build,source">
-<jar index="yes" destfile="bin/JugglingLab.jar">
-<manifest>
-<attribute name="Main-Class" value="JugglingLab" />
-</manifest>
-<fileset dir="${build}" includes="JugglingLabAWT*.class" />
-<fileset dir="${src}/resources" includes="GUIStrings_en_US.properties" />
-<fileset dir="${src}/resources" includes="ErrorStrings_en_US.properties" />
-<fileset dir="${src}" includes="resources/catch.au" />
-<fileset dir="${src}" includes="resources/bounce.au" />
-<fileset dir="${build}" includes="jugglinglab/core/Animator.class" />
-<fileset dir="${build}" includes="jugglinglab/core/Animator$*.class" />
-<fileset dir="${build}" includes="jugglinglab/core/AnimatorPrefs.class" />
-<fileset dir="${build}" includes="jugglinglab/core/Constants.class" />
-<fileset dir="${build}" includes="jugglinglab/core/VersionSpecific*.class" />
-<fileset dir="${build}" includes="jugglinglab/util/Coordinate.class" />
-<fileset dir="${build}" includes="jugglinglab/util/JuggleException*.class" />
-<fileset dir="${build}" includes="jugglinglab/util/JBoyceException.class" />
-<fileset dir="${build}" includes="jugglinglab/util/JLMath.class" />
-<fileset dir="${build}" includes="jugglinglab/util/Parameter*.class" />
-<fileset dir="${build}" includes="jugglinglab/util/Permutation.class" />
-<fileset dir="${build}" includes="jugglinglab/jml/*" />
-<fileset dir="${build}" includes="jugglinglab/curve/*" />
-<fileset dir="${build}" includes="org/xml/sax/*" />
-<fileset dir="${build}" includes="com/microstar/xml/*" />
-<fileset dir="${build}" includes="jugglinglab/path/*" />
-<fileset dir="${build}" includes="jugglinglab/prop/*" />
-<fileset dir="${build}" includes="jugglinglab/renderer/*" excludes="jugglinglab/renderer/RendererIDX3D.class" />
-<fileset dir="${build}" includes="idx3d/idx3d_Math.class" />
-<fileset dir="${build}" includes="idx3d/idx3d_Matrix.class" />
-<fileset dir="${build}" includes="idx3d/idx3d_Vector.class" />
-<fileset dir="${build}" includes="jugglinglab/notation/*" />
-<fileset dir="${src}/resources" includes="GUIStrings*" excludes="GUIStrings_en_US.properties" />
-<fileset dir="${src}/resources" includes="ErrorStrings*" excludes="ErrorStrings_en_US.properties" />
-
-<fileset dir="${build}" includes="JugglingLab.class" />
-<fileset dir="${build}" includes="JugglingLab$*.class" />
-<fileset dir="${build}" includes="jugglinglab/view/*" />
-<fileset dir="${build}" includes="jugglinglab/core/AnimatorEdit*.class" />
-<fileset dir="${build}" includes="jugglinglab/core/AnimatorPrefsDialog*.class" />
-<fileset dir="${build}" includes="jugglinglab/core/ApplicationWindow*.class" />
-<fileset dir="${build}" includes="jugglinglab/core/EditLadderDiagram*.class" />
-<fileset dir="${build}" includes="jugglinglab/core/JugglingLabPanel.class" />
-<fileset dir="${build}" includes="jugglinglab/core/JugglingLabWindow.class" />
-<fileset dir="${build}" includes="jugglinglab/core/LadderDiagram.class" />
-<fileset dir="${build}" includes="jugglinglab/core/LadderEventItem.class" />
-<fileset dir="${build}" includes="jugglinglab/core/LadderItem.class" />
-<fileset dir="${build}" includes="jugglinglab/core/LadderPathItem.class" />
-<fileset dir="${build}" includes="jugglinglab/core/PBUpdater.class" />
-<fileset dir="${build}" includes="jugglinglab/core/PatternList.class" />
-<fileset dir="${build}" includes="jugglinglab/core/PatternList$*.class" />
-<fileset dir="${build}" includes="jugglinglab/core/PatternListWindow.class" />
-<fileset dir="${build}" includes="jugglinglab/core/PatternWindow.class" />
-<fileset dir="${build}" includes="jugglinglab/core/PlatformSpecific.class" />
-<fileset dir="${build}" includes="jugglinglab/util/ErrorDialog*.class" />
-<fileset dir="${build}" includes="jugglinglab/util/FileUploader*.class" />
-<fileset dir="${build}" includes="jugglinglab/util/LabelDialog.class" />
-<fileset dir="${build}" includes="jugglinglab/generator/*" />
-<fileset dir="${build}" includes="org/apache/regexp/*" />
-<fileset dir="${src}" includes="resources/about.gif" />
-<fileset dir="${src}" includes="resources/ball.gif" />
-<fileset dir="${src}" includes="resources/ball.png" />
-
-<fileset dir="${build}" includes="jugglinglab/renderer/RendererIDX3D.class" />
-<fileset dir="${build}" includes="idx3d/idx3d_Camera.class" />
-<fileset dir="${build}" includes="idx3d/idx3d_Color.class" />
-<fileset dir="${build}" includes="idx3d/idx3d_CoreObject.class" />
-<fileset dir="${build}" includes="idx3d/idx3d_Edge.class" />
-<fileset dir="${build}" includes="idx3d/idx3d_Environment.class" />
-<fileset dir="${build}" includes="idx3d/idx3d_ImageProducer.class" />
-<fileset dir="${build}" includes="idx3d/idx3d_Light.class" />
-<fileset dir="${build}" includes="idx3d/idx3d_Lightmap.class" />
-<fileset dir="${build}" includes="idx3d/idx3d_Material.class" />
-<fileset dir="${build}" includes="idx3d/idx3d_Object.class" />
-<fileset dir="${build}" includes="idx3d/idx3d_ObjectFactory.class" />
-<fileset dir="${build}" includes="idx3d/idx3d_Rasterizer.class" />
-<fileset dir="${build}" includes="idx3d/idx3d_RenderPipeline.class" />
-<fileset dir="${build}" includes="idx3d/idx3d_Scene.class" />
-<fileset dir="${build}" includes="idx3d/idx3d_Screen.class" />
-<fileset dir="${build}" includes="idx3d/idx3d_Texture.class" />
-<fileset dir="${build}" includes="idx3d/idx3d_TextureFactory.class" />
-<fileset dir="${build}" includes="idx3d/idx3d_TextureProjector.class" />
-<fileset dir="${build}" includes="idx3d/idx3d_TextureSettings.class" />
-<fileset dir="${build}" includes="idx3d/idx3d_Triangle.class" />
-<fileset dir="${build}" includes="idx3d/idx3d_Vertex.class" />
-<fileset dir="${build}" includes="jugglinglab/core/AnimatorGIFWriter.class" />
-<fileset dir="${build}" includes="gifwriter/*" />
-<fileset dir="${build}" includes="Acme/*" />
-</jar>
-</target>
-
-<target name="awtjar" depends="build,source">
-<jar index="yes" destfile="bin/JugglingLabAWTApplet.jar">
-<fileset dir="${build}" includes="JugglingLabAWT*.class" />
-<fileset dir="${build}" includes="org/xml/sax/*" />
-<fileset dir="${build}" includes="com/microstar/xml/*" />
-<fileset dir="${build}" includes="idx3d/idx3d_Math.class" />
-<fileset dir="${build}" includes="idx3d/idx3d_Matrix.class" />
-<fileset dir="${build}" includes="idx3d/idx3d_Vector.class" />
-<fileset dir="${build}" includes="jugglinglab/core/Animator.class" />
-<fileset dir="${build}" includes="jugglinglab/core/Animator$*.class" />
-<fileset dir="${build}" includes="jugglinglab/core/AnimatorPrefs.class" />
-<fileset dir="${build}" includes="jugglinglab/core/Constants.class" />
-<fileset dir="${build}" includes="jugglinglab/core/VersionSpecific*.class" />
-<fileset dir="${build}" includes="jugglinglab/curve/*" />
-<fileset dir="${build}" includes="jugglinglab/jml/*" />
-<fileset dir="${build}" includes="jugglinglab/notation/mhnBody.class" />
-<fileset dir="${build}" includes="jugglinglab/notation/mhnHands.class" />
-<fileset dir="${build}" includes="jugglinglab/notation/mhnNotation.class" />
-<fileset dir="${build}" includes="jugglinglab/notation/mhnPattern.class" />
-<fileset dir="${build}" includes="jugglinglab/notation/mhnSymmetry.class" />
-<fileset dir="${build}" includes="jugglinglab/notation/mhnThrow.class" />
-<fileset dir="${build}" includes="jugglinglab/notation/Notation.class" />
-<fileset dir="${build}" includes="jugglinglab/notation/siteswapNotation.class" />
-<fileset dir="${build}" includes="jugglinglab/notation/siteswapPattern.class" />
-<fileset dir="${build}" includes="jugglinglab/notation/SiteswapParser*.class" />
-<fileset dir="${build}" includes="jugglinglab/notation/ParseException.class" />
-<fileset dir="${build}" includes="jugglinglab/notation/SimpleCharStream.class" />
-<fileset dir="${build}" includes="jugglinglab/notation/SiteswapTreeItem.class" />
-<fileset dir="${build}" includes="jugglinglab/notation/Token*.class" />
-<fileset dir="${build}" includes="jugglinglab/path/*" />
-<fileset dir="${build}" includes="jugglinglab/prop/*" />
-<fileset dir="${build}" includes="jugglinglab/renderer/*" excludes="jugglinglab/renderer/RendererIDX3D.class" />
-<fileset dir="${build}" includes="jugglinglab/util/Coordinate.class" />
-<fileset dir="${build}" includes="jugglinglab/util/JuggleException*.class" />
-<fileset dir="${build}" includes="jugglinglab/util/JBoyceException.class" />
-<fileset dir="${build}" includes="jugglinglab/util/JLMath.class" />
-<fileset dir="${build}" includes="jugglinglab/util/Parameter*.class" />
-<fileset dir="${build}" includes="jugglinglab/util/Permutation.class" />
-<fileset dir="${src}/resources" includes="GUIStrings.properties" />
-<fileset dir="${src}/resources" includes="ErrorStrings.properties" />
-</jar>
-</target>
+<target name="jars" depends="jar,source" />
 
 <!-- This target executes only if invoked with something like 'ant signjars -Dkeystore=keystorepath -Dstorepass=password' -->
 <target name="signjars" if="storepass,keystore" depends="jars">
-    <signjar jar="bin/JugglingLab.jar" signedjar="bin/SignedJugglingLab.jar" alias="jlkey" keystore="${keystore}" storepass="${storepass}"/>
-    <signjar jar="bin/JugglingLabAWTApplet.jar" signedjar="bin/SignedJugglingLabAWTApplet.jar" alias="jlkey" keystore="${storename}" storepass="${storepass}"/>
+    <signjar jar="${bin}/JugglingLab.jar" signedjar="${bin}/SignedJugglingLab.jar" alias="jlkey" keystore="${keystore}" storepass="${storepass}"/>
+    <signjar jar="${bin}/JugglingLabAWTApplet.jar" signedjar="${bin}/SignedJugglingLabAWTApplet.jar" alias="jlkey" keystore="${storename}" storepass="${storepass}"/>
 </target>
 
-<!-- Assumes that the project has already been built -->
-<target name="run">
-    <java jar="bin/JugglingLab.jar" fork="true"/>
+<!-- Run the application -->
+<target name="run" depends="jar" description="Run the application">
+    <java jar="${bin}/JugglingLab.jar" fork="true"/>
+</target>
+
+<!-- Clean up -->
+<target name="clean" description="Remove build directory">
+	<delete dir="${build}"/>
+	<delete file="${bin}/JugglingLab.jar"/>
+	<delete file="${bin}/JugglingLab_source.jar"/>
+</target>
+
+
+
+<!-- This target builds the Mac OS X application -->
+<!-- It won't work on non-Mac machines, because the Apple stub executable below is missing -->
+<property name="resources_macosx" location="${src}/resources_osx" />
+<property name="apple.appstub" location="/System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub" />
+<property name="application" location="./Juggling Lab.app" />
+<property name="application.macos" location="${application}/Contents/MacOS" />
+<property name="application.macos.stub" location="${application}/Contents/MacOS/Juggling Lab" />
+<property name="application.resources" location="${application}/Contents/Resources" />
+<property name="application.resources.java" location="${application}/Contents/Resources/Java" />
+
+<target name="osx" depends="compile,source" description="Make a double-clickable Mac OS X application">
+	<javac debug="${debug}" srcdir="${src}/." destdir="${build}/." target="1.5" source="1.5"
+	deprecation="yes" includeAntRuntime="false" includes="jugglinglab/MacOS/*.java" />
+
+	<mkdir dir="${application.resources.java}"/>
+	<mkdir dir="${application.macos}"/>
+	<!-- put jars into application -->
+	<jar index="yes" destfile="${application.resources.java}/JugglingLab.jar">
+	<manifest>
+	<attribute name="Main-Class" value="JugglingLab" />
+	</manifest>
+	<fileset dir="${build}" excludes="Organizer*" />
+	<fileset dir="${src}/resources" includes="GUIStrings*" />
+	<fileset dir="${src}/resources" includes="ErrorStrings*" />
+	<fileset dir="${src}" includes="resources/*.au" />
+	<fileset dir="${src}" includes="resources/*.gif" />
+	<fileset dir="${src}" includes="resources/*.png" />
+	</jar>
+	<copy toDir="${application.resources.java}">
+		<fileset dir="${bin}">
+		<include name="JugglingLab_source.jar"/>
+		</fileset>
+	</copy>
+	<!-- copy application stub -->
+	<copy file="${apple.appstub}" toFile="${application.macos}/Juggling Lab"/>
+	<!-- fix stub permissions -->
+	<exec executable="/bin/chmod">
+		<arg line="755 '${application.macos.stub}'"/>
+	</exec>		
+	<!-- copy Info.plist -->
+	<copy file="${resources_macosx}/Info.plist" toFile="${application}/Contents/Info.plist"/>
+	<!-- copy PkgInfo -->
+	<copy file="${resources_macosx}/PkgInfo" toFile="${application}/Contents/PkgInfo"/>
+	<!-- copy icons -->
+	<copy toDir="${application.resources}">
+		<fileset dir="${resources_macosx}">
+		<include name="*.icns"/>
+		</fileset>			
+	</copy>
 </target>
 
 </project>

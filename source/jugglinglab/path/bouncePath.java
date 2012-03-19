@@ -22,6 +22,7 @@
 
 package jugglinglab.path;
 
+import java.text.MessageFormat;
 import jugglinglab.util.*;
 
 
@@ -87,8 +88,9 @@ public class bouncePath extends Path {
                 try {
                     bounces = Integer.valueOf(pvalue).intValue();
                 } catch (NumberFormatException nfe) {
-                    throw new JuggleExceptionUser(errorstrings.getString("Error_number_format_prefix")+" 'bounces' "+
-                                                  errorstrings.getString("Error_number_format_suffix"));
+					String template = errorstrings.getString("Error_number_format");
+					Object[] arguments = { "bounces" };					
+					throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
                 }
             } else if (pname.equalsIgnoreCase("forced")) {
                 forced = Boolean.valueOf(pvalue).booleanValue();
@@ -98,22 +100,25 @@ public class bouncePath extends Path {
                 try {
                     bounceplane = Double.valueOf(pvalue).doubleValue();
                 } catch (NumberFormatException nfe) {
-                    throw new JuggleExceptionUser(errorstrings.getString("Error_number_format_prefix")+" 'bounceplane' "+
-                                                  errorstrings.getString("Error_number_format_suffix"));
+					String template = errorstrings.getString("Error_number_format");
+					Object[] arguments = { "bounceplane" };					
+					throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
                 }
             } else if (pname.equalsIgnoreCase("bouncefrac")) {
                 try {
                     bouncefrac = Double.valueOf(pvalue).doubleValue();
                 } catch (NumberFormatException nfe) {
-                    throw new JuggleExceptionUser(errorstrings.getString("Error_number_format_prefix")+" 'bouncefrac' "+
-                                                  errorstrings.getString("Error_number_format_suffix"));
+					String template = errorstrings.getString("Error_number_format");
+					Object[] arguments = { "bouncefrac" };					
+					throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
                 }
             } else if (pname.equalsIgnoreCase("g")) {
                 try {
                     g = Double.valueOf(pvalue).doubleValue();
                 } catch (NumberFormatException nfe) {
-                    throw new JuggleExceptionUser(errorstrings.getString("Error_number_format_prefix")+" 'g' "+
-                                                  errorstrings.getString("Error_number_format_suffix"));
+					String template = errorstrings.getString("Error_number_format");
+					Object[] arguments = { "g" };					
+					throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
                 }
             } else
                 throw new JuggleExceptionUser(errorstrings.getString("Error_path_badmod")+": '"+pname+"'");

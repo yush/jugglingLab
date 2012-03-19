@@ -35,8 +35,8 @@ public abstract class Notation {
     // static ResourceBundle guistrings;
     static ResourceBundle errorstrings;
     static {
-        // guistrings = ResourceBundle.getBundle("GUIStrings");
-        errorstrings = ResourceBundle.getBundle("ErrorStrings");
+        // guistrings = JLLocale.getBundle("GUIStrings");
+        errorstrings = JLLocale.getBundle("ErrorStrings");
     }
 
     static Hashtable hash = null;

@@ -117,7 +117,7 @@ public class SelectionView extends View {
         
 		this.add(pleft);
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.anchor = GridBagConstraints.LINE_START;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.gridheight = gbc.gridwidth = 1;
         gbc.gridx = 0;
@@ -127,7 +127,7 @@ public class SelectionView extends View {
 		
 		this.add(pright);
         gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.NORTHWEST;
+        gbc.anchor = GridBagConstraints.FIRST_LINE_START;
         gbc.fill = GridBagConstraints.NONE;
         gbc.gridheight = gbc.gridwidth = 1;
         gbc.gridx = 1;

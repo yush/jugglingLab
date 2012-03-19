@@ -23,10 +23,10 @@
 package jugglinglab.renderer;
 
 import java.awt.*;
+import javax.swing.*;
 
 import jugglinglab.jml.*;
 import jugglinglab.util.*;
-import idx3d.*;
 
 
 public abstract class Renderer {
@@ -50,14 +50,14 @@ public abstract class Renderer {
 				int dx, int dy);
 	
 	public abstract void drawFrame(double time, int[] pnum,
-				Graphics g, Component comp) throws JuggleExceptionInternal;
+				Graphics g, JPanel pan) throws JuggleExceptionInternal;
 	
 	public abstract Color getBackground();
 	
-	protected static idx3d_Vector toVector(Coordinate c, idx3d_Vector result) {
-        result.x = (float)c.x;
-        result.y = (float)c.z;
-        result.z = (float)c.y;
+	protected static JLVector toVector(Coordinate c, JLVector result) {
+        result.x = c.x;
+        result.y = c.z;
+        result.z = c.y;
         return result;
 	}
 }

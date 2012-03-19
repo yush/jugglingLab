@@ -26,11 +26,11 @@ import java.util.*;
 import java.awt.*;
 import java.awt.image.*;
 import java.lang.reflect.*;
+import java.text.MessageFormat;
 
 import jugglinglab.core.*;
 import jugglinglab.util.*;
 import jugglinglab.renderer.*;
-import idx3d.*;
 
 
 public class ballProp extends Prop {
@@ -45,8 +45,8 @@ public class ballProp extends Prop {
     protected static final boolean highlight_def = false;
 
     protected double 	diam = diam_def;	// diameter, in cm
-    protected int	colornum = colornum_def;
-    protected Color	color;
+    protected int		colornum = colornum_def;
+    protected Color		color;
     protected boolean	highlight = highlight_def;
     // protected int	ball_pixel_size;
 
@@ -110,21 +110,34 @@ public class ballProp extends Prop {
                 while ((pos = str.indexOf('}')) >= 0) {
                     str = str.substring(0,pos) + str.substring(pos+1,str.length());
                 }
-                int red = 0, green = 0, blue = 0;
-                StringTokenizer st2 = new StringTokenizer(str, ",", false);
-                if (st2.hasMoreTokens())
-                    red = Integer.valueOf(st2.nextToken()).intValue();
-                if (st2.hasMoreTokens())
-                    green = Integer.valueOf(st2.nextToken()).intValue();
-                if (st2.hasMoreTokens())
-                    blue = Integer.valueOf(st2.nextToken()).intValue();
-                temp = new Color(red, green, blue);
+				StringTokenizer st2 = new StringTokenizer(str, ",", false);
+				if (st2.countTokens() == 3) {
+					int red = 0, green = 0, blue = 0;
+					String token = null;
+					try {
+						token = st2.nextToken();
+						red = Integer.valueOf(token).intValue();
+						token = st2.nextToken();
+						green = Integer.valueOf(token).intValue();
+						token = st2.nextToken();
+						blue = Integer.valueOf(token).intValue();
+					} catch (NumberFormatException nfe) {
+						String template = errorstrings.getString("Error_number_format");
+						Object[] arguments = { token };					
+						throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
+					}
+					temp = new Color(red, green, blue);
+				} else
+					throw new JuggleExceptionUser(errorstrings.getString("Error_token_count"));
             }
 
             if (temp != null)
                 color = temp;
-            else
-                throw new JuggleExceptionUser(errorstrings.getString("Error_prop_color")+": '"+colorstr+"'");
+            else {
+				String template = errorstrings.getString("Error_prop_color");
+				Object[] arguments = { colorstr };					
+				throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
+			}
         }
 
         String diamstr = pl.getParameter("diam");
@@ -137,8 +150,9 @@ public class ballProp extends Prop {
                 else
                     throw new JuggleExceptionUser(errorstrings.getString("Error_prop_diameter"));
             } catch (NumberFormatException nfe) {
-                throw new JuggleExceptionUser(errorstrings.getString("Error_number_format_prefix")+" 'diam' "+
-                                              errorstrings.getString("Error_number_format_suffix"));
+				String template = errorstrings.getString("Error_number_format");
+				Object[] arguments = { "diam" };					
+				throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
             }
         }
 
@@ -150,11 +164,11 @@ public class ballProp extends Prop {
     }
 
     public Coordinate getMax() {
-        return new Coordinate(diam/2,0,diam);
+        return new Coordinate(diam/2,0,diam/2);
     }
 
     public Coordinate getMin() {
-        return new Coordinate(-diam/2,0,0);
+        return new Coordinate(-diam/2,0,-diam/2);
     }
 
     public Image getProp2DImage(Component comp, double zoom, double[] camangle) {
@@ -228,20 +242,15 @@ public class ballProp extends Prop {
 
         size = new Dimension(ball_pixel_size, ball_pixel_size);
         center = new Dimension(ball_pixel_size/2, ball_pixel_size/2);
-        grip = new Dimension(ball_pixel_size/2, ball_pixel_size);
+        grip = new Dimension(ball_pixel_size/2, ball_pixel_size/2);
 
         lastzoom = zoom;
     }
 
+	/*
     public Object getPropIDX3D() {
         Object result = null;
         try {
-            /*
-             idx3d_Object result = idx3d_ObjectFactory.SPHERE((float)diam/2, 10);
-             idx3d_Material surf = new idx3d_Material();
-             surf.setColor(color.getRGB());
-             result.setMaterial(surf);
-             */
             Class ob = Class.forName("idx3d.idx3d_Object");
             Class of = Class.forName("idx3d.idx3d_ObjectFactory");
             Class mat = Class.forName("idx3d.idx3d_Material");
@@ -272,4 +281,5 @@ public class ballProp extends Prop {
     public Coordinate getPropIDX3DGrip() {
         return new Coordinate(0.0, 0.0, -diam/2);		// bottom of ball
     }
+	*/
 }

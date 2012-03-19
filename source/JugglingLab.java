@@ -33,17 +33,12 @@ import jugglinglab.core.*;
 import jugglinglab.jml.*;
 import jugglinglab.util.*;
 import jugglinglab.notation.*;
-import jugglinglab.generator.*;
 import jugglinglab.view.*;
 
 
 public class JugglingLab extends JApplet {
     static ResourceBundle guistrings;
     static ResourceBundle errorstrings;
-    static {
-        guistrings = ResourceBundle.getBundle("GUIStrings");
-        errorstrings = ResourceBundle.getBundle("ErrorStrings");
-    }
 
 	protected Animator ja = null;
     protected JugglingLabPanel jlp = null;
@@ -55,13 +50,60 @@ public class JugglingLab extends JApplet {
 		initDefaultPropImages();
     }
 
-    // applet version starts here
-    public void init() {
-        // String uploadscript = getParameter("uploadscript");
+
+    protected void configure_applet() {
+		String config = getParameter("config");
+        String prefs = getParameter("animprefs");
         String jmldir = getParameter("jmldir");
         String jmlfile = getParameter("jmlfile");
-        String prefs = getParameter("animprefs");
 		
+		// default values
+		int entry_type = Notation.NOTATION_SITESWAP;
+		int view_type = View.VIEW_SIMPLE;
+		
+		if (config != null) {
+			ParameterList param = new ParameterList(config);
+			String entry = param.getParameter("entry");
+			if (entry != null) {
+				if (entry.equalsIgnoreCase("none"))
+					entry_type = Notation.NOTATION_NONE;
+				else if (entry.equalsIgnoreCase("siteswap"))
+					entry_type = Notation.NOTATION_SITESWAP;
+			}
+			String view = param.getParameter("view");
+			if (view != null) {
+				if (view.equalsIgnoreCase("none"))
+					view_type = View.VIEW_NONE;
+				else if (view.equalsIgnoreCase("simple"))
+					view_type = View.VIEW_SIMPLE;
+				else if (view.equalsIgnoreCase("edit"))
+					view_type = View.VIEW_EDIT;
+				else if (view.equalsIgnoreCase("selection"))
+					view_type = View.VIEW_SELECTION;
+				else if (view.equalsIgnoreCase("jml"))
+					view_type = View.VIEW_JML;
+			}
+			String loc = param.getParameter("locale");
+			if (loc != null) {
+				// want to get to this before the resource bundles are needed
+				// by this or any other objects
+				String[] locarray = loc.split("_", 5);
+				System.out.println("locarray = " + locarray);
+				Locale newloc = null;
+				if (locarray.length == 1)
+					newloc = new Locale(locarray[0]);
+				else if (locarray.length == 2)
+					newloc = new Locale(locarray[0], locarray[1]);
+				else if (locarray.length > 2)
+					newloc = new Locale(locarray[0], locarray[1], locarray[2]);
+				
+				JLLocale.setLocale(newloc);
+			}
+		}
+
+		JugglingLab.guistrings = JLLocale.getBundle("GUIStrings");
+        JugglingLab.errorstrings = JLLocale.getBundle("ErrorStrings");
+
 		try {
 			jc = new AnimatorPrefs();
 			if (prefs != null)
@@ -123,114 +165,23 @@ public class JugglingLab extends JApplet {
 				}
 			}
 			
-			/*
-			// This code is currently active only in the AWT applet; sync with that version to
-			// use it here
+			if (readerror)
+				throw new JuggleExceptionUser(errorstrings.getString("Error_reading_pattern"));
+				
+			JugglingLabPanel jlp = new JugglingLabPanel(null, entry_type, pl, view_type);
+			jlp.setDoubleBuffered(true);
+			this.setBackground(new Color(0.9f, 0.9f, 0.9f));
+			setContentPane(jlp);
 			
-			if (uploadscript != null) {
-				if (jmlfile == null)
-					throw new JuggleExceptionUser(errorstrings.getString("Error_no_JML_specified"));
+			Locale loc = JLLocale.getLocale();
+			this.applyComponentOrientation(ComponentOrientation.getOrientation(loc));
 
-				JPanel p = new JPanel();
-				p.setBackground(Color.white);
-				GridBagLayout gb = new GridBagLayout();
-				p.setLayout(gb);
+			validate();
 			
-				ja = new Animator();
-				p.add(ja);
-				GridBagConstraints gbc = new GridBagConstraints();
-				gbc.anchor = GridBagConstraints.WEST;
-				gbc.fill = GridBagConstraints.BOTH;
-				gbc.gridwidth = gbc.gridheight = 1;
-				gbc.gridx = 0;
-				gbc.gridy = 0;
-				gbc.insets = new Insets(0,0,0,0);
-				gbc.weightx = 1.0;
-				gbc.weighty = 1.0;
-				gb.setConstraints(ja, gbc);
+			// NOTE: animprefs will only be applied when some kind of pattern is defined
+			if (pat != null)
+				jlp.getView().restartView(pat, jc);
 
-				JButton but = new JButton(guistrings.getString("Edit"));
-				but.setBackground(Color.white);
-				p.add(but);
-				gbc = new GridBagConstraints();
-				gbc.anchor = GridBagConstraints.EAST;
-				gbc.fill = GridBagConstraints.NONE;
-				gbc.gridwidth = gbc.gridheight = 1;
-				gbc.gridx = 0;
-				gbc.gridy = 1;
-				gbc.insets = new Insets(0,0,0,0);
-				gbc.weightx = 1.0;
-				gbc.weighty = 0.0;
-				gb.setConstraints(but, gbc);
-							
-				setContentPane(p);
-				validate();
-				
-				if (pat != null)
-					ja.restartJuggle(pat, jc);
-				else if (readerror)
-					ja.exception = new JuggleExceptionUser(guistrings.getString("Click_Edit"));
-				else if (pl != null)
-					throw new JuggleExceptionUser(errorstrings.getString("Error_JML_is_pattern_list"));
-		
-				final String uploadscriptf = uploadscript;
-				final String jmlfilef = jmlfile;
-				final Animator jaf = ja;
-				but.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent ae) {
-						try {
-							new JugglingLabWindow("Editing "+jmlfilef, uploadscriptf, jmlfilef, jaf);
-						} catch (JuggleExceptionUser jeu) {
-							jaf.exception = jeu;
-						} catch (JuggleExceptionInternal jei) {
-							jaf.exception = new JuggleExceptionInternal("Internal error: " + jei.getMessage());
-						}
-					}
-				});
-			} else {
-			*/
-				if (readerror)
-					throw new JuggleExceptionUser(errorstrings.getString("Error_reading_pattern"));
-				//if (pat == null)
-				//	throw new JuggleExceptionUser(errorstrings.getString("Error_no_pattern_specified"));
-					
-				// default values
-				int entry_type = Notation.NOTATION_SITESWAP;
-				int view_type = View.VIEW_SIMPLE;
-				
-				String config = getParameter("config");
-				if (config != null) {
-					ParameterList param = new ParameterList(config);
-					String entry = param.getParameter("entry");
-					if (entry != null) {
-						if (entry.equalsIgnoreCase("none"))
-							entry_type = Notation.NOTATION_NONE;
-						else if (entry.equalsIgnoreCase("siteswap"))
-							entry_type = Notation.NOTATION_SITESWAP;
-					}
-					String view = param.getParameter("view");
-					if (view != null) {
-						if (view.equalsIgnoreCase("none"))
-							view_type = View.VIEW_NONE;
-						else if (view.equalsIgnoreCase("simple"))
-							view_type = View.VIEW_SIMPLE;
-						else if (view.equalsIgnoreCase("edit"))
-							view_type = View.VIEW_EDIT;
-						else if (view.equalsIgnoreCase("selection"))
-							view_type = View.VIEW_SELECTION;
-						else if (view.equalsIgnoreCase("jml"))
-							view_type = View.VIEW_JML;
-					}
-				}
-				
-				JugglingLabPanel jlp = new JugglingLabPanel(null, entry_type, pl, view_type);
-				setContentPane(jlp);
-				validate();
-				
-				// NOTE: animprefs will only be applied when some kind of pattern is defined
-				if (pat != null)
-					jlp.getView().restartView(pat, jc);
-//			}
 		} catch (Exception e) {
 			String message = "";
 			if (e instanceof JuggleExceptionUser)
@@ -273,24 +224,34 @@ public class JugglingLab extends JApplet {
 		}
     }
 
+    // applet version starts here
+	public void init() {
+		// do it this way, so that calls to Swing methods happen on the event dispatch thread
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				configure_applet();
+			}
+		});	
+	}
+	
     public void start() {
-        if ((jlp != null) && (jlp.getView() != null) && !jc.mousePause)
+		if ((jlp != null) && (jlp.getView() != null) && !jc.mousePause)
 			jlp.getView().setPaused(false);
-        if ((ja != null) && (ja.message == null) && !jc.mousePause)
+		if ((ja != null) && (ja.message == null) && !jc.mousePause)
 			ja.setPaused(false);
     }
 
     public void stop() {
-        if ((jlp != null) && (jlp.getView() != null) && !jc.mousePause)
+		if ((jlp != null) && (jlp.getView() != null) && !jc.mousePause)
 			jlp.getView().setPaused(true);
-        if ((ja != null) && (ja.message == null) && !jc.mousePause)
-            ja.setPaused(true);
+		if ((ja != null) && (ja.message == null) && !jc.mousePause)
+			ja.setPaused(true);
     }
 
     public void destroy() {
-        if ((jlp != null) && (jlp.getView() != null))
-            jlp.getView().dispose();
-        if (ja != null)
+		if ((jlp != null) && (jlp.getView() != null))
+			jlp.getView().dispose();
+		if (ja != null)
 			ja.dispose();
     }
 
@@ -317,6 +278,7 @@ public class JugglingLab extends JApplet {
         VersionSpecific.setDefaultPropImages(images);
 	}
 
+	
     // application version starts here
     public static void main(String[] args) {
         try {

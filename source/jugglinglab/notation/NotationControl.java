@@ -24,14 +24,15 @@ package jugglinglab.notation;
 
 import java.util.*;
 import javax.swing.*;
+import jugglinglab.util.*;
 
 
 public abstract class NotationControl extends JPanel {
     static ResourceBundle guistrings;
     static ResourceBundle errorstrings;
     static {
-        guistrings = ResourceBundle.getBundle("GUIStrings");
-        errorstrings = ResourceBundle.getBundle("ErrorStrings");
+        guistrings = JLLocale.getBundle("GUIStrings");
+        errorstrings = JLLocale.getBundle("ErrorStrings");
     }
 
     public abstract String getPattern();

@@ -22,6 +22,7 @@
 
 package jugglinglab.path;
 
+import java.text.MessageFormat;
 import jugglinglab.util.*;
 
 
@@ -57,8 +58,9 @@ public class tossPath extends Path {
                 try {
                     g = Double.valueOf(pvalue).doubleValue();
                 } catch (NumberFormatException nfe) {
-                    throw new JuggleExceptionUser(errorstrings.getString("Error_number_format_prefix")+" 'g' "+
-                                                  errorstrings.getString("Error_number_format_suffix"));
+					String template = errorstrings.getString("Error_number_format");
+					Object[] arguments = { "g" };					
+					throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
                 }
             } else
                 throw new JuggleExceptionUser(errorstrings.getString("Error_path_badmod")+": '"+pname+"'");

@@ -37,8 +37,8 @@ public class View extends JPanel implements ActionListener {
     static ResourceBundle guistrings;
     static ResourceBundle errorstrings;
     static {
-        guistrings = ResourceBundle.getBundle("GUIStrings");
-        errorstrings = ResourceBundle.getBundle("ErrorStrings");
+        guistrings = JLLocale.getBundle("GUIStrings");
+        errorstrings = JLLocale.getBundle("ErrorStrings");
     }
 
 	protected JFrame parent = null;
@@ -127,11 +127,11 @@ public class View extends JPanel implements ActionListener {
 
 
     protected static final String[] viewItems = new String[]
-    { "Simple", "Visual editor", "Selection editor", "JML editor", null, "Restart", "Animation Preferences..." };
+    { "Simple", "Visual editor", /*"Selection editor",*/ "JML editor", null, "Restart", "Animation Preferences..." };
     protected static final String[] viewCommands = new String[]
-    { "simple", "edit", "selection", "jml", null, "restart", "prefs" };
+    { "simple", "edit", /*"selection",*/ "jml", null, "restart", "prefs" };
     protected static final char[] viewShortcuts =
-    { '1', '2', '3', '4', ' ', ' ', 'P' };
+    { '1', '2', '3', /*'4',*/ ' ', ' ', 'P' };
 	
 	public JMenu createViewMenu() {
         JMenu viewmenu = new JMenu(guistrings.getString("View"));
@@ -254,9 +254,6 @@ public class View extends JPanel implements ActionListener {
                                 setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                                 FileWriter fw = new FileWriter(PlatformSpecific.getPlatformSpecific().getSelectedFile());
                                 PrintWriter write = new PrintWriter(fw);
-                                for (int i = 0; i < JMLDefs.jmlprefix.length; i++)
-                                    write.println(JMLDefs.jmlprefix[i]);
-                                write.flush();
                                 getPattern().writeJML(fw, true);
                                 fw.close();
                             }
@@ -274,12 +271,11 @@ public class View extends JPanel implements ActionListener {
                 break;
 
             case FILE_GIFSAVE:
-                if ((subview != null) && (subview instanceof NormalView) && jugglinglab.core.Constants.INCLUDE_GIF_SAVE) {
+                if ((getViewMode() == VIEW_SIMPLE) && jugglinglab.core.Constants.INCLUDE_GIF_SAVE) {
                     NormalView nv = (NormalView)subview;
 					Animator ja = nv.getAnimator();
                     if (!ja.isAnimInited())
                         break;
-			System.out.println("got here");
                     ja.writeGIFAnim();
                 }
                 break;
@@ -294,13 +290,13 @@ public class View extends JPanel implements ActionListener {
                                 FileWriter fw = new FileWriter(PlatformSpecific.getPlatformSpecific().getSelectedFile());
                                 PrintWriter pw = new PrintWriter(fw);
 
-                                // String config = null;
+                                String config = null;
                                 Dimension dim = null;
-                                if (this instanceof EditView) {
-                                    // config = "entry=false;editor=true";
+                                if (this.getViewMode() == VIEW_EDIT) {
+                                    config = "entry=none;view=edit";
                                     dim = getSize();
                                 } else {
-                                    // config = "entry=false;editor=false";
+                                    config = "entry=none;view=simple";
                                     dim = getAnimatorSize();
                                 }
 
@@ -310,28 +306,21 @@ public class View extends JPanel implements ActionListener {
                                 int h = dim.height;
                                 JMLPattern pat = getPattern();
 
+                                pw.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">");
                                 pw.println("<html>");
                                 pw.println("<head>");
-                                pw.println("<title>"+pat.getTitle()+"</title>");
+                                pw.println("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">");
+                                pw.println("<title>"+JMLNode.xmlescape(pat.getTitle())+"</title>");
                                 pw.println("</head>");
                                 pw.println("<body>");
-                                pw.println("<applet archive=\"JugglingLabAWTApplet.jar\" code=\"JugglingLabAWT\" width="+w+" height="+h+">");
-                                // pw.println("<param name=\"config\" value=\""+config+"\"/>");
+                                pw.println("<applet archive=\"JugglingLab.jar\" code=\"JugglingLab\" width=\""+w+"\" height=\""+h+"\">");
+                                pw.println("<param name=\"config\" value=\""+JMLNode.xmlescape(config)+"\">");
                                 if (prefs.length() != 0)
-                                    pw.println("<param name=\"animprefs\" value=\""+prefs+"\"/>");
-                                pw.println("<param name=\"notation\" value=\"jml\"/>");
-                                pw.println("<param name=\'pattern\' value=\'");
-                                pw.flush();
-                                String p = pat.toString();
-                                // delete the ' character first
-                                int pos;
-                                while ((pos = p.indexOf('\'')) >= 0) {
-                                    p = p.substring(0,pos) + p.substring(pos+1,p.length());
-                                }
-                                pw.println(p);
-                                // pat.writeJML(fw, false);
-                                // fw.flush();
-                                pw.println("\'/>");
+                                    pw.println("<param name=\"animprefs\" value=\""+JMLNode.xmlescape(prefs)+"\">");
+                                pw.println("<param name=\"notation\" value=\"jml\">");
+                                pw.println("<param name=\"pattern\" value=\"");
+                                pw.println(JMLNode.xmlescape(pat.toString()));
+                                pw.println("\">");
                                 pw.println("Java not available");
                                 pw.println("</applet>");
                                 pw.println("</body>");
@@ -429,7 +418,7 @@ public class View extends JPanel implements ActionListener {
 		this.add(newview);
 
 		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.anchor = GridBagConstraints.WEST;
+		gbc.anchor = GridBagConstraints.LINE_START;
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.gridwidth = gbc.gridheight = 1;
 		gbc.gridx = 0;

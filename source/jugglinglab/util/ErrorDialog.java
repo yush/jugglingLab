@@ -35,8 +35,8 @@ public class ErrorDialog implements Runnable {
     static ResourceBundle guistrings;
     static ResourceBundle errorstrings;
     static {
-        guistrings = ResourceBundle.getBundle("GUIStrings");
-        errorstrings = ResourceBundle.getBundle("ErrorStrings");
+        guistrings = JLLocale.getBundle("GUIStrings");
+        errorstrings = JLLocale.getBundle("ErrorStrings");
     }
 
 	Component parent = null;
@@ -76,38 +76,38 @@ public class ErrorDialog implements Runnable {
         exframe.getContentPane().setLayout(new BorderLayout());
 
         JPanel exp = new JPanel();
-        exframe.getContentPane().add(exp, BorderLayout.NORTH);
+        exframe.getContentPane().add(exp, BorderLayout.PAGE_START);
         GridBagLayout gb = new GridBagLayout();
         exp.setLayout(gb);
 
         JLabel text1 = new JLabel(exmsg1);
         text1.setFont(new Font("SansSerif", Font.BOLD, 12));
         exp.add(text1);
-        gb.setConstraints(text1, make_constraints(GridBagConstraints.WEST,0,0,
+        gb.setConstraints(text1, make_constraints(GridBagConstraints.LINE_START,0,0,
                                                   new Insets(10,10,0,10)));
 
         JLabel text2 = new JLabel(exmsg2);
         text2.setFont(new Font("SansSerif", Font.PLAIN, 12));
         exp.add(text2);
-        gb.setConstraints(text2, make_constraints(GridBagConstraints.WEST,0,1,
+        gb.setConstraints(text2, make_constraints(GridBagConstraints.LINE_START,0,1,
                                                   new Insets(10,10,0,10)));
 
         JLabel text3 = new JLabel(exmsg3);
         text3.setFont(new Font("SansSerif", Font.PLAIN, 12));
         exp.add(text3);
-        gb.setConstraints(text3, make_constraints(GridBagConstraints.WEST,0,2,
+        gb.setConstraints(text3, make_constraints(GridBagConstraints.LINE_START,0,2,
                                                   new Insets(0,10,0,10)));
 
         JLabel text4 = new JLabel(exmsg4);
         text4.setFont(new Font("SansSerif", Font.PLAIN, 12));
         exp.add(text4);
-        gb.setConstraints(text4, make_constraints(GridBagConstraints.WEST,0,3,
+        gb.setConstraints(text4, make_constraints(GridBagConstraints.LINE_START,0,3,
                                                   new Insets(0,10,0,10)));
 
         JLabel text5 = new JLabel(exmsg5);
         text5.setFont(new Font("SansSerif", Font.BOLD, 12));
         exp.add(text5);
-        gb.setConstraints(text5, make_constraints(GridBagConstraints.WEST,0,4,
+        gb.setConstraints(text5, make_constraints(GridBagConstraints.LINE_START,0,4,
                                                   new Insets(10,10,10,10)));
 
         JTextArea dumpta = new JTextArea();
@@ -120,7 +120,7 @@ public class ErrorDialog implements Runnable {
                                                 new Insets(10,10,10,10)));
 
         JPanel butp = new JPanel();
-        butp.setLayout(new FlowLayout(FlowLayout.LEFT));
+        butp.setLayout(new FlowLayout(FlowLayout.LEADING));
         JButton quitbutton = new JButton(guistrings.getString("Quit"));
         quitbutton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -137,12 +137,15 @@ public class ErrorDialog implements Runnable {
         });
         butp.add(okbutton);
         exp.add(butp);
-        gb.setConstraints(butp, make_constraints(GridBagConstraints.EAST,0,6,
+        gb.setConstraints(butp, make_constraints(GridBagConstraints.LINE_END,0,6,
                                                  new Insets(10,10,10,10)));
 
+		Locale loc = JLLocale.getLocale();
+		exframe.applyComponentOrientation(ComponentOrientation.getOrientation(loc));
+		
         exframe.pack();
 		exframe.setResizable(false);
-        exframe.show();
+        exframe.setVisible(true);
     }
 	
 	protected static GridBagConstraints make_constraints(int location, int gridx, int gridy, Insets ins) {

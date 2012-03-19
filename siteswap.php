@@ -1,9 +1,12 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<link rel="STYLESHEET" type="text/css" href="html/jugglinglab.css"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="STYLESHEET" type="text/css" href="html/jugglinglab.css">
 <title>Juggling Lab siteswap animation</title>
 </head>
 <body>
+<div id="standalone">
 <?php
 $query=urldecode($_SERVER["QUERY_STRING"]);
 if ($query=="") {
@@ -11,17 +14,19 @@ if ($query=="") {
 	echo "<p>For information on animating patterns with Juggling Lab in this way, please see <a href=\"html/phpinfo.html\">the instructions</a>.</p>";
 } else {
 	parse_str(strtr($query, ";", "&"));
-	$width = (($stereo=="true") ? 450 : 300);
+	$width = (($stereo=="true") ? 750 : 600);
+	$viewmode = ( (strpos($query, "<") === false) ? "edit" : "simple" );
 	echo "<p>\n";
-	echo "<applet archive=\"bin/JugglingLabAWTApplet.jar\" code=\"JugglingLabAWT\" width=\"$width\" height=\"350\">\n";
-	echo "<param name=\"animprefs\" value=\"$query\"/>\n";
-	echo "<param name=\"notation\" value=\"siteswap\"/>\n";
-	echo "<param name=\"pattern\" value=\"$query\"/>\n";
+	echo "<applet archive=\"bin/JugglingLab.jar\" code=\"JugglingLab\" width=\"$width\" height=\"500\">\n";
+	echo "<param name=\"config\" value=\"entry=none;view=$viewmode\">\n";
+	echo "<param name=\"animprefs\" value=\"$query\">\n";
+	echo "<param name=\"notation\" value=\"siteswap\">\n";
+	echo "<param name=\"pattern\" value=\"$query\">\n";
 	echo "Java not available\n";
 	echo "</applet>\n";
 	echo "</p>\n";
 	echo "<p>\n";
-	echo "<b>Animator input (<a href=\"html/phpinfo.html\">instructions</a>):</b><br/>\n";
+	echo "<b>Animator input (<a href=\"html/phpinfo.html\">instructions</a>):</b><br>\n";
 	echo $query;
 	echo "</p>\n";
 	if ($stereo == "true") {
@@ -30,5 +35,6 @@ the images appear to merge.</i></p>";
 	}
 }
 ?>
+</div>
 </body>
 </html>

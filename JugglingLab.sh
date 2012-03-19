@@ -1,3 +1,4 @@
 #!/bin/sh
 
-java -cp bin/JugglingLab.jar JugglingLab
+cd `dirname $0`
+java -jar bin/JugglingLab.jar

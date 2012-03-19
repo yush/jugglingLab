@@ -26,6 +26,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
+import java.text.MessageFormat;
 import javax.swing.*;
 import javax.swing.event.*;
 import org.xml.sax.*;
@@ -69,7 +70,7 @@ public class JMLView extends View {
         this.add(jsp, BorderLayout.CENTER);
 
         JPanel lower = new JPanel();
-        lower.setLayout(new FlowLayout(FlowLayout.LEFT));
+        lower.setLayout(new FlowLayout(FlowLayout.LEADING));
         this.compile = new JButton(guistrings.getString("JMLView_compile_button"));
         compile.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
@@ -104,7 +105,7 @@ public class JMLView extends View {
         this.lab = new JLabel("");
         lower.add(lab);
 
-        this.add(lower, BorderLayout.SOUTH);
+        this.add(lower, BorderLayout.PAGE_END);
     }
 
     public void restartView() {
@@ -164,9 +165,13 @@ public class JMLView extends View {
             } catch (JuggleExceptionInternal jei) {
                 ErrorDialog.handleException(jei);
                 setDirty(true);
+            } catch (SAXParseException spe) {
+				String template = errorstrings.getString("Error_parsing");
+				Object[] arguments = { new Integer(spe.getLineNumber()) };					
+                lab.setText(MessageFormat.format(template, arguments));
+                setDirty(true);
             } catch (SAXException se) {
-                StringTokenizer st = new StringTokenizer(se.getMessage(), ":");
-                lab.setText(errorstrings.getString("Error_parsing_prefix")+" "+st.nextToken());
+                lab.setText(se.getMessage());
                 setDirty(true);
             } catch (IOException ioe) {
                 ErrorDialog.handleException(ioe);

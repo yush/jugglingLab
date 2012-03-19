@@ -23,6 +23,7 @@
 package jugglinglab.notation;
 
 import java.util.*;
+import java.text.MessageFormat;
 
 import jugglinglab.util.*;
 
@@ -31,8 +32,8 @@ public class mhnHands {
     // static ResourceBundle guistrings;
     static ResourceBundle errorstrings;
     static {
-        // guistrings = ResourceBundle.getBundle("GUIStrings");
-        errorstrings = ResourceBundle.getBundle("ErrorStrings");
+        // guistrings = JLLocale.getBundle("GUIStrings");
+        errorstrings = JLLocale.getBundle("ErrorStrings");
     }
 
     protected int jugglers = 0;
@@ -159,8 +160,9 @@ public class mhnHands {
                         continue;
                     }
 
-                    throw new JuggleExceptionUser(errorstrings.getString("Error_hands_character_prefix")+
-                                " '"+ch+"'"+errorstrings.getString("Error_hands_character_suffix"));
+					String template = errorstrings.getString("Error_hands_character");
+					Object[] arguments = { Character.toString(ch) };					
+					throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
                 }
 
                 if (k == 0) {

@@ -24,16 +24,18 @@ package jugglinglab.prop;
 
 import java.awt.*;
 import java.util.*;
-import jugglinglab.util.*;
-import jugglinglab.renderer.*;
-import jugglinglab.core.*;
-import idx3d.*;
 import javax.swing.*;
 import java.awt.image.*;
 import java.awt.image.ImageObserver.*;
 import java.net.*;
 import java.io.*;
 import java.lang.reflect.*;
+import java.text.MessageFormat;
+
+import jugglinglab.util.*;
+import jugglinglab.renderer.*;
+import jugglinglab.core.*;
+
 
 public class imageProp extends Prop {
 	private URL url_def;
@@ -156,8 +158,9 @@ public class imageProp extends Prop {
                 else
                     throw new NumberFormatException();
             } catch (NumberFormatException nfe) {
-                throw new JuggleExceptionUser(errorstrings.getString("Error_number_format_prefix")+" 'width' "+
-                                              errorstrings.getString("Error_number_format_suffix"));
+				String template = errorstrings.getString("Error_number_format");
+				Object[] arguments = { "width" };					
+				throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
             }
         }
 		
@@ -171,8 +174,9 @@ public class imageProp extends Prop {
                 else
                     throw new NumberFormatException();
             } catch (NumberFormatException nfe) {
-                throw new JuggleExceptionUser(errorstrings.getString("Error_number_format_prefix")+" 'height' "+
-                                              errorstrings.getString("Error_number_format_suffix"));
+				String template = errorstrings.getString("Error_number_format");
+				Object[] arguments = { "height" };					
+				throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
             }
         }*/
 	}
@@ -209,6 +213,7 @@ public class imageProp extends Prop {
 		return grip;
 	}
 	
+	/*
 	public Object getPropIDX3D() {
         Object result = null;
         try {
@@ -250,5 +255,5 @@ public class imageProp extends Prop {
     public Coordinate getPropIDX3DGrip() {
         return new Coordinate(0.0, 0.0, -height/2);		// bottom of cube
     }
-	
+	*/
 }

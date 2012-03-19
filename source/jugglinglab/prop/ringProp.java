@@ -26,11 +26,12 @@ import java.util.*;
 import java.awt.*;
 import java.awt.image.*;
 import java.lang.reflect.*;
+import java.text.MessageFormat;
 
 import jugglinglab.core.*;
 import jugglinglab.util.*;
 import jugglinglab.renderer.*;
-import idx3d.*;
+
 
 public class ringProp extends Prop {
     static String[] colornames = {"black", "blue", "cyan", "gray",
@@ -128,8 +129,11 @@ public class ringProp extends Prop {
 
             if (temp != null)
                 color = temp;
-            else
-                throw new JuggleExceptionUser(errorstrings.getString("Error_prop_color")+": '"+colorstr+"'");
+            else {
+				String template = errorstrings.getString("Error_prop_color");
+				Object[] arguments = { colorstr };					
+				throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
+			}
         }
 
         String outsidestr = pl.getParameter("outside");
@@ -142,8 +146,9 @@ public class ringProp extends Prop {
                 else
                     throw new JuggleExceptionUser(errorstrings.getString("Error_prop_diameter"));
             } catch (NumberFormatException nfe) {
-                throw new JuggleExceptionUser(errorstrings.getString("Error_number_format_prefix")+" 'diam' "+
-                                              errorstrings.getString("Error_number_format_suffix"));
+				String template = errorstrings.getString("Error_number_format");
+				Object[] arguments = { "diam" };					
+				throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
             }
         }
 		
@@ -157,18 +162,19 @@ public class ringProp extends Prop {
                 else
                     throw new JuggleExceptionUser(errorstrings.getString("Error_prop_diameter"));
             } catch (NumberFormatException nfe) {
-                throw new JuggleExceptionUser(errorstrings.getString("Error_number_format_prefix")+" 'diam' "+
-                                              errorstrings.getString("Error_number_format_suffix"));
+				String template = errorstrings.getString("Error_number_format");
+				Object[] arguments = { "diam" };					
+				throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
             }
         }
     }
 
     public Coordinate getMax() {
-        return new Coordinate(outside_diam/2, 0, outside_diam);
+        return new Coordinate(outside_diam/2, 0, outside_diam/2);
     }
 
     public Coordinate getMin() {
-        return new Coordinate(-outside_diam/2, 0, 0);
+        return new Coordinate(-outside_diam/2, 0, -outside_diam/2);
     }
 
     public Image getProp2DImage(Component comp, double zoom, double[] camangle) {
@@ -286,6 +292,7 @@ public class ringProp extends Prop {
 		lastcamangle = new double[] {camangle[0], camangle[1]};
 	}
 
+	/*
     public Object getPropIDX3D() {
         Object result = null;
         try {
@@ -325,4 +332,5 @@ public class ringProp extends Prop {
     public Coordinate getPropIDX3DGrip() {
         return new Coordinate(0.0, -outside_diam/2, 0.0);
     }
+	*/
 }

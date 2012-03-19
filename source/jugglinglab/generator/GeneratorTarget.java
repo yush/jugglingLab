@@ -23,6 +23,7 @@
 package jugglinglab.generator;
 
 import java.io.*;
+import javax.swing.*;
 
 import jugglinglab.core.*;
 
@@ -46,9 +47,17 @@ public class GeneratorTarget {
     }
 
 
-    public void writePattern(String display, String notation, String anim) {
-        if (ltarget != null)
-            ltarget.addPattern(display, null, notation, anim);
+    public void writePattern(final String display, final String notation, final String anim) {
+        if (ltarget != null) {
+			// This method isn't necessarily being called from the event dispatch
+			// thread, so do it this way to ensure the displayed list is only
+			// updated from the event dispatch thread.
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					ltarget.addPattern(display, null, notation, anim, null);
+				}
+			});
+		}
         if (ptarget != null)
             ptarget.println(display);
     }

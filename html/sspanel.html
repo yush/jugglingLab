@@ -6,20 +6,18 @@
 <title>Juggling Lab siteswap input panel</title>
 </head>
 <body>
-<h2>Using the siteswap input panel</h2>
-
-<p>The siteswap input panel allows you to enter siteswap patterns for animation, and then optionally
+<div id="all">
+<h2>Using the pattern entry panel</h2>
+<p>The pattern entry panel is where you type in a pattern to juggle, and then optionally
 adjust the pattern timing and movement of the hands.  Its appearance is shown below.</p>
 
 <p><img src="sspanel.gif" alt="siteswap panel screenshot"/></p>
-
-<h4>The components in the panel display</h4>
-
+<p>Description of each part:</p>
 <ul>
-<li><b>Pattern.</b>  Box where you type in a siteswap pattern, specified using the <a href="ssnotation.html">generalized siteswap
-notation</a> used by Juggling Lab.</li>
+<li><b>Pattern.</b>  Box where you enter a pattern to juggle, using <a href="ssnotation.html">siteswap
+notation</a>.</li>
 <li><b>Beats per second.</b>  A number greater than 0.0 that specifies how many beats there are
-each second; there is typically an average of one throw per beat.  Leaving this blank causes Juggling Lab to calculate a default value based
+each second.  There is typically an average of one throw per beat.  Leaving this blank causes Juggling Lab to calculate a default value based
 on the pattern.  Typical values are between 3.0 and 5.5 beats per second.</li>
 <li><b>Dwell beats.</b>  A number between 0.0 and 2.0 that specifies the number of beats a catch is made prior to the subsequent throw.  Default value is 1.3.</li>
 <li><b>Hand movement.</b>  Specifies hand movement using a text string in a format described
@@ -34,7 +32,7 @@ As a default, Juggling Lab determines body positions based on the number of jugg
 <li><b>Juggle button.</b>  Click this to juggle the pattern.</li>
 </ul>
 
-<h4 id="hands">The hand movement format</h4>
+<h3 id="hands">Hand movement format</h3>
 
 <p>The text string representing hand movement allows you to specify the spatial location of the hands at
 the times of each throw and catch, as well as at points in time in between.  Juggling Lab uses a spline interpolation
@@ -112,7 +110,7 @@ using the style <code>"&lt;t(10)c(32.5)(0,45,-25).|(-30)(2.5).(30)(-2.5).(-30)(0
 <code>&lt;3|5&gt;</code> gives two jugglers, one "eating apples" and the other juggling
 a 5 ball Mills Mess.</p>
 
-<h4 id="body">The body movement format</h4>
+<h3 id="body">Body movement format</h3>
 
 <p>The text string defining body movement allows you to define angles and locations for each
 juggler's body, as a function of time.  Its format is similar to the hand movement format above,
@@ -150,20 +148,22 @@ be defined within a single beat.  The <code>'-'</code> spacer can also be used.)
 and down.</li>
 </ul>
 
-<h4 id="settings">Manual settings to configure the siteswap pattern</h4>
+<h3 id="settings">Manual settings to configure the pattern</h3>
 
-<p>This entry method provides a way to manually control the siteswap pattern.  Everything that can be set in the other portions of the siteswap input panel can be manually entered in this box as well.  Manual settings override settings made in other parts of the panel.</p>
+<p>This entry method provides a way to manually control the siteswap pattern.  Everything that can be set in the
+other portions of the siteswap input panel can be manually entered in this box as well.  Manual settings override
+settings made in other parts of the panel.</p>
 
 <p>The format of the entry is a text string comprised of
-semicolon-separated assignment settings, for example <code>"pattern=(4x,4x);tps=6.0;hands=(32.5)(10)."</code>.  Variables are:</p>
+semicolon-separated assignment settings, for example <code>"pattern=(4x,4x);bps=6.0;hands=(32.5)(10)."</code>.  Variables are:</p>
 <ul>
-<li><b><code>pattern</code></b> -- siteswap pattern to animate, in <a href="ssnotation.html">generalized siteswap notation</a>.  No default.</li>
-<li><b><code>bps</code></b> -- number of beats per second, a floating point value.  Default is
+<li><code class="def">pattern</code> &ndash; pattern to animate, in <a href="ssnotation.html">siteswap notation</a>.  No default.</li>
+<li><code class="def">bps</code> &ndash; number of beats per second, a floating point value.  Default is
 automatically calculated from the pattern.</li>
-<li><b><code>dwell</code></b> -- number of beats a catch is made prior to the subsequent throw.  Values are floating-point numbers between 0.0 and 2.0; default is 1.3.</li>
-<li><b><code>hands</code></b> -- hand movement as a sequence of spatial coordinates, using the format <a href="#hands">described above</a>.</li>
-<li><b><code>body</code></b> -- body movement as a sequence of angles and spatial coordinates, using the format <a href="#body">described above</a>.</li>
-<li><b><code>colors</code></b> -- determines the coloring of the props.  Each color is defined either
+<li><code class="def">dwell</code> &ndash; number of beats a catch is made prior to the subsequent throw.  Values are floating-point numbers between 0.0 and 2.0; default is 1.3.</li>
+<li><code class="def">hands</code> &ndash; hand movement as a sequence of spatial coordinates, using the format <a href="#hands">described above</a>.</li>
+<li><code class="def">body</code> &ndash; body movement as a sequence of angles and spatial coordinates, using the format <a href="#body">described above</a>.</li>
+<li><code class="def">colors</code> &ndash; determines the coloring of the props.  Each color is defined either
 by name or by its red/green/blue components on a 0-255 scale.  Thus if this
 setting is equal to <code>{red}</code> or <code>{255,0,0}</code>, the animator will use red balls.
 If you define several colors, they will be assigned to the balls in a cyclical manner.  For example,
@@ -171,12 +171,12 @@ If you define several colors, they will be assigned to the balls in a cyclical m
 ball 4 is green, and so on.  Recognized color names are:
 <code>black, blue, cyan, gray, green, magenta, orange, pink, red, yellow</code>.  Using the
 value <code>mixed</code> (no braces) will apply a pre-defined mix of colors.  Default is red balls.</li>
-<li><b><code>propdiam</code></b> -- diameter of the props, in centimeters.  Values are
+<li><code class="def">propdiam</code> &ndash; diameter of the props, in centimeters.  Values are
 floating-point numbers greater than 0.0; default is 10.0.</li>
-<li><b><code>prop</code></b> -- prop type to use.  Recognized prop names are <code>ball</code>, <code>image</code>, and <code>ring</code>; default is <code>ball</code>.</li>
-<li><b><code>gravity</code></b> -- acceleration of gravity, in cm/sec^2.  Values are floating-point
+<li><code class="def">prop</code> &ndash; prop type to use.  Recognized prop names are <code>ball</code>, <code>image</code>, and <code>ring</code>; default is <code>ball</code>.</li>
+<li><code class="def">gravity</code> &ndash; acceleration of gravity, in cm/sec^2.  Values are floating-point
 numbers; default is 980.0 (earth standard).</li>
-<li><b><code>bouncefrac</code></b> -- fraction of a ball's energy retained after bouncing off the ground
+<li><code class="def">bouncefrac</code> &ndash; fraction of a ball's energy retained after bouncing off the ground
 (how much of its dropped height does it return to?).  Values are floating point numbers greater than 0.0;
 default is 0.9.</li>
 </ul>
@@ -184,29 +184,21 @@ default is 0.9.</li>
 discouraged.  Most are documented
 <a href="http://juggleanim.sourceforge.net/doc/inputformat.html">elsewhere</a>:</p>
 <ul>
-<li><b><code>tps</code></b> -- use <code>bps</code> instead.</li>
-<li><b><code>dratio</code></b> -- defined as half of <code>dwell</code>.  In the typical
+<li><code class="def">tps</code> &ndash; use <code>bps</code> instead.</li>
+<li><code class="def">dratio</code> &ndash; defined as half of <code>dwell</code>.  In the typical
 case where a given hand throws on every other beat, this equals the fraction of time the
 hand is filled with a ball.  
 Values are floating-point numbers between 0.0 and 1.0; default is 0.65.</li>
-<li><b><code>throwx</code></b> -- use <code>hands</code> instead .</li>
-<li><b><code>rightthrowx</code></b> -- use <code>hands</code> instead.</li>
-<li><b><code>leftthrowx</code></b> -- use <code>hands</code> instead.</li>
-<li><b><code>catchx</code></b> -- use <code>hands</code> instead.</li>
-<li><b><code>rightcatchx</code></b> -- use <code>hands</code> instead.</li>
-<li><b><code>leftcatchx</code></b> -- use <code>hands</code> instead.</li>
-<li><b><code>balldiam</code></b> -- use <code>propdiam</code> instead.</li>
-<li><b><code>g</code></b> -- use <code>gravity</code> instead.</li>
-<li><b><code>mat_style</code></b> -- use <code>hands</code> instead.</li>
-<li><b><code>mat_HR</code></b> -- use <code>tps</code> instead.</li>
-<li><b><code>mat_DR</code></b> -- use <code>dratio</code> instead.</li>
+<li><code class="def">throwx</code> &ndash; use <code>hands</code> instead .</li>
+<li><code class="def">rightthrowx</code> &ndash; use <code>hands</code> instead.</li>
+<li><code class="def">leftthrowx</code> &ndash; use <code>hands</code> instead.</li>
+<li><code class="def">catchx</code> &ndash; use <code>hands</code> instead.</li>
+<li><code class="def">rightcatchx</code> &ndash; use <code>hands</code> instead.</li>
+<li><code class="def">leftcatchx</code> &ndash; use <code>hands</code> instead.</li>
+<li><code class="def">balldiam</code> &ndash; use <code>propdiam</code> instead.</li>
+<li><code class="def">g</code> &ndash; use <code>gravity</code> instead.</li>
 </ul>
 
-<hr/>
-<p>
-<a href="http://validator.w3.org/check/referer">
-<img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0!" height="31" width="88" /></a>
-</p>
-
+</div>
 </body>
 </html>

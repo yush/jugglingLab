@@ -30,50 +30,49 @@ import java.io.*;
 import java.util.*;
 import java.net.*;
 import java.lang.reflect.*;
+import javax.swing.*;
 
 import jugglinglab.jml.*;
 import jugglinglab.renderer.*;
 import jugglinglab.util.*;
 
 
-public class Animator extends Component implements Runnable {
+public class Animator extends JPanel implements Runnable {
     static ResourceBundle guistrings;
     // static ResourceBundle errorstrings;
     static {
-        guistrings = ResourceBundle.getBundle("GUIStrings");
-        // errorstrings = ResourceBundle.getBundle("ErrorStrings");
+        guistrings = JLLocale.getBundle("GUIStrings");
+        // errorstrings = JLLocale.getBundle("ErrorStrings");
     }
 
     protected Thread			engine;
     protected boolean			engineStarted = false;;
     protected boolean			enginePaused = false;
     protected boolean			engineRunning = false;
-    public boolean			writingGIF = false;
+    public boolean				writingGIF = false;
     public JuggleException		exception;
-    public String			message;
+    public String				message;
 
     protected JMLPattern		pat;
     protected AnimatorPrefs		jc;
     protected jugglinglab.renderer.Renderer	ren1 = null, ren2 = null;
     protected Coordinate		overallmax = null, overallmin = null;
 
-    protected int[]			animpropnum = null, temppropnum = null;
+    protected int[]				animpropnum = null, temppropnum = null;
     protected Permutation		invpathperm = null;
-    protected int			num_frames;
+    protected int				num_frames;
     protected double			sim_time;
     protected double			sim_interval_secs;
-    protected long			real_interval_millis;
-    protected Graphics			offg = null;
-    protected Image			offscreen = null;
-    protected static AudioClip		catchclip = null, bounceclip = null;
+    protected long				real_interval_millis;
+    protected static AudioClip	catchclip = null, bounceclip = null;
 	
-	protected boolean waspaused;			// for pause on mouse away
+	protected boolean			waspaused;			// for pause on mouse away
 	// protected boolean waspaused_valid = false;
-	protected boolean outside;
-	protected boolean		outside_valid;
+	protected boolean			outside;
+	protected boolean			outside_valid;
     
     protected boolean			cameradrag;
-    protected int			startx, starty, lastx, lasty;
+    protected int				startx, starty, lastx, lasty;
     protected double[]			camangle;
     protected double[]			actualcamangle;
     protected double[]			actualcamangle1;
@@ -95,6 +94,8 @@ public class Animator extends Component implements Runnable {
 		
 		outside = true;
 		waspaused = outside_valid = false;
+		
+		this.setOpaque(true);
     }
 
 
@@ -225,11 +226,6 @@ public class Animator extends Component implements Runnable {
                 if (!engineStarted)
                     return;
                 syncRenderer();
-                if (jc.dbuffer && (ren1 instanceof Renderer2D)) {
-                    Dimension dim = Animator.this.getSize();
-                    offscreen = Animator.this.createImage(dim.width, dim.height);
-                    offg = offscreen.getGraphics();
-                }
                 repaint();
             }
         });
@@ -281,23 +277,10 @@ public class Animator extends Component implements Runnable {
         if (this.pat == null)
             return;
 
-        ren1 = ren2 = null;
-        if (this.jc.threeD) {
-            try {
-                Class rc = Class.forName("jugglinglab.renderer.RendererIDX3D");
-                ren1 = (Renderer)(rc.newInstance());
-                if (this.jc.stereo)
-                    ren2 = (Renderer)(rc.newInstance());
-            } catch (Exception e) {
-				// The 3D renderer is not always packaged in the jar file.  That's ok; we'll
-				// load the 2D renderer below instead.
-            }
-        }
-        if (ren1 == null) {
-            ren1 = new Renderer2D();
-            if (this.jc.stereo)
-                ren2 = new Renderer2D();
-        }
+		ren1 = new Renderer2D();
+		if (this.jc.stereo)
+			ren2 = new Renderer2D();
+
         ren1.setPattern(this.pat);
         if (this.jc.stereo)
             ren2.setPattern(this.pat);
@@ -356,11 +339,6 @@ public class Animator extends Component implements Runnable {
 
             message = null;
             // setCameraAngle(camangle);
-            if (jc.dbuffer && (ren1 instanceof Renderer2D)) {
-                Dimension dim = this.getSize();
-                offscreen = this.createImage(dim.width, dim.height);
-                offg = offscreen.getGraphics();
-            }
 
             real_time_start = System.currentTimeMillis();
             double oldtime, newtime;
@@ -428,10 +406,6 @@ public class Animator extends Component implements Runnable {
             exception = je;
             repaint();
         } finally {
-            if (offg != null) {
-                offg.dispose();
-                offg = null;
-            }
             engineStarted = engineRunning = enginePaused = false;
             engine = null;	// this is critical as it signals restartJuggle() that exit is occurring
         }
@@ -457,8 +431,6 @@ public class Animator extends Component implements Runnable {
         engineRunning = false;
         exception = null;
         message = null;
-        offg = null;
-        offscreen = null;
     }
 
     public boolean getPaused() {
@@ -483,17 +455,14 @@ public class Animator extends Component implements Runnable {
         sim_time = time;
     }
 
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
         if (exception != null)
             drawString(exception.getMessage(), g);
         else if (message != null)
             drawString(message, g);
         else if (engineRunning && !writingGIF) {
             try {
-                Graphics myg = ((offg == null)? g : offg);
-                drawFrame(getTime(), animpropnum, myg);
-                if (offg != null)
-                    g.drawImage(offscreen, 0, 0, this);
+                drawFrame(getTime(), animpropnum, g);
             } catch (JuggleExceptionInternal jei) {
                 this.killAnimationThread();
                 System.out.println(jei.getMessage());
@@ -664,6 +633,23 @@ public class Animator extends Component implements Runnable {
         this.overallmin = Coordinate.min(handmin, ren1.getJugglerWindowMin());
         this.overallmin = Coordinate.min(overallmin, patternmin);
 
+		// we want to ensure everything stays visible as we rotate the camera
+		// viewpoint.  the following is simple and seems to work ok.
+		if (pat.getNumberOfJugglers() == 1) {
+			overallmin.z -= 0.3 * Math.max(Math.abs(overallmin.y), Math.abs(overallmax.y));
+			overallmax.z += 5.0;	// keeps objects from rubbing against top of window
+		} else {
+			double tempx = Math.max(Math.abs(overallmin.x), Math.abs(overallmax.x));
+			double tempy = Math.max(Math.abs(overallmin.y), Math.abs(overallmax.y));
+			overallmin.z -= 0.4 * Math.max(tempx, tempy);
+			overallmax.z += 0.4 * Math.max(tempx, tempy);
+		}
+
+		// make the x-coordinate origin at the center of the view
+		double maxabsx = Math.max(Math.abs(this.overallmin.x), Math.abs(this.overallmax.x));
+		this.overallmin.x = -maxabsx;
+		this.overallmax.x = maxabsx;
+		
         if (jugglinglab.core.Constants.DEBUG_LAYOUT) {
             System.out.println("Hand max = "+handmax);
             System.out.println("Hand min = "+handmin);

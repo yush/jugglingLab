@@ -26,8 +26,7 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.util.*;
 import java.lang.reflect.*;
-
-import idx3d.*;
+import javax.swing.*;
 
 import jugglinglab.core.*;
 import jugglinglab.jml.*;
@@ -41,41 +40,41 @@ public class Renderer2D extends Renderer {
 	public static final int RENDER_FLAT_SOLID = 2;
 	protected int render_type = RENDER_FLAT_SOLID; // One of the above
 	
-    protected Color		background = null;
+    protected Color			background = null;
     protected Coordinate	left = null, right = null;
-    protected idx3d_Vector	cameracenter;
+    protected JLVector		cameracenter;
     protected double[]		cameraangle;
     protected double		cameradistance;
-    protected idx3d_Matrix	m;
+    protected JLMatrix	m;
 
-    protected int		width, height;
+    protected int			width, height;
     protected JMLPattern	pat = null;
 
     protected double		zoom;
-    protected int		originx, originz;
-    protected int		polysides;	// # sides in polygon for head
-    protected float[]		headcos, headsin;
-    protected int[]		headx, heady;
+    protected int			originx, originz;
+    protected int			polysides;	// # sides in polygon for head
+    protected double[]		headcos, headsin;
+    protected int[]			headx, heady;
 
     protected DrawObject2D[]	obj = null, obj2 = null;
-    protected idx3d_Vector[][]	jugglervec = null;
-    protected Coordinate	tempc = null;
-    protected idx3d_Vector	tempv = null;
+    protected JLVector[][]	jugglervec = null;
+    protected Coordinate		tempc = null;
+    protected JLVector		tempv = null;
 
     public Renderer2D() {
         this.background = Color.white;
         this.cameraangle = new double[2];
         this.polysides = 40;
-        headcos = new float[polysides];
-        headsin = new float[polysides];
+        headcos = new double[polysides];
+        headsin = new double[polysides];
         headx = new int[polysides];
         heady = new int[polysides];
         for (int i = 0; i < polysides; i++) {
-            headcos[i] = (float)(Math.cos((double)i * JLMath.toRad(360.0) / polysides));
-            headsin[i] = (float)(Math.sin((double)i * JLMath.toRad(360.0) / polysides));
+            headcos[i] = Math.cos((double)i * JLMath.toRad(360.0) / polysides);
+            headsin[i] = Math.sin((double)i * JLMath.toRad(360.0) / polysides);
         }
         this.tempc = new Coordinate();
-        this.tempv = new idx3d_Vector();
+        this.tempv = new JLVector();
     }
 
     public void setPattern(JMLPattern pat) {
@@ -85,7 +84,7 @@ public class Renderer2D extends Renderer {
         for (int i = 0; i < numobjects; i++)
             obj[i] = new DrawObject2D(numobjects);
         this.obj2 = new DrawObject2D[numobjects];
-        this.jugglervec = new idx3d_Vector[pat.getNumberOfJugglers()][12];
+        this.jugglervec = new JLVector[pat.getNumberOfJugglers()][12];
     }
 
     public Color getBackground() { return this.background; }
@@ -97,9 +96,9 @@ public class Renderer2D extends Renderer {
         Rectangle r = new Rectangle(border, border, width-2*border, height-2*border);
         calcScaling(r, overallmax, overallmin);
         this.cameradistance = 1000.0;
-        this.cameracenter = new idx3d_Vector((float)(0.5*(overallmax.x+overallmin.x)),
-                                             (float)(0.5*(overallmax.z+overallmin.z)),
-                                             (float)(0.5*(overallmax.y+overallmin.y)));
+        this.cameracenter = new JLVector(0.5*(overallmax.x+overallmin.x),
+                                             0.5*(overallmax.z+overallmin.z),
+                                             0.5*(overallmax.y+overallmin.y));
         setCameraAngle(this.cameraangle);	// sets camera position
     }
 
@@ -111,14 +110,14 @@ public class Renderer2D extends Renderer {
         if (cameracenter == null)
             return;
 
-        m = idx3d_Matrix.shiftMatrix(-cameracenter.x, -cameracenter.y, -cameracenter.z);
-        m.transform(idx3d_Matrix.rotateMatrix(0f, (float)(JLMath.toRad(180.0) - cameraangle[0]), 0f));
-        m.transform(idx3d_Matrix.rotateMatrix((float)(JLMath.toRad(90.0) - cameraangle[1]), 0f, 0f));
-        m.transform(idx3d_Matrix.shiftMatrix(cameracenter.x, cameracenter.y, cameracenter.z));
+        m = JLMatrix.shiftMatrix(-cameracenter.x, -cameracenter.y, -cameracenter.z);
+        m.transform(JLMatrix.rotateMatrix(0.0, JLMath.toRad(180.0) - cameraangle[0], 0.0));
+        m.transform(JLMatrix.rotateMatrix(JLMath.toRad(90.0) - cameraangle[1], 0.0, 0.0));
+        m.transform(JLMatrix.shiftMatrix(cameracenter.x, cameracenter.y, cameracenter.z));
 
-        m.transform(idx3d_Matrix.scaleMatrix(1f, -1f, 1f));	// larger y values -> smaller y pixel coord
-        m.transform(idx3d_Matrix.scaleMatrix((float)(this.zoom)));
-        m.transform(idx3d_Matrix.shiftMatrix(this.originx, this.originz, 0f));
+        m.transform(JLMatrix.scaleMatrix(1.0, -1.0, 1.0));	// larger y values -> smaller y pixel coord
+        m.transform(JLMatrix.scaleMatrix(this.zoom));
+        m.transform(JLMatrix.shiftMatrix(this.originx, this.originz, 0.0));
     }
 	
     public double[] getCameraAngle() {
@@ -129,16 +128,16 @@ public class Renderer2D extends Renderer {
     }
 
     public int[] getXY(Coordinate c) {
-        return getXY(new idx3d_Vector((float)c.x, (float)c.z, (float)c.y));
+        return getXY(new JLVector(c.x, c.z, c.y));
     }
-    protected int[] getXY(idx3d_Vector vec) {
-        idx3d_Vector v = vec.transform(m);	// apply camera rotation
+    protected int[] getXY(JLVector vec) {
+        JLVector v = vec.transform(m);	// apply camera rotation
         int[] val = new int[2];
         val[0] = (int)(v.x + 0.5f);
         val[1] = (int)(v.y + 0.5f);
         return val;
     }
-    protected idx3d_Vector getXYZ(idx3d_Vector vec, idx3d_Vector result) {
+    protected JLVector getXYZ(JLVector vec, JLVector result) {
         result.x = vec.x*m.m00 + vec.y*m.m01 + vec.z*m.m02 + m.m03;
         result.y = vec.x*m.m10 + vec.y*m.m11 + vec.z*m.m12 + m.m13;
         result.z = vec.x*m.m20 + vec.y*m.m21 + vec.z*m.m22 + m.m23;
@@ -146,15 +145,15 @@ public class Renderer2D extends Renderer {
     }
 
     public Coordinate getScreenTranslatedCoordinate(Coordinate c, int dx, int dy) {
-        idx3d_Vector v = new idx3d_Vector((float)c.x, (float)c.z, (float)c.y);
-        idx3d_Vector s = v.transform(m);
-        idx3d_Vector news = idx3d_Vector.add(s, new idx3d_Vector((float)dx, (float)dy, 0f));
-        idx3d_Vector newv = news.transform(m.inverse());
-        return new Coordinate((double)newv.x, (double)newv.z, (double)newv.y);
+        JLVector v = new JLVector(c.x, c.z, c.y);
+        JLVector s = v.transform(m);
+        JLVector news = JLVector.add(s, new JLVector(dx, dy, 0.0));
+        JLVector newv = news.transform(m.inverse());
+        return new Coordinate(newv.x, newv.z, newv.y);
     }
 
 
-    public void drawFrame(double time, int[] pnum, Graphics g, Component comp) throws JuggleExceptionInternal {
+    public void drawFrame(double time, int[] pnum, Graphics g, JPanel pan) throws JuggleExceptionInternal {
         // try to turn on antialiased rendering
         VersionSpecific.getVersionSpecific().setAntialias(g);
 
@@ -176,43 +175,13 @@ public class Renderer2D extends Renderer {
             int x = (int)(0.5f + obj[index].coord[0].x);
             int y = (int)(0.5f + obj[index].coord[0].y);
             Prop pr = pat.getProp(pnum[i-1]);
-			if (pr.getProp2DImage(comp, this.zoom, this.cameraangle) != null) {
-				Dimension center = pr.getProp2DCenter(comp, this.zoom);
-				Dimension size = pr.getProp2DSize(comp, this.zoom);
+			if (pr.getProp2DImage(pan, this.zoom, this.cameraangle) != null) {
+				Dimension center = pr.getProp2DCenter(pan, this.zoom);
+				Dimension size = pr.getProp2DSize(pan, this.zoom);
 				obj[index].boundingbox.x = x - center.width;
 				obj[index].boundingbox.y = y - center.height;
 				obj[index].boundingbox.width = size.width;
 				obj[index].boundingbox.height = size.height;
-			} else {
-				idx3d_Object object = (idx3d_Object)pr.getPropIDX3D();
-				// Rotate by the prop orientation.
-				//object.rotate(0f, (float)JLMath.toRad(90.0), 0f);
-				// Translate the object so that it is centered about its origin.
-				//Coordinate origin = pr.getPropIDX3DGrip();
-				//object.shift((float)-origin.x, (float)-origin.z, (float)-origin.y);
-				
-				// Rotate the object to its correct orientation!!!
-				pat.getPathOrientation(i, time, tempc);
-				object.rotate((float)tempc.x, 0f, 0f);		// ignoring yaw and roll!!!
-				
-				// Rotate the object according to the current camera angle.
-				object.rotate(0f, (float)(JLMath.toRad(180.0) - cameraangle[0]), 0f);
-				object.rotate((float)(JLMath.toRad(90.0) - cameraangle[1]), 0f, 0f);
-				// Scale the object for the current zoom.
-				object.scale(1f, -1f, 1f);
-				object.scale((float)(this.zoom));
-				// Finally, translate the object into its screen coordinates.
-				object.shift(x, y, 0f);
-				// Apply changes to the prop
-				//object.matrixMeltdown();
-				applyPartialTransformation(object);
-				obj[index].object = object;
-				idx3d_Vector min = object.min();
-				idx3d_Vector max = object.max();
-				obj[index].boundingbox.x = (int)(min.x);
-				obj[index].boundingbox.y = (int)(min.y);
-				obj[index].boundingbox.width = (int)(1 + max.x - min.x);
-				obj[index].boundingbox.height = (int)(1 + max.y - min.y);
 			}
             index++;
         }
@@ -356,14 +325,14 @@ public class Renderer2D extends Renderer {
                     Prop pr = pat.getProp(pnum[ob.number-1]);
 					int x = (int)(0.5f + ob.coord[0].x);
                     int y = (int)(0.5f + ob.coord[0].y);
-                    Image ballimage = pr.getProp2DImage(comp, this.zoom, this.cameraangle);
-					if (ballimage != null) {
-						Dimension center = pr.getProp2DCenter(comp, this.zoom);
-						g.drawImage(ballimage, x-center.width, y-center.height, comp);
-					} else {
+                    Image propimage = pr.getProp2DImage(pan, this.zoom, this.cameraangle);
+					if (propimage != null) {
+						Dimension grip = pr.getProp2DGrip(pan, this.zoom);
+						g.drawImage(propimage, x-grip.width, y-grip.height, pan);
+					} /* else {
 						g.setColor(pr.getEditorColor());
 						draw3DProp(ob.object, g);
-					}
+					} */
 					
 					// g.setColor(Color.black);
 					// g.drawLine(ob.boundingbox.x, ob.boundingbox.y, ob.boundingbox.x + ob.boundingbox.width, ob.boundingbox.y);
@@ -384,18 +353,18 @@ public class Renderer2D extends Renderer {
                     g.setColor(Color.black);
                     g.drawPolygon(bodyx, bodyy, 4);
 
-                    float LheadBx = ob.coord[4].x;
-                    float LheadBy = ob.coord[4].y;
-                    float LheadTx = ob.coord[5].x;
-                    float LheadTy = ob.coord[5].y;
-                    float RheadBx = ob.coord[6].x;
-                    float RheadBy = ob.coord[6].y;
-                    float RheadTx = ob.coord[7].x;
-                    float RheadTy = ob.coord[7].y;
+                    double LheadBx = ob.coord[4].x;
+                    double LheadBy = ob.coord[4].y;
+                    double LheadTx = ob.coord[5].x;
+                    double LheadTy = ob.coord[5].y;
+                    double RheadBx = ob.coord[6].x;
+                    double RheadBy = ob.coord[6].y;
+                    double RheadTx = ob.coord[7].x;
+                    double RheadTy = ob.coord[7].y;
                     for (int j = 0; j < polysides; j++) {
                         headx[j] = (int)(0.5f + 0.5f*(LheadBx + RheadBx + headcos[j]*(RheadBx-LheadBx)));
                         heady[j] = (int)(0.5f + 0.5f*(LheadBy + LheadTy + headsin[j]*(LheadBy-LheadTy)) +
-                                         ((float)headx[j]-LheadBx)*(RheadBy-LheadBy) / (RheadBx-LheadBx));
+                                         (headx[j]-LheadBx)*(RheadBy-LheadBy) / (RheadBx-LheadBx));
                     }
 
 					g.setColor(this.background);
@@ -462,77 +431,30 @@ public class Renderer2D extends Renderer {
         originx = r.x + (int)(0.5 + 0.5 * (r.width - zoom*(coordmax.x+coordmin.x)));   // r.x + r.width / 2;
         originz = r.y + (int)(0.5 + 0.5 * (r.height + zoom*(coordmax.z+coordmin.z)));
     }
-	
-	protected void draw3DProp(idx3d_Object object, Graphics g) {
-		// We use a simple orthogonal projection that merely neglects the z coordinate.
-		if (this.render_type == RENDER_POINT_FIELD) {
-			for (int i = 0; i < object.vertexData.size(); i++) {
-				idx3d_Vector screenCoord = object.vertex(i).pos;
-				//System.out.println("x: " + screenCoord.x + ", y: " + screenCoord.y);
-				
-				g.drawLine((int)screenCoord.x, (int)screenCoord.y, (int)screenCoord.x, (int)screenCoord.y);
-			}
-		} else  if (this.render_type == RENDER_WIRE_FRAME) {
-			for (int i = 0; i < object.triangleData.size(); i++) {
-				idx3d_Triangle t = object.triangle(i);
-				int[] xs = new int[3];
-				int[] ys = new int[3];
-				xs[0] = (int)t.p1.pos.x;
-				ys[0] = (int)t.p1.pos.y;
-				xs[1] = (int)t.p2.pos.x;
-				ys[1] = (int)t.p2.pos.y;
-				xs[2] = (int)t.p3.pos.x;
-				ys[2] = (int)t.p3.pos.y;
-				g.drawPolygon(xs, ys, 3);
-			}
-		} else {
-			for (int i = 0; i < object.triangleData.size(); i++) {
-				idx3d_Triangle t = object.triangle(i);
-				int[] xs = new int[3];
-				int[] ys = new int[3];
-				xs[0] = (int)t.p1.pos.x;
-				ys[0] = (int)t.p1.pos.y;
-				xs[1] = (int)t.p2.pos.x;
-				ys[1] = (int)t.p2.pos.y;
-				xs[2] = (int)t.p3.pos.x;
-				ys[2] = (int)t.p3.pos.y;
-				g.fillPolygon(xs, ys, 3);
-			}
-		}
-	}
-	
-	public void applyPartialTransformation(idx3d_Object o) {
-		// This is meant to be much faster than idx3d_Object.matrixMeltdown() since
-		// it neglects the normal vectors and all of the other cleanup.
-		for (int i = 0; i < o.vertexData.size(); i++) {
-			o.vertex(i).pos = o.vertex(i).pos.transform(o.matrix);
-		}
-	}
+
 
     class DrawObject2D {
         public static final int TYPE_PROP = 1;
         public static final int TYPE_BODY = 2;
         public static final int TYPE_LINE = 3;
 
-        protected static final float slop = 3f;
+        protected static final double slop = 3.0;
 
         public int type;
         public int number;		// either path or juggler number
-        public idx3d_Vector[] coord = null;
+        public JLVector[] coord = null;
         public Rectangle boundingbox = null;
         public Vector covering = null;
         public boolean drawn = false;
-        public idx3d_Vector tempv = null;
+        public JLVector tempv = null;
 		
-		public idx3d_Object object = null;  // For drawing with the 3D representation
-
         public DrawObject2D(int numobjects) {
-            this.coord = new idx3d_Vector[8];
+            this.coord = new JLVector[8];
             for (int i = 0; i < 8; i++)
-                this.coord[i] = new idx3d_Vector();
+                this.coord[i] = new JLVector();
             this.boundingbox = new Rectangle();
             this.covering = new Vector(numobjects);
-            this.tempv = new idx3d_Vector();
+            this.tempv = new JLVector();
         }
 
 
@@ -550,7 +472,7 @@ public class Renderer2D extends Renderer {
                             vectorProduct(obj.coord[0], obj.coord[1], obj.coord[2], tempv);
                             if (tempv.z == 0f)
                                 return false;
-                            float z = obj.coord[0].z - (tempv.x * (this.coord[0].x - obj.coord[0].x) +
+                            double z = obj.coord[0].z - (tempv.x * (this.coord[0].x - obj.coord[0].x) +
                                                         tempv.y * (this.coord[0].y - obj.coord[0].y)) / tempv.z;
                             return (this.coord[0].z < z);
                         }
@@ -565,16 +487,16 @@ public class Renderer2D extends Renderer {
                             vectorProduct(this.coord[0], this.coord[1], this.coord[2], tempv);
                             if (tempv.z == 0f)
                                 return false;
-                            float z = this.coord[0].z - (tempv.x * (obj.coord[0].x - this.coord[0].x) +
+                            double z = this.coord[0].z - (tempv.x * (obj.coord[0].x - this.coord[0].x) +
                                                          tempv.y * (obj.coord[0].y - this.coord[0].y)) / tempv.z;
                             return (z < obj.coord[0].z);
                         }
                         case TYPE_BODY:
                         {
-                            float d = 0f;
+                            double d = 0.0;
                             for (int i = 0; i < 4; i++)
                                 d += (this.coord[i].z - obj.coord[i].z);
-                            return (d < 0f);
+                            return (d < 0.0);
                         }
                         case TYPE_LINE:
                             return (isBoxCoveringLine(this, obj) == 1);
@@ -618,11 +540,11 @@ public class Renderer2D extends Renderer {
 
             boolean endinbb = false;
             for (int i = 0; i < 2; i++) {
-                float x = line.coord[i].x;
-                float y = line.coord[i].y;
+                double x = line.coord[i].x;
+                double y = line.coord[i].y;
 
                 if (box.boundingbox.contains((int)(x+0.5f), (int)(y+0.5f))) {
-                    float zb = box.coord[0].z - (tempv.x * (x - box.coord[0].x) +
+                    double zb = box.coord[0].z - (tempv.x * (x - box.coord[0].x) +
                                                  tempv.y * (y - box.coord[0].y)) / tempv.z;
                     if (line.coord[i].z < (zb-slop)) {
                         // System.out.println("   exit 1");
@@ -644,14 +566,14 @@ public class Renderer2D extends Renderer {
                     continue;
                 if (line.coord[1].x == line.coord[0].x)
                     continue;
-                float y = line.coord[0].y + (line.coord[1].y-line.coord[0].y)*((float)x - line.coord[0].x) /
+                double y = line.coord[0].y + (line.coord[1].y-line.coord[0].y)*((double)x - line.coord[0].x) /
                     (line.coord[1].x - line.coord[0].x);
                 if ((y < box.boundingbox.y) || (y > (box.boundingbox.y + box.boundingbox.height - 1)))
                     continue;
                 intersection = true;
-                float zb = box.coord[0].z - (tempv.x * ((float)x - box.coord[0].x) +
+                double zb = box.coord[0].z - (tempv.x * (x - box.coord[0].x) +
                                              tempv.y * (y - box.coord[0].y)) / tempv.z;
-                float zl = line.coord[0].z + (line.coord[1].z-line.coord[0].z)*((float)x-line.coord[0].x) /
+                double zl = line.coord[0].z + (line.coord[1].z-line.coord[0].z)*((double)x-line.coord[0].x) /
                     (line.coord[1].x - line.coord[0].x);
                 if (zl < (zb-slop)) {
                     // System.out.println("   exit 3, i = "+i);
@@ -665,14 +587,14 @@ public class Renderer2D extends Renderer {
                     continue;
                 if (line.coord[1].y == line.coord[0].y)
                     continue;
-                float x = line.coord[0].x + (line.coord[1].x-line.coord[0].x)*((float)y - line.coord[0].y) /
+                double x = line.coord[0].x + (line.coord[1].x-line.coord[0].x)*((double)y - line.coord[0].y) /
                     (line.coord[1].y - line.coord[0].y);
                 if ((x < box.boundingbox.x) || (x > (box.boundingbox.x + box.boundingbox.width - 1)))
                     continue;
                 intersection = true;
-                float zb = box.coord[0].z - (tempv.x * (x - box.coord[0].x) +
-                                             tempv.y * ((float)y - box.coord[0].y)) / tempv.z;
-                float zl = line.coord[0].z + (line.coord[1].z-line.coord[0].z)*(x-line.coord[0].x) /
+                double zb = box.coord[0].z - (tempv.x * (x - box.coord[0].x) +
+                                             tempv.y * ((double)y - box.coord[0].y)) / tempv.z;
+                double zl = line.coord[0].z + (line.coord[1].z-line.coord[0].z)*(x-line.coord[0].x) /
                     (line.coord[1].x - line.coord[0].x);
                 if (zl < (zb-slop)) {
                     // System.out.println("   exit 4, i = "+i);
@@ -684,13 +606,13 @@ public class Renderer2D extends Renderer {
             return (intersection ? 1 : 0);
         }
 
-        public idx3d_Vector vectorProduct(idx3d_Vector v1, idx3d_Vector v2, idx3d_Vector v3, idx3d_Vector result) {
-            float ax = v2.x - v1.x;
-            float ay = v2.y - v1.y;
-            float az = v2.z - v1.z;
-            float bx = v3.x - v1.x;
-            float by = v3.y - v1.y;
-            float bz = v3.z - v1.z;
+        public JLVector vectorProduct(JLVector v1, JLVector v2, JLVector v3, JLVector result) {
+            double ax = v2.x - v1.x;
+            double ay = v2.y - v1.y;
+            double az = v2.z - v1.z;
+            double bx = v3.x - v1.x;
+            double by = v3.y - v1.y;
+            double bz = v3.z - v1.z;
             result.x = ay * bz - by * az;
             result.y = az * bx - bz * ax;
             result.z = ax * by - bx * ay;

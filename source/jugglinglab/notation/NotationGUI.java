@@ -27,10 +27,12 @@ import java.awt.event.*;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.text.MessageFormat;
 import javax.swing.*;
 import javax.swing.event.*;
 import org.xml.sax.*;
 
+import jugglinglab.*;
 import jugglinglab.core.*;
 import jugglinglab.generator.*;
 import jugglinglab.jml.*;
@@ -42,8 +44,8 @@ public class NotationGUI extends JPanel implements ActionListener {
     static ResourceBundle guistrings;
     static ResourceBundle errorstrings;
     static {
-        guistrings = ResourceBundle.getBundle("GUIStrings");
-        errorstrings = ResourceBundle.getBundle("ErrorStrings");
+        guistrings = JLLocale.getBundle("GUIStrings");
+        errorstrings = JLLocale.getBundle("ErrorStrings");
     }
 
     protected JTabbedPane jtp = null;
@@ -197,9 +199,9 @@ public class NotationGUI extends JPanel implements ActionListener {
 
             JPanel np1 = new JPanel();
             np1.setLayout(new BorderLayout());
-            np1.add(control, BorderLayout.NORTH);
+            np1.add(control, BorderLayout.PAGE_START);
             JPanel np2 = new JPanel();
-            np2.setLayout(new FlowLayout(FlowLayout.RIGHT));
+            np2.setLayout(new FlowLayout(FlowLayout.TRAILING));
             JButton nbut1 = new JButton(guistrings.getString("Defaults"));
             nbut1.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent ae) {
@@ -239,8 +241,8 @@ public class NotationGUI extends JPanel implements ActionListener {
                 }
             });
             np2.add(juggle);
-            np1.add(np2, BorderLayout.SOUTH);
-            
+            np1.add(np2, BorderLayout.PAGE_END);
+			
             jtp.addTab(guistrings.getString("Pattern_entry"), np1);
 
             final Generator gen = Generator.getGenerator(Notation.builtinNotations[num-1]);
@@ -252,9 +254,9 @@ public class NotationGUI extends JPanel implements ActionListener {
 				
                 JPanel p1 = new JPanel();
                 p1.setLayout(new BorderLayout());
-                p1.add(gen.getGeneratorControls(), BorderLayout.NORTH);
+                p1.add(gen.getGeneratorControls(), BorderLayout.PAGE_START);
                 JPanel p2 = new JPanel();
-                p2.setLayout(new FlowLayout(FlowLayout.RIGHT));
+                p2.setLayout(new FlowLayout(FlowLayout.TRAILING));
                 JButton but1 = new JButton(guistrings.getString("Defaults"));
                 but1.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent ae) {
@@ -319,11 +321,11 @@ public class NotationGUI extends JPanel implements ActionListener {
 				GridBagLayout gb = new GridBagLayout();
 				p4.setLayout(gb);
 				p4.add(busy);
-				gb.setConstraints(busy, make_constraints(GridBagConstraints.WEST, 0, 0, new Insets(0,10,0,0)));
-				p3.add(p4, BorderLayout.WEST);
-				p3.add(p2, BorderLayout.EAST);
+				gb.setConstraints(busy, make_constraints(GridBagConstraints.LINE_START, 0, 0, new Insets(0,10,0,0)));
+				p3.add(p4, BorderLayout.LINE_START);
+				p3.add(p2, BorderLayout.LINE_END);
 				
-                p1.add(p3, BorderLayout.SOUTH);
+                p1.add(p3, BorderLayout.PAGE_END);
 
                 // Change the default button when the tab changes
                 jtp.addChangeListener(new ChangeListener() {
@@ -350,7 +352,7 @@ public class NotationGUI extends JPanel implements ActionListener {
 		add(jtp);
 
 		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.anchor = GridBagConstraints.WEST;
+		gbc.anchor = GridBagConstraints.LINE_START;
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.gridwidth = gbc.gridheight = 1;
 		gbc.gridx = 0;
@@ -376,72 +378,46 @@ public class NotationGUI extends JPanel implements ActionListener {
 			ImageIcon aboutPicture = new ImageIcon(url, "A lab");
 			if (aboutPicture != null) {
 				JLabel aboutLabel = new JLabel(aboutPicture);
-				aboutPanel.add(aboutLabel, BorderLayout.WEST);
+				aboutPanel.add(aboutLabel, BorderLayout.LINE_START);
 			}
 		}
 
 		JPanel textPanel = new JPanel();
-		aboutPanel.add(textPanel, BorderLayout.EAST);
+		aboutPanel.add(textPanel, BorderLayout.LINE_END);
 		GridBagLayout gb = new GridBagLayout();
 		textPanel.setLayout(gb);
 
 		JLabel abouttext1 = new JLabel("Juggling Lab");
 		abouttext1.setFont(new Font("SansSerif", Font.BOLD, 18));
 		textPanel.add(abouttext1);
-		gb.setConstraints(abouttext1, make_constraints(GridBagConstraints.WEST,0,0,
+		gb.setConstraints(abouttext1, make_constraints(GridBagConstraints.LINE_START,0,0,
 													   new Insets(15,15,0,15)));
 
-		JLabel abouttext5 = new JLabel(guistrings.getString("Version")+" "+Constants.version);
+		String template = guistrings.getString("Version");
+		Object[] arguments = { Constants.version };					
+		JLabel abouttext5 = new JLabel(MessageFormat.format(template, arguments));
 		abouttext5.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		textPanel.add(abouttext5);
-		gb.setConstraints(abouttext5, make_constraints(GridBagConstraints.WEST,0,1,
+		gb.setConstraints(abouttext5, make_constraints(GridBagConstraints.LINE_START,0,1,
 													   new Insets(0,15,0,15)));
 
-		JLabel abouttext2 = new JLabel("AElfred XML parser copyright (C) 1997-1998 Microstar Software Ltd.");
-		abouttext2.setFont(new Font("SansSerif", Font.PLAIN, 10));
-		textPanel.add(abouttext2);
-		gb.setConstraints(abouttext2, make_constraints(GridBagConstraints.WEST,0,2,
-													   new Insets(15,15,0,15)));
-
-		JLabel abouttext7 = new JLabel("idx3d III graphics engine copyright (C) 1999-2000 Peter Walser");
-		abouttext7.setFont(new Font("SansSerif", Font.PLAIN, 10));
-		textPanel.add(abouttext7);
-		gb.setConstraints(abouttext7, make_constraints(GridBagConstraints.WEST,0,3,
-													   new Insets(0,15,0,15)));
-
-		JLabel abouttext8 = new JLabel("Jakarta-Regexp copyright (C) 1999-2003 The Apache Software Foundation");
-		abouttext8.setFont(new Font("SansSerif", Font.PLAIN, 10));
-		textPanel.add(abouttext8);
-		gb.setConstraints(abouttext8, make_constraints(GridBagConstraints.WEST,0,4,
-													   new Insets(0,15,0,15)));
-
-		JLabel abouttext9 = new JLabel("HTTPClient copyright (C) 1996-2001 Ronald Tschalär");
-		abouttext9.setFont(new Font("SansSerif", Font.PLAIN, 10));
-		textPanel.add(abouttext9);
-		gb.setConstraints(abouttext9, make_constraints(GridBagConstraints.WEST,0,5,
-													   new Insets(0,15,0,15)));
-
-		JLabel abouttext6 = new JLabel("All other code copyright (C) 2002-"+Constants.year+" Jack Boyce and others");
+		String template2 = guistrings.getString("Copyright_message");
+		Object[] arguments2 = { Constants.year };					
+		JLabel abouttext6 = new JLabel(MessageFormat.format(template2, arguments2));
 		abouttext6.setFont(new Font("SansSerif", Font.PLAIN, 10));
 		textPanel.add(abouttext6);
-		gb.setConstraints(abouttext6, make_constraints(GridBagConstraints.WEST,0,6,
-													   new Insets(0,15,15,15)));
+		gb.setConstraints(abouttext6, make_constraints(GridBagConstraints.LINE_START,0,2,
+													   new Insets(15,15,15,15)));
 
-		JLabel abouttext3 = new JLabel(guistrings.getString("GPL_part1"));
+		JLabel abouttext3 = new JLabel(guistrings.getString("GPL_message"));
 		abouttext3.setFont(new Font("SansSerif", Font.PLAIN, 10));
 		textPanel.add(abouttext3);
-		gb.setConstraints(abouttext3, make_constraints(GridBagConstraints.WEST,0,7,
-													   new Insets(0,15,0,15)));
-
-		JLabel abouttext4 = new JLabel(guistrings.getString("GPL_part2"));
-		abouttext4.setFont(new Font("SansSerif", Font.PLAIN, 10));
-		textPanel.add(abouttext4);
-		gb.setConstraints(abouttext4, make_constraints(GridBagConstraints.WEST,0,8,
+		gb.setConstraints(abouttext3, make_constraints(GridBagConstraints.LINE_START,0,3,
 													   new Insets(0,15,0,15)));
 
 		JButton okbutton = new JButton(guistrings.getString("OK"));
 		textPanel.add(okbutton);
-		gb.setConstraints(okbutton, make_constraints(GridBagConstraints.EAST,0,9,
+		gb.setConstraints(okbutton, make_constraints(GridBagConstraints.LINE_END,0,4,
 													 new Insets(15,15,15,15)));
 		okbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -449,9 +425,13 @@ public class NotationGUI extends JPanel implements ActionListener {
 				aboutBox.dispose();
 			}
 		});
+		
+		Locale loc = JLLocale.getLocale();
+		aboutBox.applyComponentOrientation(ComponentOrientation.getOrientation(loc));
+		
 		aboutBox.pack();
 		aboutBox.setResizable(false);
-		aboutBox.show();
+		aboutBox.setVisible(true);
 	}
 	
 	

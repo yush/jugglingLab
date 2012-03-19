@@ -23,7 +23,10 @@
 package jugglinglab.view;
 
 import java.awt.*;
+import java.util.*;
 import javax.swing.*;
+import javax.swing.border.*;
+
 import jugglinglab.core.*;
 import jugglinglab.jml.*;
 import jugglinglab.util.*;
@@ -47,9 +50,20 @@ public class EditView extends View {
         ladder.setLayout(new BorderLayout());
         ladder.setPreferredSize(new Dimension(ladder_width, 1));
         ladder.setMinimumSize(new Dimension(ladder_min_width, 1));
+		ladder.setBackground(Color.white);
 
-        JSplitPane jsp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, jae, ladder);
-        jsp.setResizeWeight(1.0);
+		JSplitPane jsp = null;
+		Locale loc = JLLocale.getLocale();
+		if (ComponentOrientation.getOrientation(loc) == ComponentOrientation.LEFT_TO_RIGHT) {
+			jsp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, jae, ladder);
+			jsp.setResizeWeight(1.0);
+		} else {
+			jsp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, ladder, jae);
+			jsp.setResizeWeight(0.0);
+		}
+		jsp.setBorder(new EmptyBorder(0,0,0,0));
+		jsp.setBackground(Color.white);
+		this.setBackground(Color.white);
         this.add(jsp, BorderLayout.CENTER);
     }
 

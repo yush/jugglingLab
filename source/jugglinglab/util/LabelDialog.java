@@ -64,7 +64,7 @@ public class LabelDialog extends JDialog {
 		if (text != null) {
 			Label lab = new Label(text);
 			this.add(lab);
-			gb.setConstraints(lab, make_constraints(GridBagConstraints.WEST,0,0,
+			gb.setConstraints(lab, make_constraints(GridBagConstraints.LINE_START,0,0,
 						new Insets(border,border,10,border)));
 		} else
 			pbtopborder = border;
@@ -79,7 +79,7 @@ public class LabelDialog extends JDialog {
 		});
 		
 		this.add(okbutton);
-		gb.setConstraints(okbutton, make_constraints(GridBagConstraints.EAST,0,2,
+		gb.setConstraints(okbutton, make_constraints(GridBagConstraints.LINE_END,0,2,
 					new Insets(0,border,border,border)));
 		
 		this.pack();

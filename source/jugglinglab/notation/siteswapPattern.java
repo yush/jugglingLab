@@ -23,14 +23,12 @@
 package jugglinglab.notation;
 
 import java.util.*;
+import java.text.*;
 import jugglinglab.util.*;
 
 
 public class siteswapPattern extends mhnPattern {
-    // protected int mode;
     protected boolean oddperiod = false;
-    protected boolean mat_style = false;
-    protected double mat_hr = -1;	// legacy, for emulating Ken Matsuoka's format
 
 
     // only works after parsePattern() is called:
@@ -141,59 +139,18 @@ public class siteswapPattern extends mhnPattern {
         }
 
         if ((temp = pl.getParameter("mat_style")) != null) {
-            try {
-                StringTokenizer	st1 = new StringTokenizer(temp, "}", false);
-                StringTokenizer st2 = null;
-                String			str = null;
-                int				size = st1.countTokens();
-
-                if ((size % 2) == 1)
-                    throw new JuggleExceptionUser(errorstrings.getString("Error_matstyle_number"));
-                double[][] style = new double[size][2];
-
-                for (int i = 0; i < size/2; i++) {
-                    for (int j = 0; j < 2; j++) {
-                        str = st1.nextToken().replace('{', ' ');
-                        st2 = new StringTokenizer(str, ",", false);
-                        style[2*i+j][0] = 2.5 * Double.valueOf(st2.nextToken()).doubleValue();
-                        style[2*i+j][1] = 5.0 * Double.valueOf(st2.nextToken()).doubleValue();
-                    }
-                }
-
-                String handstring = "";
-                for (int i = 0; i < size/2; i++) {
-                    int throwindex = 2 * i + 1;
-                    int catchindex = 2 * i + 4;
-                    while (catchindex >= size)
-                        catchindex -= size;
-
-                    handstring += "("+style[throwindex][0]+","+style[throwindex][1]+")("+
-                        style[catchindex][0]+","+style[catchindex][1]+").";
-                }
-                hands = new mhnHands(handstring);
-            } catch (NumberFormatException e) {
-                throw new JuggleExceptionUser(errorstrings.getString("Error_matstyle_format"));
-            } catch (NoSuchElementException e) {
-                throw new JuggleExceptionUser(errorstrings.getString("Error_matstyle_coords"));
-            }
-            mat_style = true;
+            throw new JuggleExceptionUser(errorstrings.getString("Error_unsupported_setting")+": 'mat_style'");
         }
 
         if ((temp = pl.getParameter("mat_DR")) != null) {
-            try {
-                dwell = 2.0 * Double.valueOf(temp).doubleValue();
-            } catch (NumberFormatException e) {
-            }
+            throw new JuggleExceptionUser(errorstrings.getString("Error_unsupported_setting")+": 'mat_DR'");
         }
 
         if ((temp = pl.getParameter("mat_HR")) != null) {
-            try {
-                mat_hr = Double.valueOf(temp).doubleValue();
-            } catch (NumberFormatException e) {
-            }
+            throw new JuggleExceptionUser(errorstrings.getString("Error_unsupported_setting")+": 'mat_HR'");
         }
 
-        if ((hands == null) && gotthrowcatch) {	// not created by hands or mat_style parameters
+        if ((hands == null) && gotthrowcatch) {	// not created by hands parameter
             hands = new mhnHands("("+(100.0*rightthrowx)+")("+(100.0*rightcatchx)+").("+
                                  (100.0*leftthrowx)+")("+(100.0*leftcatchx)+").");
         }
@@ -218,7 +175,16 @@ public class siteswapPattern extends mhnPattern {
 			// System.out.println("Parse error:");
 			// System.out.println(pe.getMessage());
 			// System.out.println("---------------");
-			throw new JuggleExceptionUser(pe.getMessage());
+			
+			String template = errorstrings.getString("Error_pattern_syntax");
+			String problem = ParseException.add_escapes(pe.currentToken.next.image);
+			Object[] arguments = { problem, new Integer(pe.currentToken.next.beginColumn) };					
+			throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
+		} catch (TokenMgrError tme) {
+			String template = errorstrings.getString("Error_pattern_syntax");
+			String problem = TokenMgrError.addEscapes(String.valueOf(tme.curChar));
+			Object[] arguments = { problem, new Integer(tme.errorColumn - 1) };					
+			throw new JuggleExceptionUser(MessageFormat.format(template, arguments));
 		}
 		
 		// Need to use tree to fill in mhnPattern internal variables:
@@ -259,7 +225,7 @@ public class siteswapPattern extends mhnPattern {
 		if ((tree.throw_sum % tree.beats) != 0)
 			throw new JuggleExceptionUser(errorstrings.getString("Error_siteswap_bad_average"));
 		this.numpaths = tree.throw_sum / tree.beats;
-		this.indexes = this.max_throw + this.period;
+		this.indexes = this.max_throw + this.period + 1;
 		this.th = new mhnThrow[numjugglers][2][indexes][max_occupancy];
 		
 		/*

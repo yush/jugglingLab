@@ -1,2 +1,2 @@
-java -cp bin/JugglingLab.jar JugglingLab
+java -jar bin/JugglingLab.jar
 

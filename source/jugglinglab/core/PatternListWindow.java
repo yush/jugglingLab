@@ -38,8 +38,8 @@ public class PatternListWindow extends JFrame implements ActionListener {
     static ResourceBundle guistrings;
     // static ResourceBundle errorstrings;
     static {
-        guistrings = ResourceBundle.getBundle("GUIStrings");
-        // errorstrings = ResourceBundle.getBundle("ErrorStrings");
+        guistrings = JLLocale.getBundle("GUIStrings");
+        // errorstrings = JLLocale.getBundle("ErrorStrings");
     }
 
     String title = null;
@@ -69,14 +69,21 @@ public class PatternListWindow extends JFrame implements ActionListener {
     }
 
     protected void makeWindow() {
-        getContentPane().setLayout(new BorderLayout());
-
         this.pl = new PatternList(null);
 
-        this.getContentPane().add(pl, BorderLayout.CENTER);
-        this.setSize(200,300);
+		pl.setDoubleBuffered(true);
+		this.setBackground(Color.white);
+		this.setContentPane(pl);
+		
+		this.setSize(300,450);
         createMenuBar();
-        this.setVisible(true);
+
+		Locale loc = JLLocale.getLocale();
+		this.applyComponentOrientation(ComponentOrientation.getOrientation(loc));
+		// list contents are always left-to-right -- DISABLE FOR NOW
+		// this.getContentPane().applyComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+
+		this.setVisible(true);
     }
 
 
@@ -111,10 +118,10 @@ public class PatternListWindow extends JFrame implements ActionListener {
         setJMenuBar(mb);
     }
 
-    public static final int 	FILE_NONE = 0;
+    public static final int	FILE_NONE = 0;
     public static final int	FILE_CLOSE = 1;
-    public static final int 	FILE_SAVE = 2;
-    public static final int 	FILE_SAVETEXT = 3;
+    public static final int	FILE_SAVE = 2;
+    public static final int	FILE_SAVETEXT = 3;
 
     // Implements ActionListener to wait for MenuItem events
     public void actionPerformed(ActionEvent ae) {
@@ -185,7 +192,7 @@ public class PatternListWindow extends JFrame implements ActionListener {
     }
 
 
-    public void addPattern(String display, String animprefs, String notation, String anim) {
-        pl.addPattern(display, animprefs, notation, anim);
+    public void addPattern(String display, String animprefs, String notation, String anim, JMLNode pattern) {
+        pl.addPattern(display, animprefs, notation, anim, pattern);
     }
 }

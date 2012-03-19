@@ -37,8 +37,8 @@ public class JugglingLabPanel extends JPanel {
 	static ResourceBundle guistrings;
     static ResourceBundle errorstrings;
     static {
-        guistrings = ResourceBundle.getBundle("GUIStrings");
-        errorstrings = ResourceBundle.getBundle("ErrorStrings");
+        guistrings = JLLocale.getBundle("GUIStrings");
+        errorstrings = JLLocale.getBundle("ErrorStrings");
     }
 	*/
 	
@@ -56,7 +56,7 @@ public class JugglingLabPanel extends JPanel {
 			add(view);
 
 			GridBagConstraints gbc = new GridBagConstraints();
-			gbc.anchor = GridBagConstraints.WEST;
+			gbc.anchor = GridBagConstraints.LINE_START;
 			gbc.fill = GridBagConstraints.BOTH;
 			gbc.gridwidth = gbc.gridheight = 1;
 			gbc.gridx = 1;
@@ -76,7 +76,7 @@ public class JugglingLabPanel extends JPanel {
 			add(ng);
 
 			GridBagConstraints gbc = new GridBagConstraints();
-			gbc.anchor = GridBagConstraints.WEST;
+			gbc.anchor = GridBagConstraints.LINE_START;
 			gbc.fill = GridBagConstraints.VERTICAL;
 			gbc.gridheight = gbc.gridwidth = 1;
 			gbc.gridx = 0;
