@@ -1,0 +1,35 @@
+<pattern>
+<title>(4,2)(2x,[44x]) inside throws</title>
+<prop type="ball"/>
+<setup jugglers="1" paths="4" props="1,1,1,1"/>
+<symmetry type="delay" pperm="(1,4,3)(2)" delay="1.1764"/>
+<event x="10" y="0" z="0" t="0" hand="1:right">
+<holding path="1"/>
+</event>
+<event x="-10" y="0" z="0" t="0" hand="1:left">
+<throw path="2" type="toss"/>
+</event>
+<event x="32.5" y="0" z="0" t="0.2058" hand="1:right">
+<holding path="1"/>
+<catch path="3"/>
+</event>
+<event x="-32.5" y="0" z="0" t="0.2058" hand="1:left">
+<catch path="4"/>
+</event>
+<event x="10" y="0" z="0" t="0.5882" hand="1:right">
+<throw path="1" type="toss"/>
+<throw path="3" type="toss"/>
+</event>
+<event x="-10" y="0" z="0" t="0.5882" hand="1:left">
+<throw path="4" type="toss"/>
+</event>
+<event x="32.5" y="0" z="0" t="0.7941" hand="1:right">
+<catch path="4"/>
+</event>
+<event x="-32.5" y="0" z="0" t="0.7941" hand="1:left">
+<catch path="2"/>
+</event>
+</pattern>
+
+colors={255,255,0}{255,0,128}{100,255,100}
+40 (0)(25).(0)(0).(25)(50).(0)(0).(50)(25).(0)(0).(25)(0).(0)(0).

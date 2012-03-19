@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE jml SYSTEM "file://jml.dtd">
+<jml version="1.2">
+<patternlist>
+<title>tricks</title>
+<line display="3 - cascade" notation="jml">
+
+<pattern>
+<title>3 inside throws</title>
+<prop type="ball" mod="color={20,150,60}"/>
+<prop type="ball" mod="color={240,225,0}"/>
+<prop type="ball" mod="color={140,90,190}"/>
+
+<setup jugglers="1" paths="3" props="1,2,3"/>
+<symmetry type="delay" pperm="(1,3,2)" delay="0.6896"/>
+<symmetry type="switchdelay" jperm="(1,1*)" pperm="(1,2,3)"/>
+<event x="10" y="0" z="0" t="0" hand="1:right">
+<throw path="1" type="toss"/>
+</event>
+<event x="32.5" y="0" z="0" t="0.2413" hand="1:right">
+<catch path="3"/>
+</event>
+</pattern>
+</line>
+
+<line display="3 - tennis" notation="jml">
+
+<pattern>
+<title>3 outside throws</title>
+<prop type="ball"/>
+<setup jugglers="1" paths="3" props="1,1,1"/>
+<symmetry type="delay" pperm="(1,3,2)" delay="0.6896"/>
+<symmetry type="switchdelay" jperm="(1,1*)" pperm="(1,2,3)"/>
+<event x="32.5" y="0" z="0" t="0" hand="1:right">
+<throw path="1" type="toss"/>
+</event>
+<event x="10" y="0" z="0" t="0.2413" hand="1:right">
+<catch path="3"/>
+</event>
+</pattern>
+</line>
+
+</patternlist>
+</jml>

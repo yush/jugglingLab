@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE jml SYSTEM "file://jml.dtd">
+<jml version="1.2">
+<pattern>
+<title>31</title>
+<prop type="ball"/>
+<setup jugglers="1" paths="2" props="1,1"/>
+<symmetry type="delay" pperm="(1,2)" delay="0.6896"/>
+<event x="12" y="0" z="0" t="0" hand="1:right">
+<throw path="1" type="toss"/>
+</event>
+<event x="-20" y="0" z="0" t="0.2327" hand="1:left">
+<throw path="2" type="toss"/>
+</event>
+<event x="30" y="0" z="0" t="0.4655" hand="1:right">
+<catch path="2"/>
+</event>
+<event x="-30" y="0" z="0" t="0.5862" hand="1:left">
+<catch path="1"/>
+</event>
+</pattern>
+</jml>
+
+colors={255,255,0}{255,0,128}{100,255,100}
