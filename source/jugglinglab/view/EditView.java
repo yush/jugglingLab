@@ -31,7 +31,7 @@ import jugglinglab.core.*;
 import jugglinglab.jml.*;
 import jugglinglab.util.*;
 
-
+// Ladder View
 public class EditView extends View {
     protected AnimatorEdit jae = null;
     protected JPanel ladder = null;

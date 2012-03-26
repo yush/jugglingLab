@@ -228,6 +228,7 @@ public class mhnNotationControl extends NotationControl {
         gb.setConstraints(tf6, gbc6);
         
         this.resetNotationControl();
+        tf6.setText("colors={20,150,60}{240,225,0}{140,90,190}");
         this.add(p1, BorderLayout.PAGE_START);
     }
 

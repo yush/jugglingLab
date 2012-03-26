@@ -29,6 +29,7 @@ import jugglinglab.core.*;
 import jugglinglab.jml.*;
 import jugglinglab.util.*;
 
+// Selection view: show severals pattern on the screen (not working yet)
 
 public class SelectionView extends View {
 	protected Animator[] ja = null;

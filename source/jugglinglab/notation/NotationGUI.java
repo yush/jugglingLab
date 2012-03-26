@@ -39,6 +39,9 @@ import jugglinglab.jml.*;
 import jugglinglab.util.*;
 import jugglinglab.view.*;
 
+// First/Main screen. Calls:
+//	* mhnNotationControl: define params of a pattern
+//  * siteswapGeneratorControl: generate pattern
 
 public class NotationGUI extends JPanel implements ActionListener {
     static ResourceBundle guistrings;
