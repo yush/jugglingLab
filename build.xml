@@ -8,7 +8,7 @@
 <property name="src" value="source" />
 <property name="build" value="build" />
 <property name="bin" value="bin" />
-<property name="debug" value="off" />
+<property name="debug" value="on" />
 <property name="deprecation" value="on" />
 
 <target name="init">
@@ -54,6 +54,15 @@
 <!-- Run the application -->
 <target name="run" depends="jar" description="Run the application">
     <java jar="${bin}/JugglingLab.jar" fork="true"/>
+</target>
+	
+<target name="debug">
+ <java fork="on"
+       failonerror="true"
+       classpath="./bin"
+       classname="JugglingLab">
+     <jvmarg line="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=9010" />
+  </java>
 </target>
 
 <!-- Clean up -->

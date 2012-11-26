@@ -56,6 +56,7 @@ public class JugglingLab extends JApplet {
         String prefs = getParameter("animprefs");
         String jmldir = getParameter("jmldir");
         String jmlfile = getParameter("jmlfile");
+        String handsParams = getParameter("handsParams");
 		
 		// default values
 		int entry_type = Notation.NOTATION_SITESWAP;
@@ -160,6 +161,9 @@ public class JugglingLab extends JApplet {
 						}
 					} else {
 						not = Notation.getNotation(notation);
+						if (handsParams != null) {
+							pattern = "pattern="+pattern+";hands="+handsParams+";";
+						}
 						pat = not.getJMLPattern(pattern);
 					}
 				}

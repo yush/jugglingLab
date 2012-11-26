@@ -4,17 +4,17 @@
 <patternlist>
 <title>tricks</title>
 <line display="WIP"/>
-<line display="45501" notation="siteswap">
+<line display="45501 SS" notation="siteswap">
 pattern=45501;dratio=0.5;tps=3;
 </line>
 <line display="3"/>
-<line display="Cascade" notation="siteswap">
+<line display="Cascade SS" notation="siteswap">
 pattern=3;dratio=0.5;tps=3;
 </line>
-<line display="Mills mess" notation="siteswap">
+<line display="Mills mess SS" notation="siteswap">
 pattern=3;dratio=0.5;tps=3;hands=(-30)(2.5).(30)(-2.5).(-30)(0).
 </line>
-<line display="tennis" notation="jml">
+<line display="tennis JML" notation="jml">
 	<pattern>
 	<title>3 - tennis</title>
 	<prop type="ball"/>
@@ -42,7 +42,7 @@ pattern=3;dratio=0.5;tps=3;hands=(-30)(2.5).(30)(-2.5).(-30)(0).
 	</pattern>
 </line>
 
-<line display="moulins" notation="jml">
+<line display="moulins JML" notation="jml">
 	<pattern>
 	<title>moulins</title>
 	<prop type="ball"/>
@@ -64,22 +64,22 @@ pattern=3;dratio=0.5;tps=3;hands=(-30)(2.5).(30)(-2.5).(-30)(0).
 </line>
 
 <line display="3 backcross TODO"/>
-<line display="Cascade" notation="siteswap">
+<line display="Cascade SS" notation="siteswap">
 pattern=3;dratio=0.5;tps=3;
 </line>
 
 <line display="423"/>
-<line display="base" notation="siteswap">
+<line display="base SS" notation="siteswap">
 pattern=423;dratio=0.5;tps=3;
 </line>
 
 <line display="51"/>
-<line display="base" notation="siteswap">
+<line display="base SS" notation="siteswap">
 pattern=51;dratio=0.5;tps=3;
 </line>
 
 <line display="40"/>
-<line display="Colonne tennis" notation="jml">
+<line display="Colonne tennis JML" notation="jml">
 <pattern>
 <title>40404040</title>
 <prop type="ball"/>
@@ -128,26 +128,26 @@ pattern=51;dratio=0.5;tps=3;
 </pattern>
 </line>
 
-<line display="531"/>
+<line display="531 SS"/>
 <line display="base" notation="siteswap">
 pattern=531;dratio=0.5;tps=4;
 </line>
 
-<line display="(2x,2x)"/>
+<line display="(2x,2x) SS"/>
 <line display="Colonnes Verticales" notation="siteswap">
 pattern=(2x,2x);dratio=0.5;tps=3;hands=(10,0)(-10,0).(10,50)(-10,50).(-10,0)(10,0).(-10,50)(10,50).
 </line>
 
-<line display="Colonnes Horizontales" notation="siteswap">
+<line display="Colonnes Horizontales SS" notation="siteswap">
 pattern=(2x,2x);dratio=0.5;tps=3;hands=(20,0)(20,10).(20,10)(20,0).(20,10)(20,0).(20,0)(20,10).
 </line>
 
-<line display="Boite (4,2x)"/>
+<line display="Boite (4,2x) SS"/>
 <line display="Boite" notation="siteswap">
 pattern=(4,2x)*;dratio=0.5;tps=3;
 </line>
 
-<line display="5 ball half-pirouettes" notation="jml">
+<line display="5 ball half-pirouettes JML" notation="jml">
 	<pattern>
 	<title>(2x,2x)</title>
 	<prop type="ball"/>
@@ -181,14 +181,14 @@ pattern=(4,2x)*;dratio=0.5;tps=3;
 </line>
 
 <line display="(4x,2x) Douche"/>
-<line display="base" notation="siteswap">
+<line display="base SS" notation="siteswap">
 pattern=(4x,2x);dratio=0.5;tps=3;
 </line>
 
 <line display="A CLASSER"/>
 <line display="Colonnes"/>
 
-<line display="base (4,4)(0,4x)(4,4)(4x,0)" notation="jml">
+<line display="base (4,4)(0,4x)(4,4)(4x,0) JML" notation="jml">
 	<pattern>
 	<title>(4,4)(0,4x)(4,4)(4x,0)</title>
 	<prop type="ball"/>
@@ -241,7 +241,7 @@ pattern=(4x,2x);dratio=0.5;tps=3;
 	</pattern>
 </line>
 
-<line display="colonnes tennis" notation="jml">
+<line display="colonnes tennis JML" notation="jml">
 	<pattern>
 	<title>base (4,4)(0,4x)(4,4)(4x,0)</title>
 	<prop type="ball"/>
