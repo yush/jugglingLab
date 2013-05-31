@@ -127,11 +127,11 @@ public class View extends JPanel implements ActionListener {
 
 
     protected static final String[] viewItems = new String[]
-    { "Simple", "Visual editor", /*"Selection editor",*/ "JML editor", null, "Restart", "Animation Preferences..." };
+    { "Simple", "Visual editor", /*"Selection editor",*/ "JML editor", "GS editor", null, "Restart", "Animation Preferences..." };
     protected static final String[] viewCommands = new String[]
-    { "simple", "edit", /*"selection",*/ "jml", null, "restart", "prefs" };
+    { "simple", "edit", /*"selection",*/ "jml", "gs", null, "restart", "prefs" };
     protected static final char[] viewShortcuts =
-    { '1', '2', '3', /*'4',*/ ' ', ' ', 'P' };
+    { '1', '2', '3', /*'4',*/ 'G', ' ', ' ', 'P' };
 	
 	public JMenu createViewMenu() {
         JMenu viewmenu = new JMenu(guistrings.getString("View"));
@@ -206,6 +206,14 @@ public class View extends JPanel implements ActionListener {
             else if (command.equals("jml")) {
                 if (getViewMode() != VIEW_JML) {
 					setViewMode(VIEW_JML);
+					if (parent != null)
+						parent.pack();
+					restartView(pat, jc);
+				}
+			}
+            else if (command.equals("gs")) {
+				if (getViewMode() != VIEW_GS) {
+					setViewMode(VIEW_GS);
 					if (parent != null)
 						parent.pack();
 					restartView(pat, jc);
@@ -381,7 +389,8 @@ public class View extends JPanel implements ActionListener {
     public static final int VIEW_EDIT = 2;
     public static final int VIEW_SELECTION = 3;
     public static final int VIEW_JML = 4;
-
+    public static final int VIEW_GS = 5;
+    
     public void setViewMode(int mode) throws JuggleExceptionUser, JuggleExceptionInternal {
         View newview = null;
         boolean paused = false;
@@ -404,6 +413,9 @@ public class View extends JPanel implements ActionListener {
                 break;
             case VIEW_JML:
                 newview = new JMLView(animsize);
+                break;
+            case VIEW_GS:
+                newview = new GSView(animsize);
                 break;
             case VIEW_SELECTION:
                 newview = new SelectionView(animsize);
@@ -445,6 +457,8 @@ public class View extends JPanel implements ActionListener {
 			return VIEW_EDIT;
 		if (subview instanceof JMLView)
 			return VIEW_JML;
+		if (subview instanceof GSView)
+			return VIEW_GS;
 		if (subview instanceof SelectionView)
 			return VIEW_SELECTION;
 		return VIEW_NONE;
